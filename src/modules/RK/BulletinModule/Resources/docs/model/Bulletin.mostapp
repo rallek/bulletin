@@ -93,6 +93,9 @@ application "Bulletin" {
                 editAction "Edit"
             ,
                 deleteAction "Delete"
+            ,
+                customAction "EventList",
+                customAction "EventDisplay"
             }
         },
         entity "image" {

@@ -1,0 +1,9 @@
+{# purpose of this template: show output of event list action in notice area #}
+{% extends routeArea == 'admin' ? 'RKBulletinModule::adminBase.html.twig' : 'RKBulletinModule::base.html.twig' %}
+{% block title __('Event list') %}
+{% block admin_page_icon 'square' %}
+{% block content %}
+    <div class="rkbulletinmodule-notice rkbulletinmodule-eventlist">
+        <p>Please override this template by moving it from <em>/modules/RK/BulletinModule/Resources/views/Notice/eventList.html.twig</em> to either <em>/themes/YourTheme/Resources/RKBulletinModule/views/Notice/eventList.html.twig</em> or <em>/app/Resources/RKBulletinModule/views/Notice/eventList.html.twig</em>.</p>
+    </div>
+{% endblock %}

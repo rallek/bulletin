@@ -245,6 +245,78 @@ class NoticeController extends AbstractNoticeController
     {
         return parent::deleteAction($request, $notice);
     }
+    /**
+     * @inheritDoc
+     *
+     * @Route("/admin/notices/eventList",
+     *        methods = {"GET", "POST"}
+     * )
+     * @Theme("admin")
+     *
+     * @param Request $request Current request instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function adminEventListAction(Request $request)
+    {
+        return parent::adminEventListAction($request);
+    }
+    
+    /**
+     * @inheritDoc
+     *
+     * @Route("/notices/eventList",
+     *        methods = {"GET", "POST"}
+     * )
+     *
+     * @param Request $request Current request instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function eventListAction(Request $request)
+    {
+        return parent::eventListAction($request);
+    }
+    /**
+     * @inheritDoc
+     *
+     * @Route("/admin/notices/eventDisplay",
+     *        methods = {"GET", "POST"}
+     * )
+     * @Theme("admin")
+     *
+     * @param Request $request Current request instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function adminEventDisplayAction(Request $request)
+    {
+        return parent::adminEventDisplayAction($request);
+    }
+    
+    /**
+     * @inheritDoc
+     *
+     * @Route("/notices/eventDisplay",
+     *        methods = {"GET", "POST"}
+     * )
+     *
+     * @param Request $request Current request instance
+     *
+     * @return Response Output
+     *
+     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
+     */
+    public function eventDisplayAction(Request $request)
+    {
+        return parent::eventDisplayAction($request);
+    }
 
     /**
      * Process status changes for multiple items.

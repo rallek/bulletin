@@ -81,7 +81,7 @@ application "Bulletin" {
                     mandatory false
                     visible false
                 },
-                string "locale" locale {
+                string "noticeLocale" locale {
                     mandatory false
                     displayType VIEW_SORTING
                 }

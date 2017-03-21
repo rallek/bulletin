@@ -51,7 +51,7 @@
                     <option value="eventDate"{if $sort eq 'eventDate'} selected="selected"{/if}>{gt text='Event date'}</option>
                     <option value="eventTime"{if $sort eq 'eventTime'} selected="selected"{/if}>{gt text='Event time'}</option>
                     <option value="visits"{if $sort eq 'visits'} selected="selected"{/if}>{gt text='Visits'}</option>
-                    <option value="locale"{if $sort eq 'locale'} selected="selected"{/if}>{gt text='Locale'}</option>
+                    <option value="noticeLocale"{if $sort eq 'noticeLocale'} selected="selected"{/if}>{gt text='Notice locale'}</option>
                     <option value="createdDate"{if $sort eq 'createdDate'} selected="selected"{/if}>{gt text='Creation date'}</option>
                     <option value="createdBy"{if $sort eq 'createdBy'} selected="selected"{/if}>{gt text='Creator'}</option>
                     <option value="updatedDate"{if $sort eq 'updatedDate'} selected="selected"{/if}>{gt text='Update date'}</option>

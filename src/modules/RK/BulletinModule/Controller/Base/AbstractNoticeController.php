@@ -153,7 +153,7 @@ abstract class AbstractNoticeController extends AbstractController
             new Column('eventDate'),
             new Column('eventTime'),
             new Column('visits'),
-            new Column('locale'),
+            new Column('noticeLocale'),
             new Column('createdBy'),
             new Column('createdDate'),
             new Column('updatedBy'),

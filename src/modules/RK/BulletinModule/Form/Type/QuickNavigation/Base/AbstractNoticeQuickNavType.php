@@ -161,8 +161,8 @@ abstract class AbstractNoticeQuickNavType extends AbstractType
      */
     public function addLocaleFields(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('locale', 'Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType', [
-            'label' => $this->__('Locale'),
+        $builder->add('noticeLocale', 'Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType', [
+            'label' => $this->__('Notice locale'),
             'attr' => [
                 'class' => 'input-sm'
             ],
@@ -215,7 +215,7 @@ abstract class AbstractNoticeQuickNavType extends AbstractType
                     $this->__('Event date') => 'eventDate',
                     $this->__('Event time') => 'eventTime',
                     $this->__('Visits') => 'visits',
-                    $this->__('Locale') => 'locale',
+                    $this->__('Notice locale') => 'noticeLocale',
                     $this->__('Creation date') => 'createdDate',
                     $this->__('Creator') => 'createdBy',
                     $this->__('Update date') => 'updatedDate',

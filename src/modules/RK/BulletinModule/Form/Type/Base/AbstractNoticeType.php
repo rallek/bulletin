@@ -313,13 +313,13 @@ abstract class AbstractNoticeType extends AbstractType
             'scale' => 0
         ]);
         
-        $builder->add('locale', 'Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType', [
-            'label' => $this->__('Locale') . ':',
+        $builder->add('noticeLocale', 'Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType', [
+            'label' => $this->__('Notice locale') . ':',
             'empty_data' => '',
             'attr' => [
                 'maxlength' => 255,
                 'class' => ' validate-nospace',
-                'title' => $this->__('Choose the locale of the notice')
+                'title' => $this->__('Choose the notice locale of the notice')
             ],
             'required' => false,
             'placeholder' => $this->__('All'),

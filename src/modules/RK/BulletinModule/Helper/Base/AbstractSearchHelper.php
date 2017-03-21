@@ -176,7 +176,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
                     $whereArray[] = 'tbl.copyright';
                     $whereArray[] = 'tbl.eventDuration';
                     $whereArray[] = 'tbl.eventDescription';
-                    $whereArray[] = 'tbl.locale';
+                    $whereArray[] = 'tbl.noticeLocale';
                     break;
                 case 'image':
                     $whereArray[] = 'tbl.workflowState';

@@ -221,9 +221,9 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
      * @Assert\Regex(pattern="/\s/", match=false, message="This value must not contain space chars.")
      * @Assert\Length(min="0", max="255")
      * @Assert\Locale()
-     * @var string $locale
+     * @var string $noticeLocale
      */
-    protected $locale = '';
+    protected $noticeLocale = '';
     
     
     /**
@@ -736,25 +736,25 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     }
     
     /**
-     * Returns the locale.
+     * Returns the notice locale.
      *
      * @return string
      */
-    public function getLocale()
+    public function getNoticeLocale()
     {
-        return $this->locale;
+        return $this->noticeLocale;
     }
     
     /**
-     * Sets the locale.
+     * Sets the notice locale.
      *
-     * @param string $locale
+     * @param string $noticeLocale
      *
      * @return void
      */
-    public function setLocale($locale)
+    public function setNoticeLocale($noticeLocale)
     {
-        $this->locale = isset($locale) ? $locale : '';
+        $this->noticeLocale = isset($noticeLocale) ? $noticeLocale : '';
     }
     
     /**

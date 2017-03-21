@@ -186,7 +186,7 @@ abstract class AbstractNoticeFinderType extends AbstractType
                     $this->__('Event date') => 'eventDate',
                     $this->__('Event time') => 'eventTime',
                     $this->__('Visits') => 'visits',
-                    $this->__('Locale') => 'locale',
+                    $this->__('Notice locale') => 'noticeLocale',
                     $this->__('Creation date') => 'createdDate',
                     $this->__('Creator') => 'createdBy',
                     $this->__('Update date') => 'updatedDate',

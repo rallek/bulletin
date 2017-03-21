@@ -33,7 +33,7 @@
                 <col id="cEventTime" />
                 <col id="cEventDuration" />
                 <col id="cVisits" />
-                <col id="cLocale" />
+                <col id="cNoticeLocale" />
             </colgroup>
             <thead>
             <tr>
@@ -76,8 +76,8 @@
                 <th id="hVisits" scope="col" class="text-right">
                     <a href="{{ sort.visits.url }}" title="{{ __f('Sort by %s', {'%s': 'visits'}) }}" class="{{ sort.visits.class }}">{{ __('Visits') }}</a>
                 </th>
-                <th id="hLocale" scope="col" class="text-left">
-                    <a href="{{ sort.locale.url }}" title="{{ __f('Sort by %s', {'%s': 'locale'}) }}" class="{{ sort.locale.class }}">{{ __('Locale') }}</a>
+                <th id="hNoticeLocale" scope="col" class="text-left">
+                    <a href="{{ sort.noticeLocale.url }}" title="{{ __f('Sort by %s', {'%s': 'notice locale'}) }}" class="{{ sort.noticeLocale.class }}">{{ __('Notice locale') }}</a>
                 </th>
             </tr>
             </thead>
@@ -154,8 +154,8 @@
                 <td headers="hVisits" class="text-right">
                     {{ notice.visits }}
                 </td>
-                <td headers="hLocale" class="text-left">
-                    {{ notice.locale|languageName }}
+                <td headers="hNoticeLocale" class="text-left">
+                    {{ notice.noticeLocale|languageName }}
                 </td>
             </tr>
         {% else %}

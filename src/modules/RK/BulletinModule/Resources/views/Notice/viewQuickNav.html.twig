@@ -28,11 +28,11 @@
         {% if workflowStateFilter is defined and workflowStateFilter != true %}
             </div>
         {% endif %}
-        {% if localeFilter is defined and localeFilter != true %}
+        {% if noticeLocaleFilter is defined and noticeLocaleFilter != true %}
             <div class="hidden">
         {% endif %}
-            {{ form_row(quickNavForm.locale) }}
-        {% if localeFilter is defined and localeFilter != true %}
+            {{ form_row(quickNavForm.noticeLocale) }}
+        {% if noticeLocaleFilter is defined and noticeLocaleFilter != true %}
             </div>
         {% endif %}
         {% if searchFilter is defined and searchFilter != true %}

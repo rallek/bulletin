@@ -68,7 +68,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
             'eventDate',
             'eventTime',
             'visits',
-            'locale',
+            'noticeLocale',
             'createdBy',
             'createdDate',
             'updatedBy',
@@ -230,7 +230,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
         $categoryHelper = ServiceUtil::get('rk_bulletin_module.category_helper');
         $parameters['catIdList'] = $categoryHelper->retrieveCategoriesFromRequest('notice', 'GET');
         $parameters['workflowState'] = $this->getRequest()->query->get('workflowState', '');
-        $parameters['locale'] = $this->getRequest()->query->get('locale', '');
+        $parameters['noticeLocale'] = $this->getRequest()->query->get('noticeLocale', '');
         $parameters['q'] = $this->getRequest()->query->get('q', '');
         
         $parameters['startPage'] = $this->getRequest()->query->get('startPage', '');
@@ -724,8 +724,8 @@ abstract class AbstractNoticeRepository extends EntityRepository
         $parameters['searchEventDescription'] = '%' . $fragment . '%';
         $filters[] = 'tbl.visits = :searchVisits';
         $parameters['searchVisits'] = $fragment;
-        $filters[] = 'tbl.locale LIKE :searchLocale';
-        $parameters['searchLocale'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.noticeLocale LIKE :searchNoticeLocale';
+        $parameters['searchNoticeLocale'] = '%' . $fragment . '%';
     
         $qb->andWhere('(' . implode(' OR ', $filters) . ')')
            ->setParameters($parameters);

@@ -1,0 +1,59 @@
+{# Purpose of this template: Display one certain notice within an external context #}
+{{ pageAddAsset('javascript', asset('magnific-popup/jquery.magnific-popup.min.js')) }}
+{{ pageAddAsset('stylesheet', asset('magnific-popup/magnific-popup.css')) }}
+{{ pageAddAsset('javascript', zasset('@RKBulletinModule:js/RKBulletinModule.js')) }}
+<div id="notice{$notice.id}" class="rkbulletinmodule-external-notice">
+{% if displayMode == 'link' %}
+    <p class="rkbulletinmodule-external-link">
+    <a href="{{ path('rkbulletinmodule_notice_display', { 'id': notice.id }) }}" title="{{ notice.getTitleFromDisplayPattern()|e('html_attr') }}">
+    {{ notice.getTitleFromDisplayPattern()|notifyFilters('bulletin.filter_hooks.notices.filter') }}
+    </a>
+    </p>
+{% endif %}
+{% if hasPermission('RKBulletinModule::', '::', 'ACCESS_EDIT') %}
+    {# for normal users without edit permission show only the actual file per default #}
+    {% if displayMode == 'embed' %}
+        <p class="rkbulletinmodule-external-title">
+            <strong>{{ notice.getTitleFromDisplayPattern()|notifyFilters('bulletin.filter_hooks.notices.filter') }}</strong>
+        </p>
+    {% endif %}
+{% endif %}
+
+{% if displayMode == 'link' %}
+{% elseif displayMode == 'embed' %}
+    <div class="rkbulletinmodule-external-snippet">
+        {% if notice.image is not empty and notice.imageMeta|default %}
+                    <a href="{{ notice.imageUrl }}" title="{{ notice.getTitleFromDisplayPattern()|e('html_attr') }}"{% if notice.imageMeta.isImage %} class="image-link"{% endif %}>
+        {% if notice.imageMeta.isImage %}
+            {% set thumbOptions = attribute(thumbRuntimeOptions, 'noticeImage') %}
+            <img src="{{ notice.image.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ notice.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+        {% else %}
+            {{ __('Download') }} ({{ notice.imageMeta.size|rkbulletinmodule_fileSize(notice.image.getPathname(), false, false) }})
+        {% endif %}
+        </a>
+        {% else %}&nbsp;{% endif %}
+    </div>
+
+    {# you can distinguish the context like this: #}
+    {# % if source == 'contentType' %}
+        ...
+    {% elseif source == 'scribite' %}
+        ...
+    {% endif % #}
+
+    {# you can enable more details about the item: #}
+    {#
+        <p class="rkbulletinmodule-external-description">
+            {% if notice.teaser is not empty %}{{ notice.teaser }}<br />{% endif %}
+            {% if featureActivationHelper.isEnabled(constant('RK\\BulletinModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'notice') %}
+                <dl class="category-list">
+                {% for propName, catMapping in notice.categories %}
+                    <dt>{{ propName }}</dt>
+                    <dd>{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}</dd>
+                {% endfor %}
+                </dl>
+            {% endif %}
+        </p>
+    #}
+{% endif %}
+</div>

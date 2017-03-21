@@ -1,0 +1,29 @@
+services:
+    # Form field types
+    
+    rk_bulletin_module.form.type.field.datetime:
+        class: RK\BulletinModule\Form\Type\Field\DateTimeType
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.type.field.translation:
+        class: RK\BulletinModule\Form\Type\Field\TranslationType
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.type.field.upload:
+        class: RK\BulletinModule\Form\Type\Field\UploadType
+        arguments:
+            - "@translator.default"
+            - "@request_stack"
+            - "@rk_bulletin_module.image_helper"
+            - "@rk_bulletin_module.upload_helper"
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.type.field.user:
+        class: RK\BulletinModule\Form\Type\Field\UserType
+        arguments:
+            - "@zikula_users_module.user_repository"
+        tags:
+            - { name: form.type }

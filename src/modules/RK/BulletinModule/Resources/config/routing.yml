@@ -1,0 +1,5 @@
+rkbulletinmodule:
+    # define routing support for these controllers
+    resource: "@RKBulletinModule/Controller"
+    # enable support for defining routes by annotations
+    type: annotation

@@ -1,0 +1,133 @@
+services:
+    # Form types
+    
+    rk_bulletin_module.form.type.noticequicknav:
+        class: RK\BulletinModule\Form\Type\QuickNavigation\NoticeQuickNavType
+        arguments:
+            - "@translator.default"
+            - "@rk_bulletin_module.listentries_helper"
+            - "@zikula_settings_module.locale_api"
+            - "@rk_bulletin_module.feature_activation_helper"
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.type.imagequicknav:
+        class: RK\BulletinModule\Form\Type\QuickNavigation\ImageQuickNavType
+        arguments:
+            - "@translator.default"
+            - "@request_stack"
+            - "@rk_bulletin_module.listentries_helper"
+            - "@rk_bulletin_module.feature_activation_helper"
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.handler.notice:
+        class: RK\BulletinModule\Form\Handler\Notice\EditHandler
+        arguments:
+            - "@kernel"
+            - "@translator.default"
+            - "@form.factory"
+            - "@request_stack"
+            - "@router"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_users_module.current_user"
+            - "@rk_bulletin_module.entity_factory"
+            - "@rk_bulletin_module.controller_helper"
+            - "@rk_bulletin_module.model_helper"
+            - "@rk_bulletin_module.selection_helper"
+            - "@rk_bulletin_module.workflow_helper"
+            - "@rk_bulletin_module.hook_helper"
+            - "@rk_bulletin_module.translatable_helper"
+            - "@rk_bulletin_module.feature_activation_helper"
+        calls:
+            - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.type.notice:
+        class: RK\BulletinModule\Form\Type\NoticeType
+        arguments:
+            - "@translator.default"
+            - "@rk_bulletin_module.entity_factory"
+            - "@zikula_extensions_module.api.variable"
+            - "@rk_bulletin_module.translatable_helper"
+            - "@rk_bulletin_module.listentries_helper"
+            - "@zikula_settings_module.locale_api"
+            - "@rk_bulletin_module.feature_activation_helper"
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.handler.image:
+        class: RK\BulletinModule\Form\Handler\Image\EditHandler
+        arguments:
+            - "@kernel"
+            - "@translator.default"
+            - "@form.factory"
+            - "@request_stack"
+            - "@router"
+            - "@logger"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_users_module.current_user"
+            - "@rk_bulletin_module.entity_factory"
+            - "@rk_bulletin_module.controller_helper"
+            - "@rk_bulletin_module.model_helper"
+            - "@rk_bulletin_module.selection_helper"
+            - "@rk_bulletin_module.workflow_helper"
+            - "@rk_bulletin_module.hook_helper"
+            - "@rk_bulletin_module.translatable_helper"
+            - "@rk_bulletin_module.feature_activation_helper"
+        calls:
+            - [setLockingApi, ["@?zikula_pagelock_module.api.locking"]]
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.type.image:
+        class: RK\BulletinModule\Form\Type\ImageType
+        arguments:
+            - "@translator.default"
+            - "@rk_bulletin_module.entity_factory"
+            - "@rk_bulletin_module.listentries_helper"
+            - "@rk_bulletin_module.feature_activation_helper"
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.type.deleteentity:
+        class: RK\BulletinModule\Form\DeleteEntityType
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.type.block.itemlist:
+        class: RK\BulletinModule\Block\Form\Type\ItemListBlockType
+        arguments:
+            - "@translator.default"
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.type.noticefinder:
+        class: RK\BulletinModule\Form\Type\Finder\NoticeFinderType
+        arguments:
+            - "@translator.default"
+            - "@rk_bulletin_module.feature_activation_helper"
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.type.imagefinder:
+        class: RK\BulletinModule\Form\Type\Finder\ImageFinderType
+        arguments:
+            - "@translator.default"
+            - "@rk_bulletin_module.feature_activation_helper"
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.type.appsettings:
+        class: RK\BulletinModule\Form\AppSettingsType
+        arguments:
+            - "@translator.default"
+            - "@zikula_extensions_module.api.variable"
+        tags:
+            - { name: form.type }

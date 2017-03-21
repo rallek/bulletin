@@ -1,0 +1,74 @@
+services:
+    # Event subscriber and listener classes
+    rk_bulletin_module.entity_lifecycle_listener:
+        class: RK\BulletinModule\Listener\EntityLifecycleListener
+        arguments:
+            - "@service_container"
+        tags:
+            - { name: doctrine.event_subscriber }
+    
+    rk_bulletin_module.kernel_listener:
+        class: RK\BulletinModule\Listener\KernelListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_bulletin_module.installer_listener:
+        class: RK\BulletinModule\Listener\InstallerListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_bulletin_module.moduledispatch_listener:
+        class: RK\BulletinModule\Listener\ModuleDispatchListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_bulletin_module.mailer_listener:
+        class: RK\BulletinModule\Listener\MailerListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_bulletin_module.theme_listener:
+        class: RK\BulletinModule\Listener\ThemeListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_bulletin_module.userlogin_listener:
+        class: RK\BulletinModule\Listener\UserLoginListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_bulletin_module.userlogout_listener:
+        class: RK\BulletinModule\Listener\UserLogoutListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_bulletin_module.user_listener:
+        class: RK\BulletinModule\Listener\UserListener
+        arguments:
+            - "@translator.default"
+            - "@rk_bulletin_module.entity_factory"
+            - "@zikula_users_module.current_user"
+            - "@logger"
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_bulletin_module.userregistration_listener:
+        class: RK\BulletinModule\Listener\UserRegistrationListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_bulletin_module.users_listener:
+        class: RK\BulletinModule\Listener\UsersListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_bulletin_module.group_listener:
+        class: RK\BulletinModule\Listener\GroupListener
+        tags:
+            - { name: kernel.event_subscriber }
+    
+    rk_bulletin_module.thirdparty_listener:
+        class: RK\BulletinModule\Listener\ThirdPartyListener
+        tags:
+            - { name: kernel.event_subscriber }
+    

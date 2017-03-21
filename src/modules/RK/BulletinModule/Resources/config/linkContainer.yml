@@ -1,0 +1,12 @@
+services:
+    rk_bulletin_module.link_container:
+        class: RK\BulletinModule\Container\LinkContainer
+        arguments:
+            - "@translator.default"
+            - "@router"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_users_module.current_user"
+            - "@rk_bulletin_module.controller_helper"
+        tags:
+            - { name: zikula.link_container }

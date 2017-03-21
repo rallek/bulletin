@@ -1,0 +1,12 @@
+imports:
+  - { resource: 'linkContainer.yml' }
+  - { resource: 'entityFactory.yml' }
+  - { resource: 'eventSubscriber.yml' }
+  - { resource: 'formFields.yml' }
+  - { resource: 'forms.yml' }
+  - { resource: 'helpers.yml' }
+  - { resource: 'twig.yml' }
+  - { resource: 'logger.yml' }
+
+parameters:
+    liip_imagine.cache.signer.class: RK\BulletinModule\Imagine\Cache\DummySigner

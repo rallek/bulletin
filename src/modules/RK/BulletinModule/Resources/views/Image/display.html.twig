@@ -1,0 +1,71 @@
+{# purpose of this template: images display view #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends 'RKBulletinModule::' ~ baseTemplate ~ '.html.twig' %}
+{% block pageTitle %}{{ image.getTitleFromDisplayPattern()|default(__('Image')) }}{% endblock %}
+{% block title %}
+    {% set templateTitle = image.getTitleFromDisplayPattern()|default(__('Image')) %}
+    {{ templateTitle|notifyFilters('rkbulletinmodule.filter_hooks.images.filter') }}
+    {% set itemActions = knp_menu_get('RKBulletinModule:ItemActionsMenu:menu', [], { entity: image, area: routeArea, context: 'display' }) %}
+    <div class="dropdown">
+        <a id="itemActions{{ image.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+    </div>
+{% endblock %}
+{% block admin_page_icon 'eye' %}
+{% block content %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    <div class="rkbulletinmodule-image rkbulletinmodule-display">
+
+
+    <dl>
+        {% if image.image is not empty %}
+            <dt>{{ __('Image') }}</dt>
+            <dd>{% if image.imageMeta|default %}
+            <a href="{{ image.imageUrl }}" title="{{ image.getTitleFromDisplayPattern()|e('html_attr') }}"{% if image.imageMeta.isImage %} class="image-link"{% endif %}>
+            {% if image.imageMeta.isImage %}
+                {% set thumbOptions = attribute(thumbRuntimeOptions, 'imageImage') %}
+                <img src="{{ image.image.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ image.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+            {% else %}
+                {{ __('Download') }} ({{ image.imageMeta.size|rkbulletinmodule_fileSize(image.image.getPathname(), false, false) }})
+            {% endif %}
+            </a>
+            {% endif %}
+            </dd>
+        {% endif %}
+        {% if image.copyright is not empty %}
+            <dt>{{ __('Copyright') }}</dt>
+            <dd>{{ image.copyright }}</dd>
+        {% endif %}
+        {% if image.altText is not empty %}
+            <dt>{{ __('Alt text') }}</dt>
+            <dd>{{ image.altText }}</dd>
+        {% endif %}
+        {% if image.person|default %}
+            <dt>{{ __('Person') }}</dt>
+            <dd>
+              {% if not isQuickView %}
+                  <a href="{{ path('rkbulletinmodule_notice_' ~ routeArea ~ 'display', { 'id': image.person.id }) }}">{% spaceless %}
+                    {{ image.person.getTitleFromDisplayPattern() }}
+                  {% endspaceless %}</a>
+                  <a id="noticeItem{{ image.person.id }}Display" href="{{ path('rkbulletinmodule_notice_' ~ routeArea ~ 'display', { 'id': image.person.id, 'raw': 1 }) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="rkbulletin-inline-window hidden" data-modal-title="{{ image.person.getTitleFromDisplayPattern()|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+              {% else %}
+                  {{ image.person.getTitleFromDisplayPattern() }}
+              {% endif %}
+            </dd>
+        {% endif %}
+        
+    </dl>
+    {{ include('@RKBulletinModule/Helper/includeStandardFieldsDisplay.html.twig', { obj: image }) }}
+
+    {% if not isQuickView %}
+        {# include display hooks #}
+        {{ block('display_hooks') }}
+    {% endif %}
+</div>
+{% endblock %}
+{% block display_hooks %}
+    {% set hooks = notifyDisplayHooks(eventName='rkbulletinmodule.ui_hooks.images.display_view', id=image.id, urlObject=currentUrlObject) %}
+    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
+        {{ hook }}
+    {% endfor %}
+{% endblock %}

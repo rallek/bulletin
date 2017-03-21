@@ -1,0 +1,26 @@
+{# Purpose of this template: Display item information for previewing from other modules #}
+<dl id="notice{{ notice.id }}">
+<dt>{{ notice.getTitleFromDisplayPattern()|notifyFilters('bulletin.filter_hooks.notices.filter') }}</dt>
+<dd>{% if notice.image is not empty and notice.imageMeta|default %}
+            <a href="{{ notice.imageUrl }}" title="{{ notice.getTitleFromDisplayPattern()|e('html_attr') }}"{% if notice.imageMeta.isImage %} class="image-link"{% endif %}>
+{% if notice.imageMeta.isImage %}
+    {% set thumbOptions = attribute(thumbRuntimeOptions, 'noticeImage') %}
+    <img src="{{ notice.image.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ notice.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+{% else %}
+    {{ __('Download') }} ({{ notice.imageMeta.size|rkbulletinmodule_fileSize(notice.image.getPathname(), false, false) }})
+{% endif %}
+</a>
+{% else %}&nbsp;{% endif %}
+</dd>
+{% if notice.teaser is not empty %}<dd>{{ notice.teaser }}</dd>{% endif %}
+{% if featureActivationHelper.isEnabled(constant('RK\\BulletinModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'notice') %}
+    <dd>
+        <dl class="category-list">
+        {% for propName, catMapping in notice.categories %}
+            <dt>{{ propName }}</dt>
+            <dd>{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}</dd>
+        {% endfor %}
+        </dl>
+    </dd>
+{% endif %}
+</dl>

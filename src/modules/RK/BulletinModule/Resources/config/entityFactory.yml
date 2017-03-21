@@ -1,0 +1,6 @@
+services:
+    # Entity factory class
+    rk_bulletin_module.entity_factory:
+        class: RK\BulletinModule\Entity\Factory\BulletinFactory
+        arguments:
+            - "@doctrine.orm.default_entity_manager"

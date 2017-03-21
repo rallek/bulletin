@@ -1,0 +1,128 @@
+{# purpose of this template: notices display view #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends 'RKBulletinModule::' ~ baseTemplate ~ '.html.twig' %}
+{% block pageTitle %}{{ notice.getTitleFromDisplayPattern()|default(__('Notice')) }}{% endblock %}
+{% block title %}
+    {% set templateTitle = notice.getTitleFromDisplayPattern()|default(__('Notice')) %}
+    {{ templateTitle|notifyFilters('rkbulletinmodule.filter_hooks.notices.filter') }}
+    {% set itemActions = knp_menu_get('RKBulletinModule:ItemActionsMenu:menu', [], { entity: notice, area: routeArea, context: 'display' }) %}
+    <div class="dropdown">
+        <a id="itemActions{{ notice.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+    </div>
+{% endblock %}
+{% block admin_page_icon 'eye' %}
+{% block content %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    <div class="rkbulletinmodule-notice rkbulletinmodule-display">
+
+    {% if not isQuickView %}
+        <div class="row">
+            <div class="col-sm-9">
+    {% endif %}
+
+    <dl>
+        {% if notice.title is not empty %}
+            <dt>{{ __('Title') }}</dt>
+            <dd>{{ notice.title }}</dd>
+        {% endif %}
+        {% if notice.teaser is not empty %}
+            <dt>{{ __('Teaser') }}</dt>
+            <dd>{{ notice.teaser|safeHtml }}</dd>
+        {% endif %}
+        {% if notice.description is not empty %}
+            <dt>{{ __('Description') }}</dt>
+            <dd>{{ notice.description|safeHtml }}</dd>
+        {% endif %}
+        {% if notice.image is not empty %}
+            <dt>{{ __('Image') }}</dt>
+            <dd>{% if notice.image is not empty and notice.imageMeta|default %}
+                        <a href="{{ notice.imageUrl }}" title="{{ notice.getTitleFromDisplayPattern()|e('html_attr') }}"{% if notice.imageMeta.isImage %} class="image-link"{% endif %}>
+            {% if notice.imageMeta.isImage %}
+                {% set thumbOptions = attribute(thumbRuntimeOptions, 'noticeImage') %}
+                <img src="{{ notice.image.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ notice.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+            {% else %}
+                {{ __('Download') }} ({{ notice.imageMeta.size|rkbulletinmodule_fileSize(notice.image.getPathname(), false, false) }})
+            {% endif %}
+            </a>
+            {% else %}&nbsp;{% endif %}
+            </dd>
+        {% endif %}
+        {% if notice.copyright is not empty %}
+            <dt>{{ __('Copyright') }}</dt>
+            <dd>{{ notice.copyright }}</dd>
+        {% endif %}
+        {% if notice.startDate is not empty %}
+            <dt>{{ __('Start date') }}</dt>
+            <dd>{{ notice.startDate|localizeddate('medium', 'short') }}</dd>
+        {% endif %}
+        {% if notice.endDate is not empty %}
+            <dt>{{ __('End date') }}</dt>
+            <dd>{{ notice.endDate|localizeddate('medium', 'short') }}</dd>
+        {% endif %}
+        {% if notice.eventDate is not empty %}
+            <dt>{{ __('Event date') }}</dt>
+            <dd>{{ notice.eventDate|localizeddate('medium', 'none') }}</dd>
+        {% endif %}
+        {% if notice.eventTime is not empty %}
+            <dt>{{ __('Event time') }}</dt>
+            <dd>{{ notice.eventTime|localizeddate('none', 'short') }}</dd>
+        {% endif %}
+        {% if notice.eventDuration is not empty %}
+            <dt>{{ __('Event duration') }}</dt>
+            <dd>{{ notice.eventDuration }}</dd>
+        {% endif %}
+        {% if notice.eventDescription is not empty %}
+            <dt>{{ __('Event description') }}</dt>
+            <dd>{{ notice.eventDescription|safeHtml }}</dd>
+        {% endif %}
+        {% if notice.visits is not empty %}
+            <dt>{{ __('Visits') }}</dt>
+            <dd>{{ notice.visits }}</dd>
+        {% endif %}
+        
+    </dl>
+    {% if featureActivationHelper.isEnabled(constant('RK\\BulletinModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'notice') %}
+        {{ include('@RKBulletinModule/Helper/includeCategoriesDisplay.html.twig', { obj: notice }) }}
+    {% endif %}
+    {{ include('@RKBulletinModule/Helper/includeStandardFieldsDisplay.html.twig', { obj: notice }) }}
+
+    {% if not isQuickView %}
+        {# include display hooks #}
+        {{ block('display_hooks') }}
+            </div>
+            <div class="col-sm-3">
+                {{ block('related_items') }}
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+{% block related_items %}
+    {% if routeArea == 'admin' %}
+        <h4>{{ __('Images') }}</h4>
+    {% else %}
+        <h3>{{ __('Images') }}</h3>
+    {% endif %}
+    
+    {% if notice.addresses|default %}
+        {{ include(
+            '@RKBulletinModule/Image/includeDisplayItemListMany.html.twig',
+            { items: notice.addresses }
+        ) }}
+    {% endif %}
+    
+    {% set mayManage = hasPermission('RKBulletinModule:Image:', '::', 'ACCESS_EDIT') %}
+    {% if mayManage %}
+        <p class="managelink">
+            {% set createTitle = __('Create image') %}
+            <a href="{{ path('rkbulletinmodule_image_' ~ routeArea ~ 'edit', { person: notice.id }) }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+        </p>
+    {% endif %}
+{% endblock %}
+{% block display_hooks %}
+    {% set hooks = notifyDisplayHooks(eventName='rkbulletinmodule.ui_hooks.notices.display_view', id=notice.id, urlObject=currentUrlObject) %}
+    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
+        {{ hook }}
+    {% endfor %}
+{% endblock %}

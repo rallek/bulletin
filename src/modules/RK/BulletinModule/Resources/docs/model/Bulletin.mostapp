@@ -1,0 +1,145 @@
+application "Bulletin" {
+    documentation "Bulletin is a news and event announcing modul"
+    vendor "RK"
+    author "Ralf Koester"
+    email "ralf@familie-koester.de"
+    url "http://k62.de"
+    version "0.1.0"
+    prefix "bulletin"
+    generatorSettings {
+        settingsContainer "Settings"
+        generateMailzApi false
+        generateNewsletterPlugin false
+        generateTagSupport false
+        generateMultiHookNeedles false
+        generateRssTemplates false
+        generateAtomTemplates false
+        generateCsvTemplates false
+        generateXmlTemplates false
+        generateJsonTemplates false
+        generateKmlTemplates false
+        generateIcsTemplates false
+        versionAllGeneratedFiles false
+        generateTests false
+    }
+    entities {
+        entity "notice" leading categorisable {
+            documentation "a notice might be just a news or contains an event as well"
+            nameMultiple "notices"
+            displayPattern "#title#"
+            fields {
+                string "title" translatable,
+                text "teaser" translatable {
+                    displayType VIEW_DISPLAY
+                    length 5000
+                },
+                text "description" translatable {
+                    mandatory false
+                    displayType DISPLAY
+                    length 5000
+                },
+                upload "image" {
+                    mandatory false
+                    displayType VIEW_DISPLAY
+                },
+                string "copyright" {
+                    mandatory false
+                    displayType DISPLAY
+                },
+                datetime "startDate" startDate {
+                    mandatory false
+                },
+                datetime "endDate" endDate {
+                    mandatory false
+                },
+                boolean "startPage" ajaxTogglability {
+                    defaultValue "true"
+                    mandatory false
+                    displayType VIEW_SORTING
+                },
+                boolean "isEvent" {
+                    mandatory false
+                    displayType VIEW_SORTING
+                },
+                date "eventDate" {
+                    mandatory false
+                },
+                time "eventTime" {
+                    mandatory false
+                },
+                string "eventDuration" {
+                    mandatory false
+                    displayType VIEW_DISPLAY
+                },
+                text "eventDescription" translatable {
+                    mandatory false
+                    displayType DISPLAY
+                    length 5000
+                },
+                integer "visits" {
+                    defaultValue "0"
+                    mandatory false
+                    visible false
+                },
+                string "locale" locale {
+                    mandatory false
+                    displayType VIEW_SORTING
+                }
+            }
+            actions {
+                mainAction "Index",
+                viewAction "View",
+                displayAction "Display",
+                editAction "Edit"
+            ,
+                deleteAction "Delete"
+            }
+        },
+        entity "image" {
+            nameMultiple "images"
+            displayPattern "#altText#"
+            fields {
+                upload "image",
+                string "copyright" {
+                    mandatory false
+                    displayType DISPLAY
+                },
+                string "altText" {
+                    documentation "the text is filling the alt tag of the image"
+                    displayType DISPLAY
+                }
+            }
+            actions {
+                mainAction "Index",
+                viewAction "View",
+                displayAction "Display",
+                editAction "Edit"
+            ,
+                deleteAction "Delete"
+            }
+        }
+    }
+    relations {
+        one2many {
+            source "notice"
+            sourceAlias "person"
+            target "image"
+            targetAlias "addresses"
+        }
+    }
+variables {
+        varContainer "Bulletin" {
+            vars {
+                intVar "teaserLength" {
+                    value "5000"
+                },
+                intVar "teaserDisplayLength" {
+                    value "250"
+                },
+                intVar "descriptionLength" {
+                    documentation "for description and event description"
+                }
+            }
+        }
+    }
+}

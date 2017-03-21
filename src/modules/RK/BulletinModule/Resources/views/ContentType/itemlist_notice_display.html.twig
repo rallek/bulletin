@@ -1,0 +1,6 @@
+{# Purpose of this template: Display notices within an external context #}
+{% for notice in items %}
+    <h3>{{ notice.getTitleFromDisplayPattern() }}</h3>
+    <p><a href="{{ path('rkbulletinmodule_notice_display', { 'id': notice.id }) }}">{{ __('Read more') }}</a>
+    </p>
+{% endfor %}

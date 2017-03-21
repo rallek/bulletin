@@ -1,0 +1,42 @@
+{# purpose of this template: inclusion template for managing related notice #}
+{% if displayMode is not defined or displayMode is empty %}
+    {% set displayMode = 'choices' %}
+{% endif %}
+{% if allowEditing is not defined or allowEditing is empty %}
+    {% set allowEditing = false %}
+{% endif %}
+{% if panel|default(false) == true %}
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <h3 class="panel-title"><a class="accordion-toggle" data-toggle="collapse" data-parent="#accordion" href="#collapseNotice">{{ __('Notice') }}</a></h3>
+        </div>
+        <div id="collapseNotice" class="panel-collapse collapse in">
+            <div class="panel-body">
+{% else %}
+    <fieldset class="notice">
+{% endif %}
+    <legend>{{ __('Notice') }}</legend>
+    {% if displayMode == 'choices' %}
+        {{ form_row(attribute(form, alias)) }}
+    {% elseif displayMode == 'autocomplete' %}
+        {% set createUrl = allowEditing ? path('rkbulletinmodule_notice_' ~ routeArea ~ 'edit') : '' %}
+            {{ form_row(attribute(form, alias)) }}
+            <div class="rkbulletinmodule-relation-leftside">
+                {% if attribute(linkingItem, alias) is defined %}
+                    {{ include(
+                        'Notice/includeSelectItemListOne.html.twig',
+                        { item: attribute(linkingItem, alias) }
+                    ) }}
+                {% else %}
+                    {{ include('Notice/includeSelectItemListOne.html.twig') }}
+                {% endif %}
+            </div>
+            <br style="clear: both" />
+    {% endif %}
+{% if panel|default(false) == true %}
+            </div>
+        </div>
+    </div>
+{% else %}
+    </fieldset>
+{% endif %}

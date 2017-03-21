@@ -1,0 +1,82 @@
+{# purpose of this template: notices view filter form #}
+{% if hasPermission('RKBulletinModule:Notice:', '::', 'ACCESS_EDIT') %}
+    {% form_theme quickNavForm with [
+        'bootstrap_3_layout.html.twig'
+    ] %}
+    {{ form_start(quickNavForm, {attr: {id: 'rKBulletinModuleNoticeQuickNavForm', class: 'rkbulletinmodule-quicknav navbar-form', role: 'navigation'}}) }}
+    {{ form_errors(quickNavForm) }}
+    <fieldset>
+        <h3>{{ __('Quick navigation') }}</h3>
+        {% set categoriesEnabled = featureActivationHelper.isEnabled(constant('RK\\BulletinModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'notice') %}
+        {% if (categoryFilter is defined and categoryFilter != true) or not categoriesEnabled %}
+            <div class="hidden">
+        {% else %}
+            <div class="row">
+                <div class="col-sm-3">
+        {% endif %}
+            {{ form_row(quickNavForm.categories) }}
+        {% if (categoryFilter is defined and categoryFilter != true) or not categoriesEnabled %}
+            </div>
+        {% else %}
+                </div>
+                <div class="col-sm-9">
+        {% endif %}
+        {% if workflowStateFilter is defined and workflowStateFilter != true %}
+            <div class="hidden">
+        {% endif %}
+            {{ form_row(quickNavForm.workflowState) }}
+        {% if workflowStateFilter is defined and workflowStateFilter != true %}
+            </div>
+        {% endif %}
+        {% if localeFilter is defined and localeFilter != true %}
+            <div class="hidden">
+        {% endif %}
+            {{ form_row(quickNavForm.locale) }}
+        {% if localeFilter is defined and localeFilter != true %}
+            </div>
+        {% endif %}
+        {% if searchFilter is defined and searchFilter != true %}
+            <div class="hidden">
+        {% endif %}
+            {{ form_row(quickNavForm.q) }}
+        {% if searchFilter is defined and searchFilter != true %}
+            </div>
+        {% endif %}
+        {% if sorting is defined and sorting != true %}
+            <div class="hidden">
+        {% endif %}
+            {{ form_row(quickNavForm.sort) }}
+            {{ form_row(quickNavForm.sortdir) }}
+        {% if sorting is defined and sorting != true %}
+            </div>
+        {% endif %}
+        {% if pageSizeSelector is defined and pageSizeSelector != true %}
+            <div class="hidden">
+        {% endif %}
+            {{ form_row(quickNavForm.num) }}
+        {% if pageSizeSelector is defined and pageSizeSelector != true %}
+            </div>
+        {% endif %}
+        {% if startPageFilter is defined and startPageFilter != true %}
+            <div class="hidden">
+        {% endif %}
+            {{ form_row(quickNavForm.startPage) }}
+        {% if startPageFilter is defined and startPageFilter != true %}
+            </div>
+        {% endif %}
+        {% if isEventFilter is defined and isEventFilter != true %}
+            <div class="hidden">
+        {% endif %}
+            {{ form_row(quickNavForm.isEvent) }}
+        {% if isEventFilter is defined and isEventFilter != true %}
+            </div>
+        {% endif %}
+        {{ form_widget(quickNavForm.updateview) }}
+        {% if (categoryFilter is defined and categoryFilter != true) or not categoriesEnabled %}
+        {% else %}
+                </div>
+            </div>
+        {% endif %}
+    </fieldset>
+    {{ form_end(quickNavForm) }}
+{% endif %}

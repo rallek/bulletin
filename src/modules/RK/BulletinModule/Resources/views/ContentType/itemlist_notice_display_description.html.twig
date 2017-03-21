@@ -1,0 +1,13 @@
+{# Purpose of this template: Display notices within an external context #}
+<dl>
+    {% for notice in items %}
+        <dt>{{ notice.getTitleFromDisplayPattern() }}</dt>
+        {% if notice.teaser %}
+            <dd>{{ notice.teaser|striptags|truncate(200, true, '&hellip;') }}</dd>
+        {% endif %}
+        <dd><a href="{{ path('rkbulletinmodule_notice_display', { 'id': notice.id }) }}">{{ __('Read more') }}</a>
+        </dd>
+    {% else %}
+        <dt>{{ __('No entries found.') }}</dt>
+    {% endfor %}
+</dl>

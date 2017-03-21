@@ -1,0 +1,109 @@
+services:
+    # Helper classes
+    rk_bulletin_module.category_helper:
+        class: RK\BulletinModule\Helper\CategoryHelper
+        arguments:
+            - "@translator.default"
+            - "@session"
+            - "@request_stack"
+            - "@logger"
+            - "@zikula_users_module.current_user"
+            - "@zikula_categories_module.api.category_registry"
+            - "@zikula_categories_module.api.category_permission"
+    
+    rk_bulletin_module.controller_helper:
+        class: RK\BulletinModule\Helper\ControllerHelper
+        arguments:
+            - "@translator.default"
+            - "@request_stack"
+            - "@session"
+            - "@logger"
+            - "@form.factory"
+            - "@zikula_extensions_module.api.variable"
+            - "@rk_bulletin_module.entity_factory"
+            - "@rk_bulletin_module.model_helper"
+            - "@rk_bulletin_module.selection_helper"
+            - "@rk_bulletin_module.image_helper"
+            - "@rk_bulletin_module.feature_activation_helper"
+    
+    rk_bulletin_module.feature_activation_helper:
+        class: RK\BulletinModule\Helper\FeatureActivationHelper
+    
+    rk_bulletin_module.hook_helper:
+        class: RK\BulletinModule\Helper\HookHelper
+        arguments:
+            - "@hook_dispatcher"
+    
+    rk_bulletin_module.image_helper:
+        class: RK\BulletinModule\Helper\ImageHelper
+        arguments:
+            - "@translator.default"
+            - "@session"
+            - "@zikula_extensions_module.api.variable"
+    
+    rk_bulletin_module.listentries_helper:
+        class: RK\BulletinModule\Helper\ListEntriesHelper
+        arguments:
+            - "@translator.default"
+    
+    rk_bulletin_module.model_helper:
+        class: RK\BulletinModule\Helper\ModelHelper
+        arguments:
+            - "@rk_bulletin_module.entity_factory"
+    
+    rk_bulletin_module.search_helper:
+        class: RK\BulletinModule\Helper\SearchHelper
+        arguments:
+            - "@translator.default"
+            - "@zikula_permissions_module.api.permission"
+            - "@templating.engine.twig"
+            - "@session"
+            - "@request_stack"
+            - "@rk_bulletin_module.entity_factory"
+            - "@rk_bulletin_module.controller_helper"
+            - "@rk_bulletin_module.feature_activation_helper"
+            - "@rk_bulletin_module.category_helper"
+        tags:
+            - { name: zikula.searchable_module, bundleName: RKBulletinModule }
+    
+    rk_bulletin_module.selection_helper:
+        class: RK\BulletinModule\Helper\SelectionHelper
+        arguments:
+            - "@translator.default"
+            - "@rk_bulletin_module.entity_factory"
+    
+    rk_bulletin_module.translatable_helper:
+        class: RK\BulletinModule\Helper\TranslatableHelper
+        arguments:
+            - "@translator.default"
+            - "@request_stack"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_settings_module.locale_api"
+            - "@rk_bulletin_module.entity_factory"
+    
+    rk_bulletin_module.upload_helper:
+        class: RK\BulletinModule\Helper\UploadHelper
+        arguments:
+            - "@translator.default"
+            - "@session"
+            - "@logger"
+            - "@zikula_users_module.current_user"
+            - "@zikula_extensions_module.api.variable"
+            - "%datadir%"
+    
+    rk_bulletin_module.view_helper:
+        class: RK\BulletinModule\Helper\ViewHelper
+        arguments:
+            - "@twig"
+            - "@twig.loader"
+            - "@request_stack"
+            - "@zikula_permissions_module.api.permission"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_core.common.theme.pagevars"
+            - "@rk_bulletin_module.controller_helper"
+    
+    rk_bulletin_module.workflow_helper:
+        class: RK\BulletinModule\Helper\WorkflowHelper
+        arguments:
+            - "@translator.default"
+            - "@rk_bulletin_module.listentries_helper"

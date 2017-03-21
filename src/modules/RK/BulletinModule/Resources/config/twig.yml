@@ -1,0 +1,13 @@
+services:
+    # Twig extension
+    rk_bulletin_module.twig_extension:
+        class: RK\BulletinModule\Twig\TwigExtension
+        arguments:
+            - "@translator.default"
+            - "@zikula_extensions_module.api.variable"
+            - "@zikula_users_module.user_repository"
+            - "@rk_bulletin_module.workflow_helper"
+            - "@rk_bulletin_module.listentries_helper"
+        public: false
+        tags:
+            - { name: twig.extension }

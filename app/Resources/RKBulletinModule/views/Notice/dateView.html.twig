@@ -1,0 +1,215 @@
+{# purpose of this template: notices list view #}
+{% extends routeArea == 'admin' ? 'RKBulletinModule::adminBase.html.twig' : 'RKBulletinModule::base.html.twig' %}
+{% block title own ? __('My notices') : __('Notice list') %}
+{% block admin_page_icon 'list-alt' %}
+{% block content %}
+<div class="rkbulletinmodule-notice rkbulletinmodule-view">
+
+    <p class="alert alert-info">{{ __('a notice might be just a news or contains an event as well') }}</p>
+
+    {{ block('page_nav_links') }}
+
+    {{ include('@RKBulletinModule/Notice/viewQuickNav.html.twig', { workflowStateFilter: false }) }}{# see template file for available options #}
+
+    {% if routeArea == 'admin' %}
+    <form action="{{ path('rkbulletinmodule_notice_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="noticesViewForm" class="form-horizontal" role="form">
+        <div>
+    {% endif %}
+        <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover table-condensed">
+            <colgroup>
+                {% if routeArea == 'admin' %}
+                    <col id="cSelect" />
+                {% endif %}
+                <col id="cItemActions" />
+                <col id="cTitle" />
+                <col id="cTeaser" />
+                <col id="cImage" />
+                <col id="cStartDate" />
+                <col id="cEndDate" />
+                <col id="cStartPage" />
+                <col id="cIsEvent" />
+                <col id="cEventDateTime" />
+                <col id="cEventDuration" />
+                <col id="cVisits" />
+                <col id="cNoticeLocale" />
+            </colgroup>
+            <thead>
+            <tr>
+                {% if routeArea == 'admin' %}
+                    <th id="hSelect" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}text-center z-w02">
+                        <input type="checkbox" class="rkbulletin-mass-toggle" />
+                    </th>
+                {% endif %}
+                <th id="hItemActions" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}z-order-unsorted">{{ __('Actions') }}</th>
+                <th id="hTitle" scope="col" class="text-left">
+                    <a href="{{ sort.title.url }}" title="{{ __f('Sort by %s', {'%s': 'title'}) }}" class="{{ sort.title.class }}">{{ __('Title') }}</a>
+                </th>
+                <th id="hTeaser" scope="col" class="text-left z-order-unsorted">
+                    {{ __('Teaser') }}
+                </th>
+                <th id="hImage" scope="col" class="text-left z-order-unsorted">
+                    {{ __('Image') }}
+                </th>
+                <th id="hStartDate" scope="col" class="text-left">
+                    <a href="{{ sort.startDate.url }}" title="{{ __f('Sort by %s', {'%s': 'start date'}) }}" class="{{ sort.startDate.class }}">{{ __('Start date') }}</a>
+                </th>
+                <th id="hEndDate" scope="col" class="text-left">
+                    <a href="{{ sort.endDate.url }}" title="{{ __f('Sort by %s', {'%s': 'end date'}) }}" class="{{ sort.endDate.class }}">{{ __('End date') }}</a>
+                </th>
+                <th id="hStartPage" scope="col" class="text-center">
+                    <a href="{{ sort.startPage.url }}" title="{{ __f('Sort by %s', {'%s': 'start page'}) }}" class="{{ sort.startPage.class }}">{{ __('Start page') }}</a>
+                </th>
+                <th id="hIsEvent" scope="col" class="text-center">
+                    <a href="{{ sort.isEvent.url }}" title="{{ __f('Sort by %s', {'%s': 'is event'}) }}" class="{{ sort.isEvent.class }}">{{ __('Is event') }}</a>
+                </th>
+                <th id="hEventDateTime" scope="col" class="text-left">
+                    <a href="{{ sort.eventDateTime.url }}" title="{{ __f('Sort by %s', {'%s': 'event date time'}) }}" class="{{ sort.eventDateTime.class }}">{{ __('Event date time') }}</a>
+                </th>
+                <th id="hEventDuration" scope="col" class="text-left z-order-unsorted">
+                    {{ __('Event duration') }}
+                </th>
+                <th id="hVisits" scope="col" class="text-right">
+                    <a href="{{ sort.visits.url }}" title="{{ __f('Sort by %s', {'%s': 'visits'}) }}" class="{{ sort.visits.class }}">{{ __('Visits') }}</a>
+                </th>
+                <th id="hNoticeLocale" scope="col" class="text-left">
+                    <a href="{{ sort.noticeLocale.url }}" title="{{ __f('Sort by %s', {'%s': 'notice locale'}) }}" class="{{ sort.noticeLocale.class }}">{{ __('Notice locale') }}</a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+        
+        {% for notice in items %}
+            <tr>
+                {% if routeArea == 'admin' %}
+                    <td headers="hSelect" class="fixed-column text-center">
+                        <input type="checkbox" name="items[]" value="{{ notice.id }}" class="rkbulletin-toggle-checkbox" />
+                    </td>
+                {% endif %}
+                <td id="itemActions{{ notice.id }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
+                    {% set itemActions = knp_menu_get('RKBulletinModule:ItemActionsMenu:menu', [], { entity: notice, area: routeArea, context: 'view' }) %}
+                    <div class="dropdown">
+                        <a id="itemActions{{ notice.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+                    </div>
+                </td>
+                <td headers="hTitle" class="text-left">
+                    <a href="{{ path('rkbulletinmodule_notice_' ~ routeArea ~ 'display', { 'id': notice.id }) }}" title="{{ __('View detail page')|e('html_attr') }}">{{ notice.title|notifyFilters('rkbulletinmodule.filterhook.notices') }}</a>
+                </td>
+                <td headers="hTeaser" class="text-left">
+                    {{ notice.teaser|safeHtml }}
+                </td>
+                <td headers="hImage" class="text-left">
+                    {% if notice.image is not empty and notice.imageMeta|default %}
+                                <a href="{{ notice.imageUrl }}" title="{{ notice.getTitleFromDisplayPattern()|e('html_attr') }}"{% if notice.imageMeta.isImage %} class="image-link"{% endif %}>
+                    {% if notice.imageMeta.isImage %}
+                        {% set thumbOptions = attribute(thumbRuntimeOptions, 'noticeImage') %}
+                        <img src="{{ notice.image.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ notice.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+                    {% else %}
+                        {{ __('Download') }} ({{ notice.imageMeta.size|rkbulletinmodule_fileSize(notice.image.getPathname(), false, false) }})
+                    {% endif %}
+                    </a>
+                    {% else %}&nbsp;{% endif %}
+                </td>
+                <td headers="hStartDate" class="text-left">
+                    {{ notice.startDate|localizeddate('medium', 'short') }}
+                </td>
+                <td headers="hEndDate" class="text-left">
+                    {{ notice.endDate|localizeddate('medium', 'short') }}
+                </td>
+                <td headers="hStartPage" class="text-center">
+                    {% set itemid = notice.createCompositeIdentifier() %}
+                    <a id="toggleStartPage{{ itemid }}" href="javascript:void(0);" class="rkbulletin-ajax-toggle hidden" data-object-type="notice" data-field-name="startPage" data-item-id="{{ itemid }}">
+                        <i class="fa fa-check{% if not notice.startPage %} hidden{% endif %}" id="yesStartPage{{ itemid }}" title="{{ __('This setting is enabled. Click here to disable it.') }}"></i>
+                        <i class="fa fa-times{% if notice.startPage %} hidden{% endif %}" id="noStartPage{{ itemid }}" title="{{ __('This setting is disabled. Click here to enable it.') }}"></i>
+                    </a>
+                    <noscript><div id="noscriptStartPage{{ itemid }}">
+                        {% if notice.startPage %}
+                            <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                        {% else %}
+                            <i class="fa fa-times" title="{{ __('No') }}"></i>
+                        {% endif %}
+                    </div></noscript>
+                </td>
+                <td headers="hIsEvent" class="text-center">
+                    {% if notice.isEvent %}
+                        <i class="fa fa-check" title="{{ __('Yes') }}"></i>
+                    {% else %}
+                        <i class="fa fa-times" title="{{ __('No') }}"></i>
+                    {% endif %}
+                </td>
+                <td headers="hEventDateTime" class="text-left">
+                    {{ notice.eventDateTime|localizeddate('medium', 'short') }}
+                </td>
+                <td headers="hEventDuration" class="text-left">
+                    {{ notice.eventDuration }}
+                </td>
+                <td headers="hVisits" class="text-right">
+                    {{ notice.visits }}
+                </td>
+                <td headers="hNoticeLocale" class="text-left">
+                    {{ notice.noticeLocale|languageName }}
+                </td>
+            </tr>
+        {% else %}
+            <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}13{% else %}12{% endif %}">
+            {{ __('No notices found.') }}
+              </td>
+            </tr>
+        {% endfor %}
+        
+            </tbody>
+        </table>
+        </div>
+        
+        {% if showAllEntries != 1 and pager|default %}
+            {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'rkbulletinmodule_notice_' ~ routeArea ~ 'view'}) }}
+        {% endif %}
+    {% if routeArea == 'admin' %}
+            <fieldset>
+                <label for="rKBulletinModuleAction" class="col-sm-3 control-label">{{ __('With selected notices') }}</label>
+                <div class="col-sm-6">
+                    <select id="rKBulletinModuleAction" name="action" class="form-control input-sm">
+                        <option value="">{{ __('Choose action') }}</option>
+                        <option value="delete" title="{{ __('Delete content permanently.') }}">{{ __('Delete') }}</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <input type="submit" value="{{ __('Submit') }}" class="btn btn-default btn-sm" />
+                </div>
+            </fieldset>
+        </div>
+    </form>
+    {% endif %}
+
+    {{ block('display_hooks') }}
+</div>
+{% endblock %}
+{% block page_nav_links %}
+    <p>
+        {% if canBeCreated %}
+            {% if hasPermission('RKBulletinModule:Notice:', '::', 'ACCESS_EDIT') %}
+                {% set createTitle = __('Create notice') %}
+                <a href="{{ path('rkbulletinmodule_notice_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+            {% endif %}
+        {% endif %}
+        {% if showAllEntries == 1 %}
+            {% set linkTitle = __('Back to paginated view') %}
+            <a href="{{ path('rkbulletinmodule_notice_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% else %}
+            {% set linkTitle = __('Show all entries') %}
+            <a href="{{ path('rkbulletinmodule_notice_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% endif %}
+    </p>
+{% endblock %}
+{% block display_hooks %}
+    
+    {# here you can activate calling display hooks for the view page if you need it #}
+    {# % if routeArea != 'admin' %}
+        {% set hooks = notifyDisplayHooks(eventName='rkbulletinmodule.ui_hooks.notices.display_view', urlObject=currentUrlObject) %}
+        {% for providerArea, hook in hooks %}
+            {{ hook }}
+        {% endfor %}
+    {% endif % #}
+{% endblock %}

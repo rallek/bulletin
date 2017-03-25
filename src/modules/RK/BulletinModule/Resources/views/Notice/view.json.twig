@@ -1,0 +1,7 @@
+{# purpose of this template: notices view json view #}
+[
+{% for notice in items %}
+    {% if not loop.first %},{% endif %}
+    {{ notice.toJson() }}
+{% endfor %}
+]

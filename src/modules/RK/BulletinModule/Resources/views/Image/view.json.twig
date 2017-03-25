@@ -1,0 +1,7 @@
+{# purpose of this template: images view json view #}
+[
+{% for image in items %}
+    {% if not loop.first %},{% endif %}
+    {{ image.toJson() }}
+{% endfor %}
+]

@@ -67,7 +67,7 @@ class ImageController extends AbstractImageController
      * @inheritDoc
      *
      * @Route("/admin/images/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html"},
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|json"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -92,7 +92,7 @@ class ImageController extends AbstractImageController
      * @inheritDoc
      *
      * @Route("/images/view/{sort}/{sortdir}/{pos}/{num}.{_format}",
-     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html"},
+     *        requirements = {"sortdir" = "asc|desc|ASC|DESC", "pos" = "\d+", "num" = "\d+", "_format" = "html|json"},
      *        defaults = {"sort" = "", "sortdir" = "asc", "pos" = 1, "num" = 10, "_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -115,7 +115,7 @@ class ImageController extends AbstractImageController
      * @inheritDoc
      *
      * @Route("/admin/image/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html"},
+     *        requirements = {"id" = "\d+", "_format" = "html|json"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )
@@ -138,7 +138,7 @@ class ImageController extends AbstractImageController
      * @inheritDoc
      *
      * @Route("/image/{id}.{_format}",
-     *        requirements = {"id" = "\d+", "_format" = "html"},
+     *        requirements = {"id" = "\d+", "_format" = "html|json"},
      *        defaults = {"_format" = "html"},
      *        methods = {"GET"}
      * )

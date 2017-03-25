@@ -1,4 +1,4 @@
-# r k\Bulletin 0.1.0
+# r k\Bulletin 0.1.1
 
 Bulletin is a news and event announcing modul
 

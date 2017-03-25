@@ -150,8 +150,7 @@ abstract class AbstractNoticeController extends AbstractController
             new Column('endDate'),
             new Column('startPage'),
             new Column('isEvent'),
-            new Column('eventDate'),
-            new Column('eventTime'),
+            new Column('eventDateTime'),
             new Column('visits'),
             new Column('noticeLocale'),
             new Column('createdBy'),
@@ -433,102 +432,6 @@ abstract class AbstractNoticeController extends AbstractController
         
         // fetch and return the appropriate template
         return $this->get('rk_bulletin_module.view_helper')->processTemplate($objectType, 'delete', $templateParameters);
-    }
-    /**
-     * This is a custom action in the admin area.
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function adminEventListAction(Request $request)
-    {
-        return $this->eventListInternal($request, true);
-    }
-    
-    /**
-     * This is a custom action.
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function eventListAction(Request $request)
-    {
-        return $this->eventListInternal($request, false);
-    }
-    
-    /**
-     * This method includes the common implementation code for adminEventList() and eventList().
-     */
-    protected function eventListInternal(Request $request, $isAdmin = false)
-    {
-        // parameter specifying which type of objects we are treating
-        $objectType = 'notice';
-        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
-        if (!$this->hasPermission('RKBulletinModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
-            throw new AccessDeniedException();
-        }
-        /** TODO: custom logic */
-        
-        $templateParameters = [
-            'routeArea' => $isAdmin ? 'admin' : ''
-        ];
-        
-        // return template
-        return $this->render('@RKBulletinModule/Notice/eventList.html.twig', $templateParameters);
-    }
-    /**
-     * This is a custom action in the admin area.
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function adminEventDisplayAction(Request $request)
-    {
-        return $this->eventDisplayInternal($request, true);
-    }
-    
-    /**
-     * This is a custom action.
-     *
-     * @param Request $request Current request instance
-     *
-     * @return Response Output
-     *
-     * @throws AccessDeniedException Thrown if the user doesn't have required permissions
-     */
-    public function eventDisplayAction(Request $request)
-    {
-        return $this->eventDisplayInternal($request, false);
-    }
-    
-    /**
-     * This method includes the common implementation code for adminEventDisplay() and eventDisplay().
-     */
-    protected function eventDisplayInternal(Request $request, $isAdmin = false)
-    {
-        // parameter specifying which type of objects we are treating
-        $objectType = 'notice';
-        $permLevel = $isAdmin ? ACCESS_ADMIN : ACCESS_OVERVIEW;
-        if (!$this->hasPermission('RKBulletinModule:' . ucfirst($objectType) . ':', '::', $permLevel)) {
-            throw new AccessDeniedException();
-        }
-        /** TODO: custom logic */
-        
-        $templateParameters = [
-            'routeArea' => $isAdmin ? 'admin' : ''
-        ];
-        
-        // return template
-        return $this->render('@RKBulletinModule/Notice/eventDisplay.html.twig', $templateParameters);
     }
 
     /**

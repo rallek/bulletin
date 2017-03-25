@@ -1,6 +1,6 @@
 {
     "name": "rk/bulletin-module",
-    "version": "0.1.0",
+    "version": "0.1.1",
     "description": "Bulletin is a news and event announcing modul",
     "type": "zikula-module",
     "license": "LGPL-3.0+",

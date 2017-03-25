@@ -166,6 +166,9 @@ abstract class AbstractViewHelper
     
         // check if we need to set any custom headers
         switch ($templateExtension) {
+            case 'json.twig':
+                $response->headers->set('Content-Type', 'application/json');
+                break;
         }
     
         return $response;
@@ -209,13 +212,13 @@ abstract class AbstractViewHelper
         $hasAdminAccess = $this->permissionApi->hasPermission('RKBulletinModule:' . ucfirst($type) . ':', '::', ACCESS_ADMIN);
         if ($func == 'view') {
             if ($hasAdminAccess) {
-                $extensions = [];
+                $extensions = ['json'];
             } else {
                 $extensions = [];
             }
         } elseif ($func == 'display') {
             if ($hasAdminAccess) {
-                $extensions = [];
+                $extensions = ['json'];
             } else {
                 $extensions = [];
             }

@@ -4,7 +4,7 @@ application "Bulletin" {
     author "Ralf Koester"
     email "ralf@familie-koester.de"
     url "http://k62.de"
-    version "0.1.0"
+    version "0.1.1"
     prefix "bulletin"
     generatorSettings {
         settingsContainer "Settings"
@@ -16,7 +16,7 @@ application "Bulletin" {
         generateAtomTemplates false
         generateCsvTemplates false
         generateXmlTemplates false
-        generateJsonTemplates false
+        generateJsonTemplates true
         generateKmlTemplates false
         generateIcsTemplates false
         versionAllGeneratedFiles false
@@ -30,6 +30,7 @@ application "Bulletin" {
             fields {
                 string "title" translatable,
                 text "teaser" translatable {
+                    mandatory false
                     displayType VIEW_DISPLAY
                     length 5000
                 },
@@ -61,10 +62,8 @@ application "Bulletin" {
                     mandatory false
                     displayType VIEW_SORTING
                 },
-                date "eventDate" {
-                    mandatory false
-                },
-                time "eventTime" {
+                datetime "eventDateTime" {
+                    documentation "startpoint of the event"
                     mandatory false
                 },
                 string "eventDuration" {
@@ -93,9 +92,6 @@ application "Bulletin" {
                 editAction "Edit"
             ,
                 deleteAction "Delete"
-            ,
-                customAction "EventList",
-                customAction "EventDisplay"
             }
         },
         entity "image" {

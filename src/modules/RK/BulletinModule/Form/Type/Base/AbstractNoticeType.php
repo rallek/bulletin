@@ -156,7 +156,7 @@ abstract class AbstractNoticeType extends AbstractType
                 'class' => '',
                 'title' => $this->__('Enter the teaser of the notice')
             ],
-            'required' => true,
+            'required' => false,
         ]);
         
         $builder->add('description', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
@@ -265,28 +265,20 @@ abstract class AbstractNoticeType extends AbstractType
             'required' => false,
         ]);
         
-        $builder->add('eventDate', 'Symfony\Component\Form\Extension\Core\Type\DateType', [
-            'label' => $this->__('Event date') . ':',
+        $builder->add('eventDateTime', 'RK\BulletinModule\Form\Type\Field\DateTimeType', [
+            'label' => $this->__('Event date time') . ':',
+            'label_attr' => [
+                'class' => 'tooltips',
+                'title' => $this->__('startpoint of the event')
+            ],
+            'help' => $this->__('startpoint of the event'),
             'empty_data' => '',
             'attr' => [
                 'class' => ' validate-daterange-notice',
-                'title' => $this->__('Enter the event date of the notice')
+                'title' => $this->__('Enter the event date time of the notice')
             ],
             'required' => false,
-            'empty_data' => date('Y-m-d'),
-            'widget' => 'single_text'
-        ]);
-        
-        $builder->add('eventTime', 'Symfony\Component\Form\Extension\Core\Type\TimeType', [
-            'label' => $this->__('Event time') . ':',
-            'empty_data' => '',
-            'attr' => [
-                'maxlength' => 8,
-                'class' => '',
-                'title' => $this->__('Enter the event time of the notice')
-            ],
-            'required' => false,
-            'empty_data' => '',
+            'empty_data' => date('Y-m-d H:i'),
             'widget' => 'single_text'
         ]);
         

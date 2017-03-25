@@ -68,8 +68,7 @@
     {{ form_row(form.endDate) }}
     {{ form_row(form.startPage) }}
     {{ form_row(form.isEvent) }}
-    {{ form_row(form.eventDate) }}
-    {{ form_row(form.eventTime) }}
+    {{ form_row(form.eventDateTime) }}
     {{ form_row(form.eventDuration) }}
     <div class="hidden">
         {{ form_row(form.visits) }}
@@ -146,7 +145,7 @@
                 rKBulletinInitUploadField('rkbulletinmodule_notice_image_image');
                 rKBulletinInitDateField('rkbulletinmodule_notice_startDate');
                 rKBulletinInitDateField('rkbulletinmodule_notice_endDate');
-                rKBulletinInitDateField('rkbulletinmodule_notice_eventDate');
+                rKBulletinInitDateField('rkbulletinmodule_notice_eventDateTime');
             });
         })(jQuery);
     /* ]]> */

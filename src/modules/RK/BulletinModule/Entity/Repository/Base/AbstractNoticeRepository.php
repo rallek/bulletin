@@ -65,8 +65,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
             'endDate',
             'startPage',
             'isEvent',
-            'eventDate',
-            'eventTime',
+            'eventDateTime',
             'visits',
             'noticeLocale',
             'createdBy',
@@ -714,10 +713,8 @@ abstract class AbstractNoticeRepository extends EntityRepository
         $parameters['searchStartDate'] = $fragment;
         $filters[] = 'tbl.endDate = :searchEndDate';
         $parameters['searchEndDate'] = $fragment;
-        $filters[] = 'tbl.eventDate = :searchEventDate';
-        $parameters['searchEventDate'] = $fragment;
-        $filters[] = 'tbl.eventTime = :searchEventTime';
-        $parameters['searchEventTime'] = $fragment;
+        $filters[] = 'tbl.eventDateTime = :searchEventDateTime';
+        $parameters['searchEventDateTime'] = $fragment;
         $filters[] = 'tbl.eventDuration LIKE :searchEventDuration';
         $parameters['searchEventDuration'] = '%' . $fragment . '%';
         $filters[] = 'tbl.eventDescription LIKE :searchEventDescription';
@@ -905,7 +902,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
                 // If no plugin with default = true given the compare plugin is loaded and used for unconfigured fields.
                 // Multiple objects of the same plugin with different configurations are possible.
                 [
-                    new DateFilter(['startDate', 'endDate', 'eventDate', 'eventTime'/*, 'tblJoin.someJoinedField'*/])
+                    new DateFilter(['startDate', 'endDate', 'eventDateTime'/*, 'tblJoin.someJoinedField'*/])
                 ],
     
                 // Allowed operators per field.

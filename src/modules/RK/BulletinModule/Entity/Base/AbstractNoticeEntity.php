@@ -88,7 +88,7 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     /**
      * @Gedmo\Translatable
      * @ORM\Column(type="text", length=5000)
-     * @Assert\NotBlank()
+     * @Assert\NotNull()
      * @Assert\Length(min="0", max="5000")
      * @var text $teaser
      */
@@ -174,20 +174,13 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     protected $isEvent = false;
     
     /**
-     * @ORM\Column(type="date")
+     * startpoint of the event
+     * @ORM\Column(type="datetime")
      * @Assert\NotNull()
-     * @Assert\Date()
-     * @var date $eventDate
+     * @Assert\DateTime()
+     * @var DateTime $eventDateTime
      */
-    protected $eventDate;
-    
-    /**
-     * @ORM\Column(type="time")
-     * @Assert\NotNull()
-     * @Assert\Time()
-     * @var time $eventTime
-     */
-    protected $eventTime;
+    protected $eventDateTime;
     
     /**
      * @ORM\Column(length=255)
@@ -267,8 +260,7 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     {
         $this->startDate = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $this->endDate = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
-        $this->eventDate = \DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
-        $this->eventTime = \DateTime::createFromFormat('H:i:s', date('H:i:s'));
+        $this->eventDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $this->initWorkflow();
         $this->addresses = new ArrayCollection();
         $this->categories = new ArrayCollection();
@@ -618,54 +610,28 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     }
     
     /**
-     * Returns the event date.
+     * Returns the event date time.
      *
-     * @return date
+     * @return DateTime
      */
-    public function getEventDate()
+    public function getEventDateTime()
     {
-        return $this->eventDate;
+        return $this->eventDateTime;
     }
     
     /**
-     * Sets the event date.
+     * Sets the event date time.
      *
-     * @param date $eventDate
+     * @param DateTime $eventDateTime
      *
      * @return void
      */
-    public function setEventDate($eventDate)
+    public function setEventDateTime($eventDateTime)
     {
-        if (is_object($eventDate) && $eventDate instanceOf \DateTime) {
-            $this->eventDate = $eventDate;
+        if (is_object($eventDateTime) && $eventDateTime instanceOf \DateTime) {
+            $this->eventDateTime = $eventDateTime;
         } else {
-            $this->eventDate = new \DateTime($eventDate);
-        }
-    }
-    
-    /**
-     * Returns the event time.
-     *
-     * @return time
-     */
-    public function getEventTime()
-    {
-        return $this->eventTime;
-    }
-    
-    /**
-     * Sets the event time.
-     *
-     * @param time $eventTime
-     *
-     * @return void
-     */
-    public function setEventTime($eventTime)
-    {
-        if (is_object($eventTime) && $eventTime instanceOf \DateTime) {
-            $this->eventTime = $eventTime;
-        } else {
-            $this->eventTime = new \DateTime($eventTime);
+            $this->eventDateTime = new \DateTime($eventDateTime);
         }
     }
     
@@ -919,7 +885,6 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     
         return $allowedValues;
     }
-    
     
     /**
      * Start validation and raise exception if invalid data is found.

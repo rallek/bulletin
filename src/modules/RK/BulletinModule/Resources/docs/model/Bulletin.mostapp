@@ -51,6 +51,7 @@ application "Bulletin" {
                     mandatory false
                 },
                 datetime "endDate" endDate {
+                    defaultValue "2099-12-31 00:00:00"
                     mandatory false
                 },
                 boolean "startPage" ajaxTogglability {

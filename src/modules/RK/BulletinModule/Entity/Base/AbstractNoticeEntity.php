@@ -259,7 +259,7 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     public function __construct()
     {
         $this->startDate = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
-        $this->endDate = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
+        $this->endDate = \DateTime::createFromFormat('Y-m-d H:i:s', '2099-12-31 00:00:00');
         $this->eventDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $this->initWorkflow();
         $this->addresses = new ArrayCollection();

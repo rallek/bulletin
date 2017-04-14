@@ -256,7 +256,7 @@ abstract class AbstractControllerHelper
     public function formatPermalink($name)
     {
         $name = str_replace(
-            ['ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß', '.', '?', '"', '/', ':', 'é', 'è', 'â'],
+            ['Ã¤', 'Ã¶', 'Ã¼', 'Ã„', 'Ã–', 'Ãœ', 'ÃŸ', '.', '?', '"', '/', ':', 'Ã©', 'Ã¨', 'Ã¢'],
             ['ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss', '', '', '', '-', '-', 'e', 'e', 'a'],
             $name
         );

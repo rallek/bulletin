@@ -183,7 +183,7 @@ abstract class AbstractPictureRepository extends EntityRepository
             $thumbRuntimeOptions = [];
             $thumbRuntimeOptions[$objectType . 'Image'] = $imageHelper->getRuntimeOptions($objectType, 'image', $context, $args);
             $templateParameters['thumbRuntimeOptions'] = $thumbRuntimeOptions;
-            if (in_array($args['action'], ['display', 'view'])) {
+            if (in_array($args['action'], ['display', 'edit', 'view'])) {
                 // use separate preset for images in related items
                 $templateParameters['relationThumbRuntimeOptions'] = $imageHelper->getCustomRuntimeOptions('', '', 'RKBulletinModule_relateditem', $context, $args);
             }

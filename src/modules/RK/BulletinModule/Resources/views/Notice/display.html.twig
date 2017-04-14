@@ -60,21 +60,21 @@
             <dt>{{ __('End date') }}</dt>
             <dd>{{ notice.endDate|localizeddate('medium', 'short') }}</dd>
         {% endif %}
-        {% if notice.eventDateTime is not empty %}
-            <dt>{{ __('Event date time') }}</dt>
-            <dd>{{ notice.eventDateTime|localizeddate('medium', 'short') }}</dd>
+        {% if notice.eventStartDateTime is not empty %}
+            <dt>{{ __('Event start date time') }}</dt>
+            <dd>{{ notice.eventStartDateTime|localizeddate('medium', 'short') }}</dd>
         {% endif %}
-        {% if notice.eventDuration is not empty %}
-            <dt>{{ __('Event duration') }}</dt>
-            <dd>{{ notice.eventDuration }}</dd>
+        {% if notice.eventEndDateTime is not empty %}
+            <dt>{{ __('Event end date time') }}</dt>
+            <dd>{{ notice.eventEndDateTime|localizeddate('medium', 'short') }}</dd>
         {% endif %}
         {% if notice.eventDescription is not empty %}
             <dt>{{ __('Event description') }}</dt>
             <dd>{{ notice.eventDescription|safeHtml }}</dd>
         {% endif %}
-        {% if notice.visits is not empty %}
-            <dt>{{ __('Visits') }}</dt>
-            <dd>{{ notice.visits }}</dd>
+        {% if notice.counter is not empty %}
+            <dt>{{ __('Counter') }}</dt>
+            <dd>{{ notice.counter }}</dd>
         {% endif %}
         
     </dl>

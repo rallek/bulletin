@@ -63,22 +63,22 @@ application "Bulletin" {
                     mandatory false
                     displayType VIEW_SORTING
                 },
-                datetime "eventDateTime" {
+                datetime "eventStartDateTime" {
                     documentation "startpoint of the event"
                     mandatory false
                 },
-                string "eventDuration" {
+                datetime "eventEndDateTime" {
                     mandatory false
-                    displayType VIEW_DISPLAY
                 },
                 text "eventDescription" translatable {
                     mandatory false
                     displayType DISPLAY
                     length 5000
                 },
-                integer "visits" {
+                integer "counter" {
                     defaultValue "0"
                     mandatory false
+                    displayType VIEW_DISPLAY
                     visible false
                 },
                 string "noticeLocale" locale {

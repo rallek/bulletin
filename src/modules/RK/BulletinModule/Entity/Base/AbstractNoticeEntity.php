@@ -178,17 +178,17 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
      * @ORM\Column(type="datetime")
      * @Assert\NotNull()
      * @Assert\DateTime()
-     * @var DateTime $eventDateTime
+     * @var DateTime $eventStartDateTime
      */
-    protected $eventDateTime;
+    protected $eventStartDateTime;
     
     /**
-     * @ORM\Column(length=255)
+     * @ORM\Column(type="datetime")
      * @Assert\NotNull()
-     * @Assert\Length(min="0", max="255")
-     * @var string $eventDuration
+     * @Assert\DateTime()
+     * @var DateTime $eventEndDateTime
      */
-    protected $eventDuration = '';
+    protected $eventEndDateTime;
     
     /**
      * @Gedmo\Translatable
@@ -204,9 +204,9 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
      * @Assert\Type(type="integer")
      * @Assert\NotNull()
      * @Assert\LessThan(value=100000000000)
-     * @var integer $visits
+     * @var integer $counter
      */
-    protected $visits = 0;
+    protected $counter = 0;
     
     /**
      * @ORM\Column(length=255)
@@ -260,7 +260,8 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     {
         $this->startDate = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $this->endDate = \DateTime::createFromFormat('Y-m-d H:i:s', '2099-12-31 00:00:00');
-        $this->eventDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
+        $this->eventStartDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
+        $this->eventEndDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $this->initWorkflow();
         $this->addresses = new ArrayCollection();
         $this->categories = new ArrayCollection();
@@ -610,51 +611,55 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     }
     
     /**
-     * Returns the event date time.
+     * Returns the event start date time.
      *
      * @return DateTime
      */
-    public function getEventDateTime()
+    public function getEventStartDateTime()
     {
-        return $this->eventDateTime;
+        return $this->eventStartDateTime;
     }
     
     /**
-     * Sets the event date time.
+     * Sets the event start date time.
      *
-     * @param DateTime $eventDateTime
+     * @param DateTime $eventStartDateTime
      *
      * @return void
      */
-    public function setEventDateTime($eventDateTime)
+    public function setEventStartDateTime($eventStartDateTime)
     {
-        if (is_object($eventDateTime) && $eventDateTime instanceOf \DateTime) {
-            $this->eventDateTime = $eventDateTime;
+        if (is_object($eventStartDateTime) && $eventStartDateTime instanceOf \DateTime) {
+            $this->eventStartDateTime = $eventStartDateTime;
         } else {
-            $this->eventDateTime = new \DateTime($eventDateTime);
+            $this->eventStartDateTime = new \DateTime($eventStartDateTime);
         }
     }
     
     /**
-     * Returns the event duration.
+     * Returns the event end date time.
      *
-     * @return string
+     * @return DateTime
      */
-    public function getEventDuration()
+    public function getEventEndDateTime()
     {
-        return $this->eventDuration;
+        return $this->eventEndDateTime;
     }
     
     /**
-     * Sets the event duration.
+     * Sets the event end date time.
      *
-     * @param string $eventDuration
+     * @param DateTime $eventEndDateTime
      *
      * @return void
      */
-    public function setEventDuration($eventDuration)
+    public function setEventEndDateTime($eventEndDateTime)
     {
-        $this->eventDuration = isset($eventDuration) ? $eventDuration : '';
+        if (is_object($eventEndDateTime) && $eventEndDateTime instanceOf \DateTime) {
+            $this->eventEndDateTime = $eventEndDateTime;
+        } else {
+            $this->eventEndDateTime = new \DateTime($eventEndDateTime);
+        }
     }
     
     /**
@@ -680,25 +685,25 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     }
     
     /**
-     * Returns the visits.
+     * Returns the counter.
      *
      * @return integer
      */
-    public function getVisits()
+    public function getCounter()
     {
-        return $this->visits;
+        return $this->counter;
     }
     
     /**
-     * Sets the visits.
+     * Sets the counter.
      *
-     * @param integer $visits
+     * @param integer $counter
      *
      * @return void
      */
-    public function setVisits($visits)
+    public function setCounter($counter)
     {
-        $this->visits = intval($visits);
+        $this->counter = intval($counter);
     }
     
     /**

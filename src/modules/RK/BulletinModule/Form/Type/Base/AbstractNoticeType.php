@@ -265,8 +265,8 @@ abstract class AbstractNoticeType extends AbstractType
             'required' => false,
         ]);
         
-        $builder->add('eventDateTime', 'RK\BulletinModule\Form\Type\Field\DateTimeType', [
-            'label' => $this->__('Event date time') . ':',
+        $builder->add('eventStartDateTime', 'RK\BulletinModule\Form\Type\Field\DateTimeType', [
+            'label' => $this->__('Event start date time') . ':',
             'label_attr' => [
                 'class' => 'tooltips',
                 'title' => $this->__('startpoint of the event')
@@ -275,31 +275,32 @@ abstract class AbstractNoticeType extends AbstractType
             'empty_data' => '',
             'attr' => [
                 'class' => ' validate-daterange-notice',
-                'title' => $this->__('Enter the event date time of the notice')
+                'title' => $this->__('Enter the event start date time of the notice')
             ],
             'required' => false,
             'empty_data' => date('Y-m-d H:i'),
             'widget' => 'single_text'
         ]);
         
-        $builder->add('eventDuration', 'Symfony\Component\Form\Extension\Core\Type\TextType', [
-            'label' => $this->__('Event duration') . ':',
+        $builder->add('eventEndDateTime', 'RK\BulletinModule\Form\Type\Field\DateTimeType', [
+            'label' => $this->__('Event end date time') . ':',
             'empty_data' => '',
             'attr' => [
-                'maxlength' => 255,
-                'class' => '',
-                'title' => $this->__('Enter the event duration of the notice')
+                'class' => ' validate-daterange-notice',
+                'title' => $this->__('Enter the event end date time of the notice')
             ],
             'required' => false,
+            'empty_data' => date('Y-m-d H:i'),
+            'widget' => 'single_text'
         ]);
         
-        $builder->add('visits', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
-            'label' => $this->__('Visits') . ':',
+        $builder->add('counter', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            'label' => $this->__('Counter') . ':',
             'empty_data' => '0',
             'attr' => [
                 'maxlength' => 11,
                 'class' => ' validate-digits',
-                'title' => $this->__('Enter the visits of the notice.') . ' ' . $this->__('Only digits are allowed.')
+                'title' => $this->__('Enter the counter of the notice.') . ' ' . $this->__('Only digits are allowed.')
             ],
             'required' => false,
             'scale' => 0

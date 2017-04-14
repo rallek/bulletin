@@ -174,7 +174,6 @@ abstract class AbstractSearchHelper implements SearchableInterface
                     $whereArray[] = 'tbl.description';
                     $whereArray[] = 'tbl.image';
                     $whereArray[] = 'tbl.copyright';
-                    $whereArray[] = 'tbl.eventDuration';
                     $whereArray[] = 'tbl.eventDescription';
                     $whereArray[] = 'tbl.noticeLocale';
                     break;

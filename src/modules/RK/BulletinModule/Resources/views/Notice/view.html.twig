@@ -29,9 +29,9 @@
                 <col id="cEndDate" />
                 <col id="cStartPage" />
                 <col id="cIsEvent" />
-                <col id="cEventDateTime" />
-                <col id="cEventDuration" />
-                <col id="cVisits" />
+                <col id="cEventStartDateTime" />
+                <col id="cEventEndDateTime" />
+                <col id="cCounter" />
                 <col id="cNoticeLocale" />
             </colgroup>
             <thead>
@@ -63,14 +63,14 @@
                 <th id="hIsEvent" scope="col" class="text-center">
                     <a href="{{ sort.isEvent.url }}" title="{{ __f('Sort by %s', {'%s': 'is event'}) }}" class="{{ sort.isEvent.class }}">{{ __('Is event') }}</a>
                 </th>
-                <th id="hEventDateTime" scope="col" class="text-left">
-                    <a href="{{ sort.eventDateTime.url }}" title="{{ __f('Sort by %s', {'%s': 'event date time'}) }}" class="{{ sort.eventDateTime.class }}">{{ __('Event date time') }}</a>
+                <th id="hEventStartDateTime" scope="col" class="text-left">
+                    <a href="{{ sort.eventStartDateTime.url }}" title="{{ __f('Sort by %s', {'%s': 'event start date time'}) }}" class="{{ sort.eventStartDateTime.class }}">{{ __('Event start date time') }}</a>
                 </th>
-                <th id="hEventDuration" scope="col" class="text-left z-order-unsorted">
-                    {{ __('Event duration') }}
+                <th id="hEventEndDateTime" scope="col" class="text-left">
+                    <a href="{{ sort.eventEndDateTime.url }}" title="{{ __f('Sort by %s', {'%s': 'event end date time'}) }}" class="{{ sort.eventEndDateTime.class }}">{{ __('Event end date time') }}</a>
                 </th>
-                <th id="hVisits" scope="col" class="text-right">
-                    <a href="{{ sort.visits.url }}" title="{{ __f('Sort by %s', {'%s': 'visits'}) }}" class="{{ sort.visits.class }}">{{ __('Visits') }}</a>
+                <th id="hCounter" scope="col" class="text-right z-order-unsorted">
+                    {{ __('Counter') }}
                 </th>
                 <th id="hNoticeLocale" scope="col" class="text-left">
                     <a href="{{ sort.noticeLocale.url }}" title="{{ __f('Sort by %s', {'%s': 'notice locale'}) }}" class="{{ sort.noticeLocale.class }}">{{ __('Notice locale') }}</a>
@@ -138,14 +138,14 @@
                         <i class="fa fa-times" title="{{ __('No') }}"></i>
                     {% endif %}
                 </td>
-                <td headers="hEventDateTime" class="text-left">
-                    {{ notice.eventDateTime|localizeddate('medium', 'short') }}
+                <td headers="hEventStartDateTime" class="text-left">
+                    {{ notice.eventStartDateTime|localizeddate('medium', 'short') }}
                 </td>
-                <td headers="hEventDuration" class="text-left">
-                    {{ notice.eventDuration }}
+                <td headers="hEventEndDateTime" class="text-left">
+                    {{ notice.eventEndDateTime|localizeddate('medium', 'short') }}
                 </td>
-                <td headers="hVisits" class="text-right">
-                    {{ notice.visits }}
+                <td headers="hCounter" class="text-right">
+                    {{ notice.counter }}
                 </td>
                 <td headers="hNoticeLocale" class="text-left">
                     {{ notice.noticeLocale|languageName }}

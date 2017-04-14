@@ -48,8 +48,8 @@
                     <option value="endDate"{if $sort eq 'endDate'} selected="selected"{/if}>{gt text='End date'}</option>
                     <option value="startPage"{if $sort eq 'startPage'} selected="selected"{/if}>{gt text='Start page'}</option>
                     <option value="isEvent"{if $sort eq 'isEvent'} selected="selected"{/if}>{gt text='Is event'}</option>
-                    <option value="eventDateTime"{if $sort eq 'eventDateTime'} selected="selected"{/if}>{gt text='Event date time'}</option>
-                    <option value="visits"{if $sort eq 'visits'} selected="selected"{/if}>{gt text='Visits'}</option>
+                    <option value="eventStartDateTime"{if $sort eq 'eventStartDateTime'} selected="selected"{/if}>{gt text='Event start date time'}</option>
+                    <option value="eventEndDateTime"{if $sort eq 'eventEndDateTime'} selected="selected"{/if}>{gt text='Event end date time'}</option>
                     <option value="noticeLocale"{if $sort eq 'noticeLocale'} selected="selected"{/if}>{gt text='Notice locale'}</option>
                     <option value="createdDate"{if $sort eq 'createdDate'} selected="selected"{/if}>{gt text='Creation date'}</option>
                     <option value="createdBy"{if $sort eq 'createdBy'} selected="selected"{/if}>{gt text='Creator'}</option>

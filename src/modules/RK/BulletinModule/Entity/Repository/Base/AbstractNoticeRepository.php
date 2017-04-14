@@ -65,8 +65,8 @@ abstract class AbstractNoticeRepository extends EntityRepository
             'endDate',
             'startPage',
             'isEvent',
-            'eventDateTime',
-            'visits',
+            'eventStartDateTime',
+            'eventEndDateTime',
             'noticeLocale',
             'createdBy',
             'createdDate',
@@ -713,14 +713,14 @@ abstract class AbstractNoticeRepository extends EntityRepository
         $parameters['searchStartDate'] = $fragment;
         $filters[] = 'tbl.endDate = :searchEndDate';
         $parameters['searchEndDate'] = $fragment;
-        $filters[] = 'tbl.eventDateTime = :searchEventDateTime';
-        $parameters['searchEventDateTime'] = $fragment;
-        $filters[] = 'tbl.eventDuration LIKE :searchEventDuration';
-        $parameters['searchEventDuration'] = '%' . $fragment . '%';
+        $filters[] = 'tbl.eventStartDateTime = :searchEventStartDateTime';
+        $parameters['searchEventStartDateTime'] = $fragment;
+        $filters[] = 'tbl.eventEndDateTime = :searchEventEndDateTime';
+        $parameters['searchEventEndDateTime'] = $fragment;
         $filters[] = 'tbl.eventDescription LIKE :searchEventDescription';
         $parameters['searchEventDescription'] = '%' . $fragment . '%';
-        $filters[] = 'tbl.visits = :searchVisits';
-        $parameters['searchVisits'] = $fragment;
+        $filters[] = 'tbl.counter = :searchCounter';
+        $parameters['searchCounter'] = $fragment;
         $filters[] = 'tbl.noticeLocale LIKE :searchNoticeLocale';
         $parameters['searchNoticeLocale'] = '%' . $fragment . '%';
     
@@ -902,7 +902,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
                 // If no plugin with default = true given the compare plugin is loaded and used for unconfigured fields.
                 // Multiple objects of the same plugin with different configurations are possible.
                 [
-                    new DateFilter(['startDate', 'endDate', 'eventDateTime'/*, 'tblJoin.someJoinedField'*/])
+                    new DateFilter(['startDate', 'endDate', 'eventStartDateTime', 'eventEndDateTime'/*, 'tblJoin.someJoinedField'*/])
                 ],
     
                 // Allowed operators per field.

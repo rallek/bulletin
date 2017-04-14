@@ -1,0 +1,57 @@
+{# purpose of this template: events display view #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends 'RKBulletinModule::' ~ baseTemplate ~ '.html.twig' %}
+{% block pageTitle %}{{ event.getTitleFromDisplayPattern()|default(__('Event')) }}{% endblock %}
+{% block title %}
+    {% set templateTitle = event.getTitleFromDisplayPattern()|default(__('Event')) %}
+    {{ templateTitle|notifyFilters('rkbulletinmodule.filter_hooks.events.filter') }}{% if routeArea == 'admin' %} <small>({{ event.workflowState|rkbulletinmodule_objectState(false)|lower }})</small>{% endif %}
+    {% set itemActions = knp_menu_get('RKBulletinModule:ItemActionsMenu:menu', [], { entity: event, area: routeArea, context: 'display' }) %}
+    <div class="dropdown">
+        <a id="itemActions{{ event.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+    </div>
+{% endblock %}
+{% block admin_page_icon 'eye' %}
+{% block content %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    <div class="rkbulletinmodule-event rkbulletinmodule-display">
+
+    <dl>
+        {% if event.workflowState is not empty and routeArea == 'admin' %}
+            <dt>{{ __('State') }}</dt>
+            <dd>{{ event.workflowState|rkbulletinmodule_listEntry('event', 'workflowState') }}</dd>
+        {% endif %}
+        {% if event.eventTitle is not empty %}
+            <dt>{{ __('Event title') }}</dt>
+            <dd>{{ event.eventTitle }}</dd>
+        {% endif %}
+        {% if event.startDate is not empty %}
+            <dt>{{ __('Start date') }}</dt>
+            <dd>{{ event.startDate|localizeddate('medium', 'short') }}</dd>
+        {% endif %}
+        {% if event.endDate is not empty %}
+            <dt>{{ __('End date') }}</dt>
+            <dd>{{ event.endDate|localizeddate('medium', 'short') }}</dd>
+        {% endif %}
+        {% if event.description is not empty %}
+            <dt>{{ __('Description') }}</dt>
+            <dd>{{ event.description|safeHtml }}</dd>
+        {% endif %}
+        
+    </dl>
+
+    {% if featureActivationHelper.isEnabled(constant('RK\\BulletinModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'event') %}
+        {{ include('@RKBulletinModule/Helper/includeCategoriesDisplay.html.twig', { obj: event }) }}
+    {% endif %}
+    {{ include('@RKBulletinModule/Helper/includeStandardFieldsDisplay.html.twig', { obj: event }) }}
+
+    {{ block('display_hooks') }}
+</div>
+{% endblock %}
+{% block display_hooks %}
+    {% set hooks = notifyDisplayHooks(eventName='rkbulletinmodule.ui_hooks.events.display_view', id=event.id, urlObject=currentUrlObject) %}
+    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
+        <h4>{{ providerArea }}</h4>
+        {{ hook }}
+    {% endfor %}
+{% endblock %}

@@ -321,13 +321,13 @@ msgid "Doctrine Exception"
 msgstr "Doctrine Fehler"
 
 msgid "Done! Event created."
-msgstr "Erledigt! Trainingsstunde erstellt."
+msgstr "Erledigt! Veranstaltung erstellt."
 
 msgid "Done! Event deleted."
-msgstr "Erledigt! Trainingsstunde gelöscht."
+msgstr "Erledigt! Veranstaltung gelöscht."
 
 msgid "Done! Event updated."
-msgstr "Erledigt! Trainingsstunde aktualisiert."
+msgstr "Erledigt! Veranstaltung aktualisiert."
 
 msgid "Done! Item created."
 msgstr "Erledigt! Element erstellt."
@@ -572,7 +572,7 @@ msgid "Event title"
 msgstr "Veranstaltungs Titel"
 
 msgid "Events"
-msgstr "Trainingsstunden"
+msgstr "Veranstaltungen"
 
 msgid "Example"
 msgstr "Beispiel"
@@ -1415,7 +1415,7 @@ msgid "With description"
 msgstr "Mit Beschreibung"
 
 msgid "With selected events"
-msgstr "Mit ausgewählten Trainings"
+msgstr "Mit ausgewählten Veranstaltungen"
 
 msgid "With selected notices"
 msgstr "Mit ausgewählten Notizen"

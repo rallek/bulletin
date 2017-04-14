@@ -1,0 +1,1523 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 2.0.1\n"
+"Last-Translator: Ralf Köster <ralf@familie-koester.de>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+msgid ""
+"\"%bar\" will match \"FOObar\", \"Blubbar\" and so on, but not \"BarFoo\"."
+msgstr ""
+"\"%bar\" wird \"FOObar\", \"Blubbar\" usw. entsprechen, aber nicht \"BarFoo"
+"\"."
+
+msgid "10"
+msgstr "10"
+
+msgid "100"
+msgstr "100"
+
+msgid "15"
+msgstr "15"
+
+msgid "20"
+msgstr "20"
+
+msgid "30"
+msgstr "30"
+
+msgid "5"
+msgstr "5"
+
+msgid "50"
+msgstr "50"
+
+msgid "A filter consists of several statements."
+msgstr "Ein Filter besteht aus mehreren Anweisungen."
+
+msgid "Absolute url to the event"
+msgstr "Absolute Url zur Veranstaltung"
+
+msgid "Absolute url to the notice"
+msgstr "Absolute Url zur Notiz"
+
+msgid "Absolute url to the picture"
+msgstr "Absolute Url zum Bild"
+
+msgid "Actions"
+msgstr "Aktionen"
+
+msgid "Add %name%"
+msgstr "%name% hinzufügen"
+
+msgid "All"
+msgstr "Alle"
+
+msgid "All additional joined tables can be referenced by \"tblFoo\"."
+msgstr ""
+"Alle zusätzlichen verknüpften Tabellen können durch \"tblFoo\" referenziert "
+"werden."
+
+msgid "All except approved"
+msgstr "Alle außer freigegebene"
+
+msgid "All except deferred"
+msgstr "Alle außer zurückgestellte"
+
+msgid "All items with a date in July 2016."
+msgstr "Alle Elemente mit einem Datum im Juli 2016."
+
+msgid "All items with a date in year 2016."
+msgstr "Alle Elemente mit einem Datum im Jahr 2016."
+
+msgid "All items with date in the last year."
+msgstr "Alle Elemente mit Datum im letzten Jahr."
+
+msgid "All items with date of today."
+msgstr "Alle Elemente mit Datum von heute."
+
+msgid "All items with date up from 24 hours ago."
+msgstr "Alle Artikel der letzten 24 Stunden."
+
+msgid "Allowed file extensions"
+msgstr "Erlaubte Dateiendungen"
+
+msgid "Allowed file size"
+msgstr "Erlaubte Dateigröße"
+
+msgid "Also you can use \"%\" as placeholder."
+msgstr "Sie können auch \"%\" als Platzhalter verwenden."
+
+msgid "Alt text"
+msgstr "Alternativtext"
+
+msgid "Amount"
+msgstr "Anzahl"
+
+msgid ""
+"An error occured during creation of the .htaccess file in directory \"%path%"
+"\"."
+msgstr ""
+"Während der Erstellung der .htaccess-Datei im Verzeichnis \"%path%\" ist ein "
+"Fehler aufgetreten."
+
+msgid ""
+"An error was encountered while removing stored object workflows for the "
+"%extension% extension."
+msgstr ""
+"Während des Entfernens des gespeicherten Workflow-Objektes für das Modul "
+"%extension% ist ein Fehler aufgetreten."
+
+msgid "Approved"
+msgstr "Genehmigt"
+
+msgid "Ascending"
+msgstr "Aufsteigend"
+
+msgid "Back to overview"
+msgstr "Zurück zur Übersicht"
+
+msgid "Back to paginated view"
+msgstr "Zurück zur Seitenansicht"
+
+msgid "Backend"
+msgstr "Backend"
+
+msgid "Bulletin"
+msgstr "Bekantmachung"
+
+msgid "Bulletin Backend"
+msgstr "Backend"
+
+msgid "Bytes"
+msgstr "Bytes"
+
+msgid "Cancel"
+msgstr "Abbrechen"
+
+msgid "Categories"
+msgstr "Kategorien"
+
+msgid "Category"
+msgstr "Kategorie"
+
+msgid "Change selection"
+msgstr "Ändere Auswahl"
+
+msgid "Choose action"
+msgstr "Aktion wählen"
+
+msgid "Choose the enabled finder types."
+msgstr "Die aktivierten Finter-Typen auswählen."
+
+msgid "Choose the event"
+msgstr "Veranstaltung auswählen"
+
+msgid "Choose the notice"
+msgstr "Notiz auswählen"
+
+msgid "Choose the thumbnail mode."
+msgstr "Thumbnail Modus auswählen."
+
+msgid "Close"
+msgstr "Schließen"
+
+msgid "Combining statements"
+msgstr "Kombination von Aussagen"
+
+msgid "Configuration"
+msgstr "Konfiguration"
+
+msgid "Confirmation prompt"
+msgstr "Bestätigungsabfrage"
+
+msgid "Content"
+msgstr "Inhalt"
+
+msgid "Content has been approved and is available online."
+msgstr "Inhalt wurde geprüft und ist online verfügbar."
+
+msgid ""
+"Content has not been submitted yet or has been waiting, but was rejected."
+msgstr "Inhalt wurde nicht übermittelt oder freigegeben, er wurde abgelehnt."
+
+msgid "Copyright"
+msgstr "Copyright"
+
+msgid "Counter"
+msgstr "Zähler"
+
+msgid "Create"
+msgstr "Erstelle"
+
+msgid "Create another item after save"
+msgstr "Nach dem Speichern einen neuen Eintrag hinzufügen"
+
+msgid "Create event"
+msgstr "Stunde anlegen"
+
+msgid "Create new %name%"
+msgstr "%name% neu erstellen"
+
+msgid "Create notice"
+msgstr "Notiz erstellen"
+
+msgid "Create picture"
+msgstr "Bild erstellen"
+
+msgid "Created by %user"
+msgstr "Erstellt von %user"
+
+msgid "Created by %user on %date"
+msgstr "Erstellt von %user am %date"
+
+msgid "Created on %date"
+msgstr "Erstellt am %date"
+
+msgid "Creation"
+msgstr "Erstellung"
+
+msgid "Creation and update"
+msgstr "Erstellung und Aktualisierung"
+
+msgid "Creation date"
+msgstr "Erstellungsdatum"
+
+msgid "Creator"
+msgstr "Ersteller"
+
+msgid "Current file"
+msgstr "Aktuelle Datei"
+
+msgid "Custom template"
+msgstr "Benutzerdefinierte Vorlage"
+
+msgid "Date operators"
+msgstr "Datumsauswahl"
+
+msgid "Dates"
+msgstr "Datum"
+
+msgid "Default"
+msgstr "Standard"
+
+msgid "Defer"
+msgstr "Zurückstellen"
+
+msgid "Defer content for later submission."
+msgstr "Inhalt zur späteren Veröffentlichung aufschieben"
+
+msgid "Deferred"
+msgstr "Zurückgestellt"
+
+msgid "Delete"
+msgstr "Löschen"
+
+msgid "Delete content permanently."
+msgstr "Inhalt dauerhaft löschen."
+
+msgid "Delete event"
+msgstr "Veranstaltung löschen"
+
+msgid "Delete existing file"
+msgstr "Vorhandene Datei löschen"
+
+msgid "Delete notice"
+msgstr "Notiz löschen"
+
+msgid "Delete picture"
+msgstr "Bild löschen"
+
+msgid "Delete this event"
+msgstr "Dieses Veranstaltung löschen"
+
+msgid "Delete this file ?"
+msgstr "Diese Datei löschen?"
+
+msgid "Delete this notice"
+msgstr "Diese Notiz löschen"
+
+msgid "Delete this picture"
+msgstr "Dieses Bild löschen"
+
+msgid "Deleted"
+msgstr "Gelöscht"
+
+msgid "Descending"
+msgstr "Absteigend"
+
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid "Description length"
+msgstr "Länge der Beschreibung"
+
+msgid "Details"
+msgstr "Details"
+
+msgid "Display list of RKBulletinModule objects."
+msgstr "Zeigt die Liste von RKBulletinModule-Objekten."
+
+msgid "Display or link a single RKBulletinModule object."
+msgstr "Anzeigen oder ein einzelnes RKBulletinModule-Objekt verknüpfen."
+
+msgid "Do you really want to delete this event: \"%name%\" ?"
+msgstr "Möchten Sie wirklich diese Veranstaltung löschen: \"%name%\"?"
+
+msgid "Do you really want to delete this notice: \"%name%\" ?"
+msgstr "Möchten Sie wirklich diese Notiz löschen: \"%name%\"?"
+
+msgid "Do you really want to delete this picture: \"%name%\" ?"
+msgstr "Möchten Sie wirklich dieses Bild löschen: \"%name%\"?"
+
+msgid "Doctrine Exception"
+msgstr "Doctrine Fehler"
+
+msgid "Done! Event created."
+msgstr "Erledigt! Trainingsstunde erstellt."
+
+msgid "Done! Event deleted."
+msgstr "Erledigt! Trainingsstunde gelöscht."
+
+msgid "Done! Event updated."
+msgstr "Erledigt! Trainingsstunde aktualisiert."
+
+msgid "Done! Item created."
+msgstr "Erledigt! Element erstellt."
+
+msgid "Done! Item deleted."
+msgstr "Erledigt! Element gelöscht."
+
+msgid "Done! Item updated."
+msgstr "Erledigt! Element aktualisiert."
+
+msgid "Done! Module configuration updated."
+msgstr "Erledigt! Modul Konfiguration aktualisiert."
+
+msgid "Done! Notice created."
+msgstr "Erledigt! Notiz erstellt."
+
+msgid "Done! Notice deleted."
+msgstr "Erledigt! Notiz gelöscht."
+
+msgid "Done! Notice updated."
+msgstr "Erledigt! Notiz aktualisiert."
+
+msgid "Done! Picture created."
+msgstr "Erledigt! Bild erstellt."
+
+msgid "Done! Picture deleted."
+msgstr "Erledigt! Bild gelöscht."
+
+msgid "Done! Picture updated."
+msgstr "Erledigt! Bild aktualisiert."
+
+msgid "Download"
+msgstr "Download"
+
+msgid ""
+"Each statement is a set of field name, operator and value connected by a "
+"colon."
+msgstr ""
+"Jede Aussage ist ein Satz von Feldnamen, Operator und Wert durch einen "
+"Doppelpunkt verbunden."
+
+msgid "Edit"
+msgstr "Bearbeiten"
+
+msgid "Edit event"
+msgstr "Veranstaltung bearbeiten"
+
+msgid "Edit notice"
+msgstr "Notiz bearbeiten"
+
+msgid "Edit picture"
+msgstr "Bild bearbeiten"
+
+msgid "Edit this event"
+msgstr "Diese Veranstaltung bearbeiten"
+
+msgid "Edit this notice"
+msgstr "Diese Notiz bearbeiten"
+
+msgid "Edit this picture"
+msgstr "Dieses Bild bearbeiten"
+
+msgid ""
+"Either the first name is Peter and the house number of any address is below "
+"100 or the first name is Chris and the house number of any address is below "
+"150."
+msgstr ""
+"Entweder der erste Name ist Peter und die Hausnummer an jede beliebige "
+"Adresse ist unter 100 oder der erste Name ist Chris und die Hausnummer an "
+"jede beliebige Adresse ist unter 150."
+
+msgid "Enable shrinking"
+msgstr "Bildverkleinerung einschalten"
+
+msgid "Enable this option to insert images"
+msgstr "Diese Option aktivieren um Bilder einzufügen"
+
+msgid "Enabled finder types"
+msgstr "Aktivierte Finder-Typen"
+
+msgid "End date"
+msgstr "Enddatum"
+
+msgid "Enter a part of the user name to search"
+msgstr "Zum Suchen geben Sie einen Teil des Benutzernamens ein"
+
+msgid "Enter the alt text of the picture"
+msgstr "Den Alt-Text des Bildes eingeben"
+
+msgid "Enter the copyright of the notice"
+msgstr "Das Copyright des Bildes eingeben"
+
+msgid "Enter the copyright of the picture"
+msgstr "Das Copyright des Bildes eingeben"
+
+msgid "Enter the counter of the notice."
+msgstr "Zähler der Notiz eingeben."
+
+msgid "Enter the description length."
+msgstr "Länge der Beschreibung eintragen."
+
+msgid "Enter the description of the event"
+msgstr "Gebe eine Beschreibung für die Veranstaltung an"
+
+msgid "Enter the description of the notice"
+msgstr "Gebe eine Beschreibung für die Notiz an"
+
+msgid "Enter the end date of the event"
+msgstr "Geben Sie das Enddatum der Veranstaltung an"
+
+msgid "Enter the end date of the notice"
+msgstr "Geben Sie das Enddatum der Notiz an"
+
+msgid "Enter the event entries per page."
+msgstr "Anzahl Einträge pro Seite eintragen."
+
+msgid "Enter the event title of the event"
+msgstr "Gebe den Titel der Veranstaltung an"
+
+msgid "Enter the image of the notice"
+msgstr "Lade das Bild zur Notiz"
+
+msgid "Enter the image of the picture"
+msgstr "Lade das Bild"
+
+msgid "Enter the notice entries per page."
+msgstr "Anzahl Einträge pro Seite eintragen."
+
+msgid "Enter the picture entries per page."
+msgstr "Anzahl Einträge pro Seite eintragen."
+
+msgid "Enter the shrink height."
+msgstr "Pixel für die reduzierte Bildhöhe."
+
+msgid "Enter the shrink width."
+msgstr "Pixel für die reduzierte Bildbreite."
+
+msgid "Enter the start date of the event"
+msgstr "Startdatum der Veranstaltung angeben"
+
+msgid "Enter the start date of the notice"
+msgstr "Startdatum der Notiz angeben"
+
+msgid "Enter the teaser display length."
+msgstr "Länge der Einleitungstextes eintragen."
+
+msgid "Enter the teaser length."
+msgstr "Länge der Einleitungstextes eintragen."
+
+msgid "Enter the teaser of the notice"
+msgstr "Länge der Einleitungstextes der Notiz eintragen."
+
+msgid "Enter the thumbnail height display."
+msgstr "Thumbnail Höhe Display Ansicht eintragen."
+
+msgid "Enter the thumbnail height edit."
+msgstr "Thumbnail Höhe Bearbeitungsansicht eintragen."
+
+msgid "Enter the thumbnail height view."
+msgstr "Thumbnail Höhe Listenansicht eintragen."
+
+msgid "Enter the thumbnail width display."
+msgstr "Thumbnail Breite Display Ansicht eintragen."
+
+msgid "Enter the thumbnail width edit."
+msgstr "Thumbnail Breite Bearbeitungsansicht eintragen."
+
+msgid "Enter the thumbnail width view."
+msgstr "Thumbnail Breite Listenansicht eintragen."
+
+msgid "Enter the title of the notice"
+msgstr "Den Titel der Notiz eintragen"
+
+msgid "Error! Could not create a category registry for the %entity% entity."
+msgstr ""
+"Fehler! Eine Kategorie-Registrierung für die Entität %entity% konnte nicht "
+"erstellt werden."
+
+msgid "Error! Could not determine workflow actions."
+msgstr "Fehler! Kann den zugeordneten Workflow nicht erkennen."
+
+msgid "Error! Could not load the associated workflow."
+msgstr "Fehler! Kann den zugeordneten Workflow nicht laden."
+
+msgid "Error! Could not remove stored workflow. Deletion has been aborted."
+msgstr ""
+"Fehler! Konnte den gespeicherten Workflow nicht entfernen. Löschen wurde "
+"abgebrochen."
+
+msgid "Error! Creation attempt failed."
+msgstr "Fehler! Erstellung fehlgeschlagen."
+
+msgid "Error! Deletion attempt failed."
+msgstr "Fehler! Löschen fehlgeschlagen."
+
+msgid "Error! Invalid identifier received."
+msgstr "Fehler! Ungültiger Bezeichner aufgerufen."
+
+msgid "Error! Invalid object type received."
+msgstr "Fehler! Ungültigen Objekttyp erhalten."
+
+msgid "Error! It is not allowed to delete this event."
+msgstr "Fehler! Es ist nicht erlaubt, diese Veranstaltung zu löschen."
+
+msgid "Error! It is not allowed to delete this notice."
+msgstr "Fehler! Es ist nicht erlaubt, diese Notiz zu löschen."
+
+msgid "Error! It is not allowed to delete this picture."
+msgstr "Fehler! Es ist nicht erlaubt, dieses Bild zu löschen."
+
+msgid ""
+"Error! This file type is not allowed. Please choose another file format."
+msgstr ""
+"Fehler! Dieser Dateityp ist nicht erlaubt. Wähle bitte ein anderes Format."
+
+msgid "Error! This file type seems not to be a valid image."
+msgstr "Fehler! Dieser Dateityp scheint kein gültiges Bild zu sein."
+
+msgid "Error! Update attempt failed."
+msgstr "Fehler! Aktualisierung fehlgeschlagen."
+
+msgid "Error: Invalid editor context given for external controller action."
+msgstr ""
+"Fehler: ungültiger Editor Kontext für externe Controller-Aktion gegeben."
+
+msgid "Error: invalid input."
+msgstr "Fehler: ungültige Eingabe."
+
+msgid "Errors"
+msgstr "Fehler"
+
+msgid "Event"
+msgstr "Veranstaltung"
+
+msgid "Event entries per page"
+msgstr "Veranstaltungseinträge pro Seite"
+
+msgid "Event list"
+msgstr "Stundenliste"
+
+msgid "Event title"
+msgstr "Veranstaltungs Titel"
+
+msgid "Events"
+msgstr "Trainingsstunden"
+
+msgid "Example"
+msgstr "Beispiel"
+
+msgid "Fields"
+msgstr "Felder"
+
+msgid "Filter"
+msgstr "Filter"
+
+msgid "Filter (expert option)"
+msgstr "Filter ( Expertenoption )"
+
+msgid "Filter statements"
+msgstr "Filter Statements"
+
+msgid "Filter syntax explained"
+msgstr "Filtersyntax erklärt"
+
+msgid "Find %name%"
+msgstr "Finde %name%"
+
+msgid ""
+"For time periods: Begin of the given period. \"Date:ge:today\" matches all "
+"items with date of today or later."
+msgstr ""
+"Für Zeiträume: Anfang der gegeben Periode. \"Date:ge:today\" betrift alle "
+"Items mit dem Datum von heute oder später."
+
+msgid ""
+"For time periods: Begin of the given period. \"Date:lt:today\" matches all "
+"items with date of yesterday or before."
+msgstr ""
+"Für Zeiträume: Anfang der gegeben Periode. \"Date:lt:today\" betrift alle "
+"Items mit dem Datum von gestern oder früher."
+
+msgid ""
+"For time periods: End of the given period. \"Date:gt:today\" matches all "
+"items with date of tomorrow or later."
+msgstr ""
+"Für Zeiträume: Ende der gegeben Periode. \"Date:gt:today\" betrift alle "
+"Items mit dem Datum von morgen oder später."
+
+msgid ""
+"For time periods: End of the given period. \"Date:le:today\" matches all "
+"items with date of today or before."
+msgstr ""
+"Für Zeiträume: Ende der gegeben Periode. \"Date:le:today\" betrift alle "
+"Items mit dem Datum von heute oder früher."
+
+msgid "Frontend"
+msgstr "Frontend"
+
+msgid "Further properties"
+msgstr "Weitere Eigenschaften"
+
+msgid "Furthermore you can use brackets to group statements."
+msgstr "Desweiteren können Klammern genutzt werden um Aussagen zu gruppieren."
+
+msgid "GB"
+msgstr "GB"
+
+msgid "General syntax"
+msgstr "Allgemeine Syntax"
+
+msgid "Here you can choose a custom creation date"
+msgstr "Hier kann ein benutzerdefiniertes Erstellungsdatum gewählt werden"
+
+msgid "Here you can choose a user which will be set as creator"
+msgstr ""
+"Hier können Sie einen Benutzer wählen, die als Ersteller festgelegt wird"
+
+msgid "Here you can configure parameters for list views."
+msgstr "Hier können Sie Parameter für die Listenansichten konfigurieren."
+
+msgid "Here you can manage all basic settings for this application."
+msgstr "Hier kannst Du die Grundeinstellungen für dieses Modul verwalten."
+
+msgid "Hooks"
+msgstr "Hooks"
+
+msgid "ID of event"
+msgstr "Id der Veranstaltung"
+
+msgid "ID of notice"
+msgstr "Id der Notiz"
+
+msgid "ID of picture"
+msgstr "Id des Bildes"
+
+msgid ""
+"If a \"Person\" has Categories support then you can also filter by category "
+"id or name."
+msgstr ""
+"Wenn eine \"Person\" Kategorien-Unterstützung hat, können Sie auch nach "
+"Kategorie-Id oder Name filtern."
+
+msgid ""
+"If you change this please save the block once to reload the parameters below."
+msgstr ""
+"Wenn das geändert wird, bitte den Block einmal speichern, um die Parameter "
+"unten neu zu laden."
+
+msgid "Image"
+msgstr "Bild"
+
+msgid "Image settings for notices image"
+msgstr "Bildeinstellungen für Notiz Bild"
+
+msgid "Image settings for pictures image"
+msgstr "Bildeinstellungen"
+
+msgid "Image with absolute url to the notice"
+msgstr "Bild mit absoluter Url zur Notiz"
+
+msgid "Image with absolute url to the picture"
+msgstr "Bild mit absoluter Url"
+
+msgid "Image with relative link to the notice"
+msgstr "Bild mit relativer Url zur Notiz"
+
+msgid "Image with relative link to the picture"
+msgstr "Bild mit relativer Url"
+
+msgid "Images"
+msgstr "Bilder"
+
+msgid "Initial"
+msgstr "Anfang"
+
+msgid "Inset"
+msgstr "Einfügen (inset)"
+
+msgid "Integration"
+msgstr "Integration"
+
+msgid "Invalid object type received."
+msgstr "Fehler! Ungültigen Objekttyp erhalten."
+
+msgid "Invalid user identifier received."
+msgstr "Fehler! Ungültiger Benutzer Bezeichner aufgerufen."
+
+msgid ""
+"It is possible to filter the list of retrieved items by specifying arbitrary "
+"filter expressions. This page shows how to create these expressions."
+msgstr ""
+"Es ist möglich, die Liste der gefundenen Elemente zu filtern durch Angabe "
+"frei wählbarer Filterausdrücke. Diese Seite zeigt, wie Sie diese Ausdrücke "
+"erstellen."
+
+msgid "KB"
+msgstr "KB"
+
+msgid "Last update"
+msgstr "Letzte Aktualisierung"
+
+msgid "Link own events on account page"
+msgstr "Eigene Veranstaltungen im Benutzerkonto anzeigen"
+
+msgid "Link own notices on account page"
+msgstr "Verknüpfen von eigenen Notizen auf dem Benutzerkonto"
+
+msgid "Link own pictures on account page"
+msgstr "Verknüpfen von eigenen Bildern auf dem Benutzerkonto"
+
+msgid "List views"
+msgstr "Listenansichten"
+
+msgid "MB"
+msgstr "MB"
+
+msgid "Manage settings for this application"
+msgstr "Einstellungen für diese Anwendung"
+
+msgid "Manage user"
+msgstr "Benutzer verwalten"
+
+msgid "Moderation"
+msgstr "Moderation"
+
+msgid "Moderation options"
+msgstr "Moderation-Optionen"
+
+msgid "My events"
+msgstr "Meine Veranstaltungen"
+
+msgid "My notices"
+msgstr "Meine Notizen"
+
+msgid "My pictures"
+msgstr "Meine Bilder"
+
+msgid "Newest"
+msgstr "Neueste"
+
+msgid "No"
+msgstr "Nein"
+
+msgid "No entries found."
+msgstr "Keine Einträge gefunden."
+
+msgid "No events found."
+msgstr "Keine Einträge gefunden."
+
+msgid "No item selected."
+msgstr "Kein Element ausgewählt."
+
+msgid "No notices found."
+msgstr "Keine Notizen gefunden."
+
+msgid "No pictures found."
+msgstr "Keine Bilder gefunden."
+
+msgid "No results found!"
+msgstr "Keine Ergebnisse gefunden!"
+
+msgid "No such item found."
+msgstr "Der entsprechende Eintrag konnte leider nicht gefunden werden."
+
+msgid "No such item."
+msgstr "Kein solches Element."
+
+msgid "None workflow (no approval)"
+msgstr "Kein Workflow (keine Freigabe)"
+
+msgid "Not set."
+msgstr "Nicht gesetzt."
+
+msgid "Notice"
+msgstr "Notiz"
+
+msgid "Notice entries per page"
+msgstr "Notiz-Einträge pro Seite"
+
+msgid "Notice list"
+msgstr "Notizen Liste"
+
+msgid "Notices"
+msgstr "Notizen"
+
+msgid "Notices image"
+msgstr "Notizen-Bild"
+
+msgid "OK"
+msgstr "Ok"
+
+msgid "Object type"
+msgstr "Objekttyp"
+
+msgid "Only digits are allowed."
+msgstr "Nur Ziffern sind erlaubt."
+
+msgid "Only images"
+msgstr "Nur Bilder"
+
+msgid "Only item titles"
+msgstr "Nur Titel"
+
+msgid "Open file"
+msgstr "Datei öffnen"
+
+msgid "Open preview page"
+msgstr "Vorschau öffnen"
+
+msgid "Open quick view window"
+msgstr "Fenster für Schnellansicht öffnen"
+
+msgid "Operation cancelled."
+msgstr "Vorgang abgebrochen."
+
+msgid "Operators"
+msgstr "Operatoren"
+
+msgid "Outbound"
+msgstr "abschneiden (outbound)"
+
+msgid "Page size"
+msgstr "Seitengröße"
+
+msgid "Paste as"
+msgstr "Einfügen als"
+
+msgid "Person is assigned to category with id \"4\"."
+msgstr "Person wird Kategorie mit der Id \"4\" zugewiesen."
+
+msgid ""
+"Person is assigned to category with name \"Sports\" or one of it's sub "
+"categories."
+msgstr ""
+"Personen, die der Kategorie \"Sports\" zugewiesen sind oder einer der "
+"Unterkategorien."
+
+msgid "Person is assigned to category with name \"Sports\"."
+msgstr "Personen, die der Kategorie \"Sports\" zugewiesen sind."
+
+msgid "Person is not assigned to category with id \"4\"."
+msgstr "Person ist nicht der Kategorie mit der Id \"4\" zugewiesen."
+
+msgid "Picture"
+msgstr "Bild"
+
+msgid "Picture entries per page"
+msgstr "Bild-Einträge pro Seite"
+
+msgid "Picture list"
+msgstr "Bilderliste"
+
+msgid "Pictures"
+msgstr "Bilder"
+
+msgid "Pictures image"
+msgstr "Bilder"
+
+msgid "Please choose an option"
+msgstr "Bitte Option wählen"
+
+msgid ""
+"Prepend one of the keywords \"year\", \"month\", \"week\", \"day\", \"hour"
+"\", \"min\" followed by a colon to search for a time period."
+msgstr ""
+"Voranstellen eines der Schlüsselwörter \"Jahr\", \"Monat\", \"Woche\", \"Tag"
+"\", \"Stunde\", \"min\" gefolgt von einem Doppelpunkt, um für einen "
+"bestimmten Zeitraum zu suchen."
+
+msgid "Preview"
+msgstr "Vorschau"
+
+msgid "Pseudo-state for content which has been deleted from the database."
+msgstr "Pseudo-Status für Inhalt, welcher aus der Datenbank gelöscht wurde."
+
+msgid "Pseudo-state for content which is just created and not persisted yet."
+msgstr ""
+"Pseudo-Status für Inhalt, welcher gerade erstellt aber noch nicht "
+"persistiert wurde."
+
+msgid "Quick navigation"
+msgstr "Schnellnavigation"
+
+msgid "RKBulletinModule detail view"
+msgstr "RKBulletinModule Detailansicht"
+
+msgid "RKBulletinModule items"
+msgstr "RKBulletinModule Elemente"
+
+msgid "RKBulletinModule list view"
+msgstr "RKBulletinModule Listenansicht"
+
+msgid "Random"
+msgstr "Zufall"
+
+msgid "Read more"
+msgstr "Weiterlesen"
+
+msgid "Relative link to the event"
+msgstr "Relativer Link zur Veranstaltung"
+
+msgid "Relative link to the image"
+msgstr "Relativer Link zum Bild"
+
+msgid "Relative link to the notice"
+msgstr "Relative Url zur Notiz"
+
+msgid "Relative link to the picture"
+msgstr "Relative Url zum Bild"
+
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+msgid "Reset to empty value"
+msgstr "Eingabe Löschen"
+
+msgid "Return control"
+msgstr "Nächster Schritt"
+
+msgid "Reuse"
+msgstr "Wiederverwenden"
+
+msgid "Reuse for new event"
+msgstr "Wiederverwenden für neuen Eintrag"
+
+msgid "Reuse for new notice"
+msgstr "Wiederverwendung für neue Notiz"
+
+msgid "Reuse for new picture"
+msgstr "Wiederverwendung für neues Bild"
+
+msgid "Search"
+msgstr "Suchen"
+
+msgid "Search %name%"
+msgstr "Suchen %name%"
+
+msgid "Search and select event"
+msgstr "Veranstaltung suchen und auswählen"
+
+msgid "Search and select notice"
+msgstr "Notiz suchen und auswählen"
+
+msgid "Search and select picture"
+msgstr "Bild suchen und auswählen"
+
+msgid "Search for"
+msgstr "Suche nach"
+
+msgid "Search user"
+msgstr "Benutzer suchen"
+
+msgid "Select %name%"
+msgstr "%name% wählen"
+
+msgid "Send private message to %userName%"
+msgstr "Schicke eine private Nachricht an %userName%"
+
+msgid "Settings"
+msgstr "Einstellungen"
+
+msgid ""
+"Several statements can be connected by a comma , (AND) or an asterisk * (OR)."
+msgstr ""
+"Mehere Ausdrücke können durch ein Komma , (AND) oder Stern * (OR) verbunden "
+"werden."
+
+msgid "Show all entries"
+msgstr "Zeige alle Einträge"
+
+msgid "Show counter"
+msgstr "Besucherzähler anzeigen"
+
+msgid "Show syntax examples"
+msgstr "Syntaxbeispiele zeigen"
+
+msgid "Shows all items except these which are approved"
+msgstr "Zeigt alle Einträge außer den Freigegebenen"
+
+msgid "Shows all items except these which are deferred"
+msgstr "Zeigt alle Elemente außer den zurückgestellten"
+
+msgid "Shrink height"
+msgstr "Bildhöhe"
+
+msgid "Shrink width"
+msgstr "Bildbreite"
+
+msgid ""
+"So in our example we can reference Persons with \"tbl\" and addresses with "
+"\"tblAddresses\"."
+msgstr ""
+"Also in unserem Beispiel können wir Personen mit \"tbl\" und Adressen mit "
+"\"tblAddresses\" refferenzieren."
+
+msgid ""
+"So instead of \"categories\" use \"categoriesFoo\" whereby \"Foo\" is the "
+"property name for the desired registry, for example \"Main\"."
+msgstr ""
+"So verwenden Sie anstelle von \"Kategorien\" \"CategoriesFoo\", wobei \"Foo"
+"\" der Name der Eigenschaft für das gewünschte Register, zum Beispiel \"Main"
+"\" ist."
+
+msgid "Sorry, but an error occured during the %action% action."
+msgstr "Sorry, aber ein Fehler ist bei Aktion %action% aufgetreten."
+
+msgid ""
+"Sorry, but an error occured during the %action% action. Please apply the "
+"changes again!"
+msgstr ""
+"Sorry, aber ein Fehler ist bei Aktion %action% aufgetreten. Bitte die "
+"Änderungen erneut anwenden!"
+
+msgid ""
+"Sorry, but you can not create the event yet as other items are required "
+"which must be created before!"
+msgstr ""
+"Entschuldigung, aber du kannst noch keine Veranstaltung erstellen da andere "
+"benötigte Einträge vorher erstellt werden müssen!"
+
+msgid ""
+"Sorry, but you can not create the notice yet as other items are required "
+"which must be created before!"
+msgstr ""
+"Tut mir leid, aber Sie können die Notiz noch nicht anlegen! Pflichteinträge "
+"müssen vorher gemacht werden!"
+
+msgid ""
+"Sorry, but you can not create the picture yet as other items are required "
+"which must be created before!"
+msgstr ""
+"Tut mir leid, aber Sie können das Bild noch nicht anlegen! Pflichteinträge "
+"müssen vorher gemacht werden!"
+
+msgid "Sort by"
+msgstr "Sortiere nach"
+
+msgid "Sort by %s"
+msgstr "Sortieren nach %s"
+
+msgid "Sort direction"
+msgstr "Sortierreihenfolge"
+
+msgid "Sorting"
+msgstr "Sortierung"
+
+msgid "Special field types"
+msgstr "Spezielle Feldtypen"
+
+msgid "Start date"
+msgstr "Anfangsdatum"
+
+msgid "Start page"
+msgstr "Startseite"
+
+msgid "State"
+msgstr "Status"
+
+msgid "Submit"
+msgstr "Absenden"
+
+msgid "Submit content."
+msgstr "Inhalt bestätigen."
+
+msgid "Switch to administration area."
+msgstr "Wechsel zum Administrationsbereich."
+
+msgid "Switch to user area."
+msgstr "Wechsel zum Nutzerbereich."
+
+msgid "Switch to users administration"
+msgstr "Wechseln Sie in die Benutzerverwaltung"
+
+msgid "Table aliases"
+msgstr "Tabellen Aliase"
+
+msgid "Teaser"
+msgstr "Einleitungstext"
+
+msgid "Teaser display length"
+msgstr "Länge des verkürzten Einleitungstextes für Listenansichten"
+
+msgid "Teaser length"
+msgstr "Beschreibungslänge Einleitungstext"
+
+msgid "Template"
+msgstr "Vorlage"
+
+msgid "The amount of events shown per page"
+msgstr "Die Anzahl der Veranstaltungen pro Seite"
+
+msgid "The amount of notices shown per page"
+msgstr "Die Anzahl der Notizen pro Seite"
+
+msgid "The amount of pictures shown per page"
+msgstr "Die Anzahl der Bilder pro Seite"
+
+msgid ""
+"The cache directory \"%directory%\" does not exist. Please create it and "
+"make it writable for the webserver."
+msgstr ""
+"Der Cache-Verzeichnis \"%directory%\" ist nicht vorhanden. Bitte erstellen "
+"Sie es und machen Sie es für den Webserver beschreibbar."
+
+msgid "The enable shrinking option."
+msgstr "Die Option zur Bildverkleinerung für Seiten Bilder."
+
+msgid ""
+"The field name \"categories\" is the default name for category fields. "
+"However, in practice we need to define different field names for possibly "
+"several registries."
+msgstr ""
+"Der Feldname \"Kategorien\" ist der Standardname für die Kategorie-Felder. "
+"Wir müssen jedoch in der Praxis verschiedene Feldnamen für möglicherweise "
+"mehrere Register definieren."
+
+msgid "The first name equals either Peter or Chris"
+msgstr "Der Vorname entspricht entweder Peter oder Chris"
+
+msgid "The first name is Peter"
+msgstr "Der erste Name ist Peter"
+
+msgid ""
+"The first name is Peter and the house number of any address is below 100."
+msgstr ""
+"Der erste Name ist Peter und die Hausnummer von jeder beliebigen Adresse "
+"liegt unter 100."
+
+msgid ""
+"The following filters assume that you have a list of persons whereby each "
+"person can have many addresses."
+msgstr ""
+"Folgende Filter geht davon aus, dass Sie eine Liste von Personen haben, "
+"wobei jede Person viele Adressen haben kann."
+
+msgid "The house number of any address is lower than 100"
+msgstr "Die Hausnummer von jeder beliebigen Adresse ist niedriger als 100"
+
+msgid "The link own events on account page option."
+msgstr "Die Option zur Anzeige der eigenen Veranstaltungen im Benutzerkonto."
+
+msgid "The link own notices on account page option."
+msgstr "Die Option zur Anzeige der eigenen Notizen im Benutzerkonto."
+
+msgid "The link own pictures on account page option."
+msgstr "Die Option zur Anzeige der eigenen Bilder im Benutzerkonto."
+
+msgid ""
+"The main table, that is the entity being the primary subject of the query, "
+"is always known directly. That means, you can prepend \"tbl.\", but you do "
+"not need to."
+msgstr ""
+"Die Haupt-Tabelle, das ist die Entität, die der primäre Gegenstand der "
+"Abfrage ist, ist immer direkt bekannt. Das heißt, Sie können \"tbl.\" "
+"voranstellen, aber Sie müssen es nicht."
+
+msgid "The maximum amount of items to be shown."
+msgstr "Die maximale Anzahl von Elementen, die angezeigt werden."
+
+msgid "The maximum image height in pixels."
+msgstr "Die maximale Bildhöhe in Pixel."
+
+msgid "The maximum image width in pixels."
+msgstr "Die maximale Bildbreite in Pixel."
+
+msgid "The operator defines the condition type (equal, lower than, etc.)."
+msgstr ""
+"Der Operator definiert die Konditionsart (gleich, niedriger als, etc..)."
+
+msgid "The setting has been successfully changed."
+msgstr "Die Einstellungen wurden erfolgreich geändert."
+
+msgid "The show counter option."
+msgstr "Die Zähler Option anzeigen."
+
+msgid ""
+"The term \"bar\" will match \"foobarthis\", but not \"foobar\" nor \"barfoo"
+"\"."
+msgstr ""
+"\"bar\" wird \"foobarthis\" entsprechen, aber nicht \"foobar\" oder \"barfoo"
+"\"."
+
+msgid ""
+"The term \"foo\" will match \"fOo\", \"AnotherFoo\" and so on, but not "
+"\"FoObar\" or \"FooBlub\"."
+msgstr ""
+"Der Begriff \"foo\" passt für \"fOo\", \"AnotherFoo\" und so weiter, aber "
+"nicht für \"FoObar\" oder \"FooBlub\"."
+
+msgid ""
+"The term \"foo\" will match \"fOo\", \"FOObar\", \"FooBlub\" and so on, but "
+"not \"AnotherFoo\"."
+msgstr ""
+"Der Begriff \"foo\" passt für \"fOo\", \"FOObar\", \"FooBlub\" und so "
+"weiter, aber nicht für \"AnotherFoo\"."
+
+msgid "The upload directories at \"%path%\" can be removed manually."
+msgstr "Das Upload-Verzeichnis \"%path%\" kann manuell entfernt werden."
+
+msgid ""
+"The upload directory \"%path%\" does not exist and could not be created. Try "
+"to create it yourself and make sure that this folder is accessible via the "
+"web and writable by the webserver."
+msgstr ""
+"Das Upload-Verzeichnis \"%path%\" ist nicht vorhanden und konnte nicht "
+"erstellt werden. Versuchen Sie es selbst und stellen Sie sicher, dass dieser "
+"Ordner über das Web zugänglich und vom Webserver beschreibbar ist."
+
+msgid "The value \"%value%\" is not allowed for the \"%property%\" property."
+msgstr ""
+"Der Wert \"%value%\" ist für die Eigenschaft \"%property%\" nicht zulässig."
+
+msgid "The value is scanned case insensitive."
+msgstr "Der Wert wird unabhängig von Groß- bzw. Kleinschreibung abgefragt."
+
+msgid ""
+"Thereby \"Foo\" does not mean the name of the joined entity, but the source "
+"or target alias of the corresponding relationship."
+msgstr ""
+"Dabei bedeutet \"Foo\" nicht der Name der verknüpften Entität, aber die "
+"Quelle oder das Ziel Alias der entsprechenden Beziehung."
+
+msgid "Therefore we create a virtual fields for each registry property."
+msgstr "Daher erstellen wir virtuelle Felder für jede Register-Eigenschaft."
+
+msgid "These options allow you to configure integration aspects."
+msgstr "Diese Optionen erlauben Integrationsaspekte zu konfigurieren."
+
+msgid "This function requires JavaScript activated!"
+msgstr "Diese Funktion verlangt aktiviertes Javascript!"
+
+msgid ""
+"This has the advantage that it is possible to join a certain table multiple "
+"times. For example instead of having many addresses for a person one could "
+"also create two relationships for business and home addresses this way."
+msgstr ""
+"Dies hat den Vorteil, dass es möglich ist, eine bestimmte Tabelle mehrfach "
+"zu verknüpfen. Zum Beispiel könnte anstatt viele Adressen für eine Person "
+"auch zwei Beziehungen für Geschäfts- und Privatadressen auf diese Weise "
+"entstehen."
+
+msgid "This is an optional filter."
+msgstr "Dies ist ein optionaler Filter."
+
+msgid ""
+"This is like a non-existing workflow. Everything is online immediately after "
+"creation."
+msgstr ""
+"Dies ist wie ein nicht existierender Workflow. Alles ist nach dem Erstellen "
+"direkt online."
+
+msgid "This setting is disabled. Click here to enable it."
+msgstr "Diese Einstellung ist deaktiviert. Klicke hier zum aktivieren."
+
+msgid "This setting is enabled. Click here to disable it."
+msgstr "Diese Einstellung ist aktiviert. Klicke hier um sie zu deaktivieren."
+
+msgid "Thumbnail height display"
+msgstr "Thumbnail Höhe Display Ansicht"
+
+msgid "Thumbnail height edit"
+msgstr "Thumbnail Höhe Bearbeitungsansicht"
+
+msgid "Thumbnail height on display pages in pixels."
+msgstr "Thumbnail Höhe auf Display Seiten in Pixel."
+
+msgid "Thumbnail height on edit pages in pixels."
+msgstr "Thumbnail Höhe auf Edit Seiten in Pixel."
+
+msgid "Thumbnail height on view pages in pixels."
+msgstr "Thumbnail Höhe auf View Seiten in Pixel."
+
+msgid "Thumbnail height view"
+msgstr "Thumbnail Höhe Listenansicht"
+
+msgid "Thumbnail mode"
+msgstr "Thumbnail Modus"
+
+msgid "Thumbnail mode (inset or outbound)."
+msgstr "Thumbnail Modus (inset oder outbound)."
+
+msgid "Thumbnail width display"
+msgstr "Thumbnail Breite Display Ansicht"
+
+msgid "Thumbnail width edit"
+msgstr "Thumbnail Breite Bearbeitungsansicht"
+
+msgid "Thumbnail width on display pages in pixels."
+msgstr "Thumbnail Breite auf Display Seiten in Pixel."
+
+msgid "Thumbnail width on edit pages in pixels."
+msgstr "Thumbnail Breite auf Edit Seiten in Pixel."
+
+msgid "Thumbnail width on view pages in pixels."
+msgstr "Thumbnail Breite auf View Seiten in Pixel."
+
+msgid "Thumbnail width view"
+msgstr "Thumbnail Breite Listenansicht"
+
+msgid "Title"
+msgstr "Titel"
+
+msgid "Update"
+msgstr "Aktualisieren"
+
+msgid "Update configuration"
+msgstr "Update-Konfiguration"
+
+msgid "Update content."
+msgstr "Aktualisiere Inhalt."
+
+msgid "Update date"
+msgstr "Aktualisierungsdatum"
+
+msgid "Updated by %user"
+msgstr "Aktualisiert von %user"
+
+msgid "Updated by %user on %date"
+msgstr "Aktualisiert von %user am %date"
+
+msgid "Updated on %date"
+msgstr "Aktualisiert am %date"
+
+msgid "Updater"
+msgstr "Aktualisieren"
+
+msgid "View detail page"
+msgstr "Zeige Detailseite"
+
+msgid ""
+"Warning! The upload directory at \"%path%\" exists but is not writable by "
+"the webserver."
+msgstr ""
+"Warnung! Das Upload-Verzeichnis \"%path%\" besteht, ist allerdings nicht vom "
+"Webserver beschreibbar."
+
+msgid "Welcome to the event section of the Bulletin application."
+msgstr "Willkommen im Veranstaltungsabschnitt des Bekanntmachungsmodules."
+
+msgid "Welcome to the notice section of the Bulletin application."
+msgstr "Willkommen im Notiz Abschnitt des Bekanntmachungsmoduls."
+
+msgid "Welcome to the picture section of the Bulletin application."
+msgstr "Willkommen im Bilder Abschnitt des Bekanntmachungsmoduls."
+
+msgid ""
+"When filtering for dates you can use convenient extensions and even time "
+"periods."
+msgstr ""
+"Beim Filtern nach Datum können Sie bequeme Erweiterungen und sogar Zeiträume "
+"benutzen."
+
+msgid "Whether to add a link to events of the current user on his account page"
+msgstr ""
+"Ob Veranstaltungen des aktuellen Benutzers in seinem Benutzerkonto angezeigt "
+"werden sollen"
+
+msgid ""
+"Whether to add a link to notices of the current user on his account page"
+msgstr ""
+"Ob Notizen des aktuellen Benutzers in seinem Benutzerkonto angezeigt werden "
+"sollen"
+
+msgid ""
+"Whether to add a link to pictures of the current user on his account page"
+msgstr ""
+"Ob Bilder des aktuellen Benutzers in seinem Benutzerkonto angezeigt werden "
+"sollen"
+
+msgid ""
+"Whether to enable shrinking huge images to maximum dimensions. Stores "
+"downscaled version of the original image."
+msgstr ""
+"Auswählen, um große Bilder auf angegebene Dimensionen zu verkleinern. "
+"Speichert herunterskalierte Version des Originalbildes."
+
+msgid ""
+"Which sections are supported in the Finder component (used by Scribite plug-"
+"ins)."
+msgstr ""
+"Weche Sektionen in der Finder-Komponente genutzt werden sollen (genutzt "
+"durch Scribite Plugins)."
+
+msgid "With description"
+msgstr "Mit Beschreibung"
+
+msgid "With selected events"
+msgstr "Mit ausgewählten Trainings"
+
+msgid "With selected notices"
+msgstr "Mit ausgewählten Notizen"
+
+msgid "With selected pictures"
+msgstr "Mit ausgewählten Bildern"
+
+msgid "Yes"
+msgstr "Ja"
+
+msgid ""
+"You can use relative time information according to the GNU Date Input "
+"Formats syntax."
+msgstr ""
+"Es können relative Zeitinformation gemäß dem Format der GNU Datum "
+"Eingabeformate verwendet werden."
+
+msgid "a notice might be just a news or contains an event as well"
+msgstr ""
+"Eine Notiz kann einfach ein Beitrag sein, oder aber auch eine Veranstaltung "
+"enthalten"
+
+msgid "event"
+msgstr "Veranstaltung"
+
+msgid "events"
+msgstr "Veranstaltungen"
+
+msgid "for description and event description"
+msgstr "Für Beschreibung und Veranstaltungsbeschreibung"
+
+msgid "is Empty or NULL."
+msgstr "ist leer oder NULL."
+
+msgid "is any middle coincidence."
+msgstr "Ist ein mittlerer Zufall."
+
+msgid "is equal."
+msgstr "ist gleich."
+
+msgid "is greater or equal than."
+msgstr "ist größer oder gleich wie."
+
+msgid "is greater than."
+msgstr "ist größer als."
+
+msgid "is like."
+msgstr "Ist wie."
+
+msgid "is lower or equal than."
+msgstr "ist kleiner oder gleich wie."
+
+msgid "is lower than."
+msgstr "ist niedriger als."
+
+msgid "is not empty and not NULL."
+msgstr "ist nicht leer und nicht NULL."
+
+msgid "is not equal."
+msgstr "ist ungleich"
+
+msgid "notice"
+msgstr "Notiz"
+
+msgid "notices"
+msgstr "Notizen"
+
+msgid "picture"
+msgstr "Bild"
+
+msgid "pictures"
+msgstr "Bilder"
+
+msgid "pixels"
+msgstr "Pixel"
+
+msgid "rkbulletinmodule. Events Display Hooks"
+msgstr "rkbulletinmodule. Veranstaltung Display Hooks"
+
+msgid "rkbulletinmodule. Events Filter Hooks"
+msgstr "rkbulletinmodule. Veranstaltung Filter Hooks"
+
+msgid "rkbulletinmodule. Notices Display Hooks"
+msgstr "rkbulletinmodule. Notiz Display Hooks"
+
+msgid "rkbulletinmodule. Notices Filter Hooks"
+msgstr "rkbulletinmodule. Notiz Filter Hooks"
+
+msgid "rkbulletinmodule. Pictures Display Hooks"
+msgstr "rkbulletinmodule. Bild Display Hooks"
+
+msgid "rkbulletinmodule. Pictures Filter Hooks"
+msgstr "rkbulletinmodule. Bild Filter Hooks"
+
+msgid "show counter in notice display"
+msgstr "zeige den Zähler in Notizen"
+
+msgid "start page ?"
+msgstr "Startseite?"
+
+msgid "startpoint of the event"
+msgstr "Anfang der Veranstaltung"
+
+msgid "the text is filling the alt tag of the image"
+msgstr "Dieser Text füllt den alt-Tag des Bildes"

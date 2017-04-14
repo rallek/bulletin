@@ -1,0 +1,64 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Project-Id-Version: \n"
+"POT-Creation-Date: \n"
+"PO-Revision-Date: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"X-Generator: Poedit 2.0.1\n"
+"Last-Translator: Ralf Köster <ralf@familie-koester.de>\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: de\n"
+
+msgid "Actions"
+msgstr "Aktionen"
+
+msgid "Copyright"
+msgstr "Copyright"
+
+msgid "Counter"
+msgstr "Zähler"
+
+msgid "Create event"
+msgstr "Stunde anlegen"
+
+msgid "Create picture"
+msgstr "Bild erstellen"
+
+msgid "Description"
+msgstr "Beschreibung"
+
+msgid "Download"
+msgstr "Download"
+
+msgid "End date"
+msgstr "Enddatum"
+
+msgid "Event"
+msgstr "Veranstaltung"
+
+msgid "Event title"
+msgstr "Veranstaltungs Titel"
+
+msgid "Image"
+msgstr "Bild"
+
+msgid "Notice"
+msgstr "Notiz"
+
+msgid "Pictures"
+msgstr "Bilder"
+
+msgid "Start date"
+msgstr "Anfangsdatum"
+
+msgid "State"
+msgstr "Status"
+
+msgid "Teaser"
+msgstr "Einleitungstext"
+
+msgid "Title"
+msgstr "Titel"

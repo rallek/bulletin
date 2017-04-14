@@ -49,8 +49,8 @@ abstract class AbstractWorkflowHelper
      */
     public function __construct(
         TranslatorInterface $translator,
-        ListEntriesHelper $listEntriesHelper)
-    {
+        ListEntriesHelper $listEntriesHelper
+    ) {
         $this->name = 'RKBulletinModule';
         $this->translator = $translator;
         $this->listEntriesHelper = $listEntriesHelper;
@@ -67,6 +67,11 @@ abstract class AbstractWorkflowHelper
          $states[] = [
              'value' => 'initial',
              'text' => $this->translator->__('Initial'),
+             'ui' => 'danger'
+         ];
+         $states[] = [
+             'value' => 'deferred',
+             'text' => $this->translator->__('Deferred'),
              'ui' => 'danger'
          ];
          $states[] = [
@@ -119,7 +124,10 @@ abstract class AbstractWorkflowHelper
             case 'notice':
                 $result = 'none';
                 break;
-            case 'image':
+            case 'picture':
+                $result = 'none';
+                break;
+            case 'event':
                 $result = 'none';
                 break;
         }
@@ -176,11 +184,17 @@ abstract class AbstractWorkflowHelper
     {
         $buttonClass = '';
         switch ($actionId) {
+            case 'defer':
+                $buttonClass = '';
+                break;
             case 'submit':
                 $buttonClass = 'success';
                 break;
             case 'update':
                 $buttonClass = 'success';
+                break;
+            case 'reject':
+                $buttonClass = '';
                 break;
             case 'delete':
                 $buttonClass = 'danger';
@@ -294,8 +308,7 @@ abstract class AbstractWorkflowHelper
     
         $where = 'tbl.workflowState:eq:' . $state;
         $parameters = ['workflowState' => $state];
-        $useJoins = false;
     
-        return $repository->selectCount($where, $useJoins, $parameters);
+        return $repository->selectCount($where, false, $parameters);
     }
 }

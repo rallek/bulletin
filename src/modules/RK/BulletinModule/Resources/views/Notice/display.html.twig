@@ -4,7 +4,7 @@
 {% block pageTitle %}{{ notice.getTitleFromDisplayPattern()|default(__('Notice')) }}{% endblock %}
 {% block title %}
     {% set templateTitle = notice.getTitleFromDisplayPattern()|default(__('Notice')) %}
-    {{ templateTitle|notifyFilters('rkbulletinmodule.filter_hooks.notices.filter') }}
+    {{ templateTitle|notifyFilters('rkbulletinmodule.filter_hooks.notices.filter') }}{% if routeArea == 'admin' %} <small>({{ notice.workflowState|rkbulletinmodule_objectState(false)|lower }})</small>{% endif %}
     {% set itemActions = knp_menu_get('RKBulletinModule:ItemActionsMenu:menu', [], { entity: notice, area: routeArea, context: 'display' }) %}
     <div class="dropdown">
         <a id="itemActions{{ notice.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
@@ -16,12 +16,13 @@
     {% set isQuickView = app.request.query.getBoolean('raw', false) %}
     <div class="rkbulletinmodule-notice rkbulletinmodule-display">
 
-    {% if not isQuickView %}
-        <div class="row">
-            <div class="col-sm-9">
-    {% endif %}
-
+    <div class="row">
+        <div class="col-sm-9">
     <dl>
+        {% if notice.workflowState is not empty and routeArea == 'admin' %}
+            <dt>{{ __('State') }}</dt>
+            <dd>{{ notice.workflowState|rkbulletinmodule_listEntry('notice', 'workflowState') }}</dd>
+        {% endif %}
         {% if notice.title is not empty %}
             <dt>{{ __('Title') }}</dt>
             <dd>{{ notice.title }}</dd>
@@ -60,65 +61,74 @@
             <dt>{{ __('End date') }}</dt>
             <dd>{{ notice.endDate|localizeddate('medium', 'short') }}</dd>
         {% endif %}
-        {% if notice.eventStartDateTime is not empty %}
-            <dt>{{ __('Event start date time') }}</dt>
-            <dd>{{ notice.eventStartDateTime|localizeddate('medium', 'short') }}</dd>
-        {% endif %}
-        {% if notice.eventEndDateTime is not empty %}
-            <dt>{{ __('Event end date time') }}</dt>
-            <dd>{{ notice.eventEndDateTime|localizeddate('medium', 'short') }}</dd>
-        {% endif %}
-        {% if notice.eventDescription is not empty %}
-            <dt>{{ __('Event description') }}</dt>
-            <dd>{{ notice.eventDescription|safeHtml }}</dd>
-        {% endif %}
         {% if notice.counter is not empty %}
             <dt>{{ __('Counter') }}</dt>
             <dd>{{ notice.counter }}</dd>
         {% endif %}
         
     </dl>
+
     {% if featureActivationHelper.isEnabled(constant('RK\\BulletinModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'notice') %}
         {{ include('@RKBulletinModule/Helper/includeCategoriesDisplay.html.twig', { obj: notice }) }}
     {% endif %}
     {{ include('@RKBulletinModule/Helper/includeStandardFieldsDisplay.html.twig', { obj: notice }) }}
 
-    {% if not isQuickView %}
-        {# include display hooks #}
-        {{ block('display_hooks') }}
-            </div>
-            <div class="col-sm-3">
-                {{ block('related_items') }}
-            </div>
+    {{ block('display_hooks') }}
         </div>
-    {% endif %}
+        <div class="col-sm-3">
+            {{ block('related_items') }}
+        </div>
+    </div>
 </div>
 {% endblock %}
 {% block related_items %}
     {% if routeArea == 'admin' %}
-        <h4>{{ __('Images') }}</h4>
+        <h4>{{ __('Pictures') }}</h4>
     {% else %}
-        <h3>{{ __('Images') }}</h3>
+        <h3>{{ __('Pictures') }}</h3>
     {% endif %}
     
-    {% if notice.addresses|default %}
+    {% if notice.pictures|default %}
         {{ include(
-            '@RKBulletinModule/Image/includeDisplayItemListMany.html.twig',
-            { items: notice.addresses }
+            '@RKBulletinModule/Picture/includeDisplayItemListMany.html.twig',
+            { items: notice.pictures }
         ) }}
     {% endif %}
     
-    {% set mayManage = hasPermission('RKBulletinModule:Image:', '::', 'ACCESS_EDIT') %}
-    {% if mayManage %}
+    {% set mayManage = hasPermission('RKBulletinModule:Picture:', '::', 'ACCESS_ADD') %}
+    {% if mayManage or (currentUser|default and notice.createdBy|default and notice.createdBy.getUid() == currentUser.uid) %}
         <p class="managelink">
-            {% set createTitle = __('Create image') %}
-            <a href="{{ path('rkbulletinmodule_image_' ~ routeArea ~ 'edit', { person: notice.id }) }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+            {% set createTitle = __('Create picture') %}
+            <a href="{{ path('rkbulletinmodule_picture_' ~ routeArea ~ 'edit', { notice: notice.id }) }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
         </p>
+    {% endif %}
+    {% if routeArea == 'admin' %}
+        <h4>{{ __('Event') }}</h4>
+    {% else %}
+        <h3>{{ __('Event') }}</h3>
+    {% endif %}
+    
+    {% if notice.event|default %}
+        {{ include(
+            '@RKBulletinModule/Event/includeDisplayItemListOne.html.twig',
+            { item: notice.event }
+        ) }}
+    {% endif %}
+    
+    {% if notice.event is not defined or notice.event is null %}
+    {% set mayManage = hasPermission('RKBulletinModule:Event:', '::', 'ACCESS_ADD') %}
+    {% if mayManage or (currentUser|default and notice.createdBy|default and notice.createdBy.getUid() == currentUser.uid) %}
+        <p class="managelink">
+            {% set createTitle = __('Create event') %}
+            <a href="{{ path('rkbulletinmodule_event_' ~ routeArea ~ 'edit', { notice: notice.id }) }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+        </p>
+    {% endif %}
     {% endif %}
 {% endblock %}
 {% block display_hooks %}
     {% set hooks = notifyDisplayHooks(eventName='rkbulletinmodule.ui_hooks.notices.display_view', id=notice.id, urlObject=currentUrlObject) %}
     {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
+        <h4>{{ providerArea }}</h4>
         {{ hook }}
     {% endfor %}
 {% endblock %}

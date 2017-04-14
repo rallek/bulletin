@@ -1,0 +1,93 @@
+{# Purpose of this template: Display a popup selector of events for scribite integration #}
+{% set useFinder = true %}
+{% extends 'RKBulletinModule::raw.html.twig' %}
+{% block title __('Search and select event') %}
+{% block content %}
+    <div class="container">
+        <div class="zikula-bootstrap-tab-container">
+            <ul class="nav nav-tabs">
+            {% set activatedObjectTypes = getModVar('RKBulletinModule', 'enabledFinderTypes', []) %}
+            {% if 'notice' in activatedObjectTypes %}
+                <li{{ objectType == 'notice' ? ' class="active"' : '' }}><a href="{{ path('rkbulletinmodule_external_finder', {'objectType': 'notice', 'editor': editorName}) }}" title="{{ __('Search and select notice') }}">{{ __('Notices') }}</a></li>
+            {% endif %}
+            {% if 'picture' in activatedObjectTypes %}
+                <li{{ objectType == 'picture' ? ' class="active"' : '' }}><a href="{{ path('rkbulletinmodule_external_finder', {'objectType': 'picture', 'editor': editorName}) }}" title="{{ __('Search and select picture') }}">{{ __('Pictures') }}</a></li>
+            {% endif %}
+            {% if 'event' in activatedObjectTypes %}
+                <li{{ objectType == 'event' ? ' class="active"' : '' }}><a href="{{ path('rkbulletinmodule_external_finder', {'objectType': 'event', 'editor': editorName}) }}" title="{{ __('Search and select event') }}">{{ __('Events') }}</a></li>
+            {% endif %}
+            </ul>
+        </div>
+        {% form_theme finderForm with [
+            '@RKBulletinModule/Form/bootstrap_3.html.twig',
+            'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
+        ] %}
+        {{ form_start(finderForm, {attr: { id: 'rKBulletinModuleSelectorForm' }}) }}
+        {{ form_errors(finderForm) }}
+        <fieldset>
+            <legend>{{ __('Search and select event') }}</legend>
+            {% if featureActivationHelper.isEnabled(constant('RK\\BulletinModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'event') %}
+                {{ form_row(finderForm.categories) }}
+            {% endif %}
+            {{ form_row(finderForm.pasteAs) }}
+            <br />
+            <div class="form-group">
+                <label class="col-sm-3 control-label">{{ __('Event') }}:</label>
+                <div class="col-sm-9">
+                    <div id="rkbulletinmoduleItemContainer">
+                        <ul>
+                            {% for event in items %}
+                                <li>
+                                    {% set itemId = event.createCompositeIdentifier() %}
+                                    <a href="#" data-itemid="{{ itemId }}">
+                                        {{ event.getTitleFromDisplayPattern() }}
+                                    </a>
+                                    <input type="hidden" id="path{{ itemId }}" value="{{ path('rkbulletinmodule_event_display', { 'id': event.id }) }}" />
+                                    <input type="hidden" id="url{{ itemId }}" value="{{ url('rkbulletinmodule_event_display', { 'id': event.id }) }}" />
+                                    <input type="hidden" id="title{{ itemId }}" value="{{ event.getTitleFromDisplayPattern()|e('html_attr') }}" />
+                                    <input type="hidden" id="desc{{ itemId }}" value="{% set description %}{% if event.description is not empty %}{{ event.description }}{% endif %}
+                                    {% endset %}{{ description|striptags|e('html_attr') }}" />
+                                </li>
+                            {% else %}
+                                <li>{{ __('No events found.') }}</li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            {{ form_row(finderForm.sort) }}
+            {{ form_row(finderForm.sortdir) }}
+            {{ form_row(finderForm.num) }}
+            {{ form_row(finderForm.q) }}
+            <div>
+                {{ pager({ display: 'page', rowcount: pager.numitems, limit: pager.itemsperpage, posvar: 'pos', maxpages: 10, route: 'rkbulletinmodule_external_finder'}) }}
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-9">
+                    {{ form_widget(finderForm.update) }}
+                    {{ form_widget(finderForm.cancel) }}
+                </div>
+            </div>
+        </fieldset>
+        {{ form_end(finderForm) }}
+    </div>
+
+    {#
+    <div class="rkbulletinmodule-finderform">
+        <fieldset>
+            {{ render(controller('RKBulletinModule:Event:edit')) }}
+        </fieldset>
+    </div>
+    #}
+
+    <script type="text/javascript">
+    /* <![CDATA[ */
+        ( function($) {
+            $(document).ready(function() {
+                rKBulletinModule.finder.onLoad();
+            });
+        })(jQuery);
+    /* ]]> */
+    </script>
+{% endblock %}

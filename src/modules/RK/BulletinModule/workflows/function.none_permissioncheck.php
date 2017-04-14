@@ -34,6 +34,12 @@ function RKBulletinModule_workflow_none_permissioncheck($obj, $permLevel, $curre
     // now perform the permission check
     $result = SecurityUtil::checkPermission($component, $instance, $permLevel, $currentUser);
 
+    // check whether the current user is the owner
+    if (!$result && isset($obj['createdBy']) && $obj['createdBy']->getUid() == $currentUser) {
+        // allow author update operations for all states which occur before 'approved' in the object's life cycle.
+        $result = in_array($actionId, ['initial', 'deferred', 'accepted']);
+    }
+
     return $result;
 }
 
@@ -51,6 +57,7 @@ function RKBulletinModule_workflow_none_gettextstrings()
         // state titles
         'states' => [
             $translator->__('Initial') => $translator->__('Pseudo-state for content which is just created and not persisted yet.'),
+            $translator->__('Deferred') => $translator->__('Content has not been submitted yet or has been waiting, but was rejected.'),
             $translator->__('Approved') => $translator->__('Content has been approved and is available online.'),
             $translator->__('Deleted') => $translator->__('Pseudo-state for content which has been deleted from the database.')
         ],
@@ -59,6 +66,13 @@ function RKBulletinModule_workflow_none_gettextstrings()
         'actions' => [
             'initial' => [
                 $translator->__('Submit') => $translator->__('Submit content.'),
+                $translator->__('Defer') => $translator->__('Defer content for later submission.'),
+            ]
+            ,
+            'deferred' => [
+                $translator->__('Submit') => $translator->__('Submit content.'),
+                $translator->__('Update') => $translator->__('Update content.'),
+                $translator->__('Delete') => $translator->__('Delete content permanently.')
             ]
             ,
             'approved' => [

@@ -12,6 +12,7 @@
 
 namespace RK\BulletinModule\Form\Type\Base;
 
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormEvent;
 use Symfony\Component\Form\FormEvents;
@@ -22,7 +23,6 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
 use Zikula\ExtensionsModule\Api\VariableApi;
-use Zikula\SettingsModule\Api\LocaleApi;
 use RK\BulletinModule\Entity\Factory\BulletinFactory;
 use RK\BulletinModule\Helper\FeatureActivationHelper;
 use RK\BulletinModule\Helper\ListEntriesHelper;
@@ -56,11 +56,6 @@ abstract class AbstractNoticeType extends AbstractType
     protected $listHelper;
 
     /**
-     * @var LocaleApi
-     */
-    protected $localeApi;
-
-    /**
      * @var FeatureActivationHelper
      */
     protected $featureActivationHelper;
@@ -73,17 +68,21 @@ abstract class AbstractNoticeType extends AbstractType
      * @param VariableApi         $variableApi VariableApi service instance
      * @param TranslatableHelper  $translatableHelper TranslatableHelper service instance
      * @param ListEntriesHelper   $listHelper     ListEntriesHelper service instance
-     * @param LocaleApi           $localeApi      LocaleApi service instance
      * @param FeatureActivationHelper $featureActivationHelper FeatureActivationHelper service instance
      */
-    public function __construct(TranslatorInterface $translator, BulletinFactory $entityFactory, VariableApi $variableApi, TranslatableHelper $translatableHelper, ListEntriesHelper $listHelper, LocaleApi $localeApi, FeatureActivationHelper $featureActivationHelper)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        BulletinFactory $entityFactory,
+        VariableApi $variableApi,
+        TranslatableHelper $translatableHelper,
+        ListEntriesHelper $listHelper,
+        FeatureActivationHelper $featureActivationHelper
+    ) {
         $this->setTranslator($translator);
         $this->entityFactory = $entityFactory;
         $this->variableApi = $variableApi;
         $this->translatableHelper = $translatableHelper;
         $this->listHelper = $listHelper;
-        $this->localeApi = $localeApi;
         $this->featureActivationHelper = $featureActivationHelper;
     }
 
@@ -106,6 +105,7 @@ abstract class AbstractNoticeType extends AbstractType
         if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, 'notice')) {
             $this->addCategoriesField($builder, $options);
         }
+        $this->addOutgoingRelationshipFields($builder, $options);
         $this->addModerationFields($builder, $options);
         $this->addReturnControlField($builder, $options);
         $this->addSubmitButtons($builder, $options);
@@ -170,17 +170,6 @@ abstract class AbstractNoticeType extends AbstractType
             'required' => false,
         ]);
         
-        $builder->add('eventDescription', 'Symfony\Component\Form\Extension\Core\Type\TextareaType', [
-            'label' => $this->__('Event description') . ':',
-            'empty_data' => '',
-            'attr' => [
-                'maxlength' => 5000,
-                'class' => '',
-                'title' => $this->__('Enter the event description of the notice')
-            ],
-            'required' => false,
-        ]);
-        
         if ($this->variableApi->getSystemVar('multilingual') && $this->featureActivationHelper->isEnabled(FeatureActivationHelper::TRANSLATIONS, 'notice')) {
             $supportedLanguages = $this->translatableHelper->getSupportedLanguages('notice');
             if (is_array($supportedLanguages) && count($supportedLanguages) > 1) {
@@ -223,7 +212,7 @@ abstract class AbstractNoticeType extends AbstractType
             'required' => false,
         ]);
         
-        $builder->add('startDate', 'RK\BulletinModule\Form\Type\Field\DateTimeType', [
+        $builder->add('startDate', 'Symfony\Component\Form\Extension\Core\Type\DateTimeType', [
             'label' => $this->__('Start date') . ':',
             'empty_data' => '',
             'attr' => [
@@ -231,11 +220,13 @@ abstract class AbstractNoticeType extends AbstractType
                 'title' => $this->__('Enter the start date of the notice')
             ],
             'required' => false,
-            'empty_data' => date('Y-m-d H:i'),
-            'widget' => 'single_text'
+            'empty_data' => date('Y-m-d H:i:s'),
+            'with_seconds' => true,
+            'date_widget' => 'single_text',
+            'time_widget' => 'single_text'
         ]);
         
-        $builder->add('endDate', 'RK\BulletinModule\Form\Type\Field\DateTimeType', [
+        $builder->add('endDate', 'Symfony\Component\Form\Extension\Core\Type\DateTimeType', [
             'label' => $this->__('End date') . ':',
             'empty_data' => '2099-12-31 00:00:00',
             'attr' => [
@@ -244,7 +235,9 @@ abstract class AbstractNoticeType extends AbstractType
             ],
             'required' => false,
             'empty_data' => '2099-12-31 00:00:00',
-            'widget' => 'single_text'
+            'with_seconds' => true,
+            'date_widget' => 'single_text',
+            'time_widget' => 'single_text'
         ]);
         
         $builder->add('startPage', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
@@ -254,44 +247,6 @@ abstract class AbstractNoticeType extends AbstractType
                 'title' => $this->__('start page ?')
             ],
             'required' => false,
-        ]);
-        
-        $builder->add('isEvent', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-            'label' => $this->__('Is event') . ':',
-            'attr' => [
-                'class' => '',
-                'title' => $this->__('is event ?')
-            ],
-            'required' => false,
-        ]);
-        
-        $builder->add('eventStartDateTime', 'RK\BulletinModule\Form\Type\Field\DateTimeType', [
-            'label' => $this->__('Event start date time') . ':',
-            'label_attr' => [
-                'class' => 'tooltips',
-                'title' => $this->__('startpoint of the event')
-            ],
-            'help' => $this->__('startpoint of the event'),
-            'empty_data' => '',
-            'attr' => [
-                'class' => ' validate-daterange-notice',
-                'title' => $this->__('Enter the event start date time of the notice')
-            ],
-            'required' => false,
-            'empty_data' => date('Y-m-d H:i'),
-            'widget' => 'single_text'
-        ]);
-        
-        $builder->add('eventEndDateTime', 'RK\BulletinModule\Form\Type\Field\DateTimeType', [
-            'label' => $this->__('Event end date time') . ':',
-            'empty_data' => '',
-            'attr' => [
-                'class' => ' validate-daterange-notice',
-                'title' => $this->__('Enter the event end date time of the notice')
-            ],
-            'required' => false,
-            'empty_data' => date('Y-m-d H:i'),
-            'widget' => 'single_text'
         ]);
         
         $builder->add('counter', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
@@ -304,20 +259,6 @@ abstract class AbstractNoticeType extends AbstractType
             ],
             'required' => false,
             'scale' => 0
-        ]);
-        
-        $builder->add('noticeLocale', 'Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType', [
-            'label' => $this->__('Notice locale') . ':',
-            'empty_data' => '',
-            'attr' => [
-                'maxlength' => 255,
-                'class' => ' validate-nospace',
-                'title' => $this->__('Choose the notice locale of the notice')
-            ],
-            'required' => false,
-            'placeholder' => $this->__('All'),
-            'choices' => $this->localeApi->getSupportedLocaleNames(),
-            'choices_as_values' => true
         ]);
     }
 
@@ -340,6 +281,40 @@ abstract class AbstractNoticeType extends AbstractType
             'module' => 'RKBulletinModule',
             'entity' => 'NoticeEntity',
             'entityCategoryClass' => 'RK\BulletinModule\Entity\NoticeCategoryEntity'
+        ]);
+    }
+
+    /**
+     * Adds fields for outgoing relationships.
+     *
+     * @param FormBuilderInterface $builder The form builder
+     * @param array                $options The options
+     */
+    public function addOutgoingRelationshipFields(FormBuilderInterface $builder, array $options)
+    {
+        $queryBuilder = function(EntityRepository $er) {
+            // select without joins
+            return $er->getListQueryBuilder('', '', false);
+        };
+        if (true === $options['filter_by_ownership']) {
+            $queryBuilder = function(EntityRepository $er) {
+                // select without joins
+                $qb = $er->getListQueryBuilder('', '', false);
+                $qb = $er->addCreatorFilter($qb);
+        
+                return $qb;
+            };
+        }
+        $builder->add('event', 'RK\BulletinModule\Form\Type\Field\AutoCompletionRelationType', [
+            'object_type' => 'event',
+            'multiple' => false,
+            'unique_name_for_js' => 'bullNotice_Event',
+            'allow_editing' => true,
+            'required' => false,
+            'label' => $this->__('Event'),
+            'attr' => [
+                'title' => $this->__('Choose the event')
+            ]
         ]);
     }
 
@@ -367,7 +342,7 @@ abstract class AbstractNoticeType extends AbstractType
             'required' => false,
             'help' => $this->__('Here you can choose a user which will be set as creator')
         ]);
-        $builder->add('moderationSpecificCreationDate', 'RK\BulletinModule\Form\Type\Field\DateTimeType', [
+        $builder->add('moderationSpecificCreationDate', 'Symfony\Component\Form\Extension\Core\Type\DateTimeType', [
             'mapped' => false,
             'label' => $this->__('Creation date') . ':',
             'attr' => [
@@ -376,7 +351,9 @@ abstract class AbstractNoticeType extends AbstractType
             ],
             'empty_data' => '',
             'required' => false,
-            'widget' => 'single_text',
+            'with_seconds' => true,
+            'date_widget' => 'single_text',
+            'time_widget' => 'single_text',
             'help' => $this->__('Here you can choose a custom creation date')
         ]);
     }

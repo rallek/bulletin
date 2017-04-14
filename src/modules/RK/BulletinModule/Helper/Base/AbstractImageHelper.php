@@ -50,8 +50,11 @@ abstract class AbstractImageHelper
      * @param SessionInterface    $session     Session service instance
      * @param VariableApi         $variableApi VariableApi service instance
      */
-    public function __construct(TranslatorInterface $translator, SessionInterface $session, VariableApi $variableApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        SessionInterface $session,
+        VariableApi $variableApi
+    ) {
         $this->translator = $translator;
         $this->session = $session;
         $this->variableApi = $variableApi;
@@ -85,7 +88,11 @@ abstract class AbstractImageHelper
                 $args['action'] = 'index';
             }
     
-            $contextName = $this->name . '_' . $args['controller'] . '_' . $args['action'];
+            if ($args['controller'] == 'ajax' && $args['action'] == 'getItemListAutoCompletion') {
+                $contextName = $this->name . '_ajax_autocomplete';
+            } else {
+                $contextName = $this->name . '_' . $args['controller'] . '_' . $args['action'];
+            }
         }
         if (empty($contextName)) {
             $contextName = $this->name . '_default';
@@ -115,6 +122,11 @@ abstract class AbstractImageHelper
             ]
         ];
     
+        if ($contextName == $this->name . '_ajax_autocomplete') {
+            $options['thumbnail']['size'] = [100, 75];
+    
+            return $options;
+        }
         if ($contextName == $this->name . '_relateditem') {
             $options['thumbnail']['size'] = [100, 75];
         } elseif ($context == 'controllerAction') {

@@ -83,8 +83,8 @@ abstract class AbstractViewHelper
         PermissionApi $permissionApi,
         VariableApi $variableApi,
         ParameterBag $pageVars,
-        ControllerHelper $controllerHelper)
-    {
+        ControllerHelper $controllerHelper
+    ) {
         $this->twig = $twig;
         $this->twigLoader = $twigLoader;
         $this->request = $requestStack->getCurrentRequest();

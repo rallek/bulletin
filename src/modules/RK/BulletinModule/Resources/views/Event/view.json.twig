@@ -1,0 +1,7 @@
+{# purpose of this template: events view json view #}
+[
+{% for event in items %}
+    {% if not loop.first %},{% endif %}
+    {{ event.toJson() }}
+{% endfor %}
+]

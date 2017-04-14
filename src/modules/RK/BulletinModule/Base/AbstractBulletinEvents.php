@@ -102,87 +102,171 @@ abstract class AbstractBulletinEvents
     const NOTICE_POST_UPDATE = 'rkbulletinmodule.notice_post_update';
     
     /**
-     * The rkbulletinmodule.image_post_load event is thrown when images
+     * The rkbulletinmodule.picture_post_load event is thrown when pictures
      * are loaded from the database.
      *
      * The event listener receives an
-     * RK\BulletinModule\Event\FilterImageEvent instance.
+     * RK\BulletinModule\Event\FilterPictureEvent instance.
      *
      * @see RK\BulletinModule\Listener\EntityLifecycleListener::postLoad()
      * @var string
      */
-    const IMAGE_POST_LOAD = 'rkbulletinmodule.image_post_load';
+    const PICTURE_POST_LOAD = 'rkbulletinmodule.picture_post_load';
     
     /**
-     * The rkbulletinmodule.image_pre_persist event is thrown before a new image
+     * The rkbulletinmodule.picture_pre_persist event is thrown before a new picture
      * is created in the system.
      *
      * The event listener receives an
-     * RK\BulletinModule\Event\FilterImageEvent instance.
+     * RK\BulletinModule\Event\FilterPictureEvent instance.
      *
      * @see RK\BulletinModule\Listener\EntityLifecycleListener::prePersist()
      * @var string
      */
-    const IMAGE_PRE_PERSIST = 'rkbulletinmodule.image_pre_persist';
+    const PICTURE_PRE_PERSIST = 'rkbulletinmodule.picture_pre_persist';
     
     /**
-     * The rkbulletinmodule.image_post_persist event is thrown after a new image
+     * The rkbulletinmodule.picture_post_persist event is thrown after a new picture
      * has been created in the system.
      *
      * The event listener receives an
-     * RK\BulletinModule\Event\FilterImageEvent instance.
+     * RK\BulletinModule\Event\FilterPictureEvent instance.
      *
      * @see RK\BulletinModule\Listener\EntityLifecycleListener::postPersist()
      * @var string
      */
-    const IMAGE_POST_PERSIST = 'rkbulletinmodule.image_post_persist';
+    const PICTURE_POST_PERSIST = 'rkbulletinmodule.picture_post_persist';
     
     /**
-     * The rkbulletinmodule.image_pre_remove event is thrown before an existing image
+     * The rkbulletinmodule.picture_pre_remove event is thrown before an existing picture
      * is removed from the system.
      *
      * The event listener receives an
-     * RK\BulletinModule\Event\FilterImageEvent instance.
+     * RK\BulletinModule\Event\FilterPictureEvent instance.
      *
      * @see RK\BulletinModule\Listener\EntityLifecycleListener::preRemove()
      * @var string
      */
-    const IMAGE_PRE_REMOVE = 'rkbulletinmodule.image_pre_remove';
+    const PICTURE_PRE_REMOVE = 'rkbulletinmodule.picture_pre_remove';
     
     /**
-     * The rkbulletinmodule.image_post_remove event is thrown after an existing image
+     * The rkbulletinmodule.picture_post_remove event is thrown after an existing picture
      * has been removed from the system.
      *
      * The event listener receives an
-     * RK\BulletinModule\Event\FilterImageEvent instance.
+     * RK\BulletinModule\Event\FilterPictureEvent instance.
      *
      * @see RK\BulletinModule\Listener\EntityLifecycleListener::postRemove()
      * @var string
      */
-    const IMAGE_POST_REMOVE = 'rkbulletinmodule.image_post_remove';
+    const PICTURE_POST_REMOVE = 'rkbulletinmodule.picture_post_remove';
     
     /**
-     * The rkbulletinmodule.image_pre_update event is thrown before an existing image
+     * The rkbulletinmodule.picture_pre_update event is thrown before an existing picture
      * is updated in the system.
      *
      * The event listener receives an
-     * RK\BulletinModule\Event\FilterImageEvent instance.
+     * RK\BulletinModule\Event\FilterPictureEvent instance.
      *
      * @see RK\BulletinModule\Listener\EntityLifecycleListener::preUpdate()
      * @var string
      */
-    const IMAGE_PRE_UPDATE = 'rkbulletinmodule.image_pre_update';
+    const PICTURE_PRE_UPDATE = 'rkbulletinmodule.picture_pre_update';
     
     /**
-     * The rkbulletinmodule.image_post_update event is thrown after an existing new image
+     * The rkbulletinmodule.picture_post_update event is thrown after an existing new picture
      * has been updated in the system.
      *
      * The event listener receives an
-     * RK\BulletinModule\Event\FilterImageEvent instance.
+     * RK\BulletinModule\Event\FilterPictureEvent instance.
      *
      * @see RK\BulletinModule\Listener\EntityLifecycleListener::postUpdate()
      * @var string
      */
-    const IMAGE_POST_UPDATE = 'rkbulletinmodule.image_post_update';
+    const PICTURE_POST_UPDATE = 'rkbulletinmodule.picture_post_update';
+    
+    /**
+     * The rkbulletinmodule.event_post_load event is thrown when events
+     * are loaded from the database.
+     *
+     * The event listener receives an
+     * RK\BulletinModule\Event\FilterEventEvent instance.
+     *
+     * @see RK\BulletinModule\Listener\EntityLifecycleListener::postLoad()
+     * @var string
+     */
+    const EVENT_POST_LOAD = 'rkbulletinmodule.event_post_load';
+    
+    /**
+     * The rkbulletinmodule.event_pre_persist event is thrown before a new event
+     * is created in the system.
+     *
+     * The event listener receives an
+     * RK\BulletinModule\Event\FilterEventEvent instance.
+     *
+     * @see RK\BulletinModule\Listener\EntityLifecycleListener::prePersist()
+     * @var string
+     */
+    const EVENT_PRE_PERSIST = 'rkbulletinmodule.event_pre_persist';
+    
+    /**
+     * The rkbulletinmodule.event_post_persist event is thrown after a new event
+     * has been created in the system.
+     *
+     * The event listener receives an
+     * RK\BulletinModule\Event\FilterEventEvent instance.
+     *
+     * @see RK\BulletinModule\Listener\EntityLifecycleListener::postPersist()
+     * @var string
+     */
+    const EVENT_POST_PERSIST = 'rkbulletinmodule.event_post_persist';
+    
+    /**
+     * The rkbulletinmodule.event_pre_remove event is thrown before an existing event
+     * is removed from the system.
+     *
+     * The event listener receives an
+     * RK\BulletinModule\Event\FilterEventEvent instance.
+     *
+     * @see RK\BulletinModule\Listener\EntityLifecycleListener::preRemove()
+     * @var string
+     */
+    const EVENT_PRE_REMOVE = 'rkbulletinmodule.event_pre_remove';
+    
+    /**
+     * The rkbulletinmodule.event_post_remove event is thrown after an existing event
+     * has been removed from the system.
+     *
+     * The event listener receives an
+     * RK\BulletinModule\Event\FilterEventEvent instance.
+     *
+     * @see RK\BulletinModule\Listener\EntityLifecycleListener::postRemove()
+     * @var string
+     */
+    const EVENT_POST_REMOVE = 'rkbulletinmodule.event_post_remove';
+    
+    /**
+     * The rkbulletinmodule.event_pre_update event is thrown before an existing event
+     * is updated in the system.
+     *
+     * The event listener receives an
+     * RK\BulletinModule\Event\FilterEventEvent instance.
+     *
+     * @see RK\BulletinModule\Listener\EntityLifecycleListener::preUpdate()
+     * @var string
+     */
+    const EVENT_PRE_UPDATE = 'rkbulletinmodule.event_pre_update';
+    
+    /**
+     * The rkbulletinmodule.event_post_update event is thrown after an existing new event
+     * has been updated in the system.
+     *
+     * The event listener receives an
+     * RK\BulletinModule\Event\FilterEventEvent instance.
+     *
+     * @see RK\BulletinModule\Listener\EntityLifecycleListener::postUpdate()
+     * @var string
+     */
+    const EVENT_POST_UPDATE = 'rkbulletinmodule.event_post_update';
     
 }

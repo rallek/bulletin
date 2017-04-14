@@ -22,7 +22,6 @@ services:
             - "@zikula_extensions_module.api.variable"
             - "@rk_bulletin_module.entity_factory"
             - "@rk_bulletin_module.model_helper"
-            - "@rk_bulletin_module.selection_helper"
             - "@rk_bulletin_module.image_helper"
             - "@rk_bulletin_module.feature_activation_helper"
     
@@ -65,12 +64,6 @@ services:
             - "@rk_bulletin_module.category_helper"
         tags:
             - { name: zikula.searchable_module, bundleName: RKBulletinModule }
-    
-    rk_bulletin_module.selection_helper:
-        class: RK\BulletinModule\Helper\SelectionHelper
-        arguments:
-            - "@translator.default"
-            - "@rk_bulletin_module.entity_factory"
     
     rk_bulletin_module.translatable_helper:
         class: RK\BulletinModule\Helper\TranslatableHelper

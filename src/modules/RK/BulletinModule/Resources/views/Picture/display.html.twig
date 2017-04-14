@@ -1,0 +1,73 @@
+{# purpose of this template: pictures display view #}
+{% set baseTemplate = app.request.query.getBoolean('raw', false) ? 'raw' : (routeArea == 'admin' ? 'adminBase' : 'base') %}
+{% extends 'RKBulletinModule::' ~ baseTemplate ~ '.html.twig' %}
+{% block pageTitle %}{{ picture.getTitleFromDisplayPattern()|default(__('Picture')) }}{% endblock %}
+{% block title %}
+    {% set templateTitle = picture.getTitleFromDisplayPattern()|default(__('Picture')) %}
+    {{ templateTitle|notifyFilters('rkbulletinmodule.filter_hooks.pictures.filter') }}{% if routeArea == 'admin' %} <small>({{ picture.workflowState|rkbulletinmodule_objectState(false)|lower }})</small>{% endif %}
+    {% set itemActions = knp_menu_get('RKBulletinModule:ItemActionsMenu:menu', [], { entity: picture, area: routeArea, context: 'display' }) %}
+    <div class="dropdown">
+        <a id="itemActions{{ picture.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> {{ __('Actions') }} <span class="caret"></span></a>
+        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+    </div>
+{% endblock %}
+{% block admin_page_icon 'eye' %}
+{% block content %}
+    {% set isQuickView = app.request.query.getBoolean('raw', false) %}
+    <div class="rkbulletinmodule-picture rkbulletinmodule-display">
+
+    <dl>
+        {% if picture.workflowState is not empty and routeArea == 'admin' %}
+            <dt>{{ __('State') }}</dt>
+            <dd>{{ picture.workflowState|rkbulletinmodule_listEntry('picture', 'workflowState') }}</dd>
+        {% endif %}
+        {% if picture.image is not empty %}
+            <dt>{{ __('Image') }}</dt>
+            <dd>{% if picture.imageMeta|default %}
+            <a href="{{ picture.imageUrl }}" title="{{ picture.getTitleFromDisplayPattern()|e('html_attr') }}"{% if picture.imageMeta.isImage %} class="image-link"{% endif %}>
+            {% if picture.imageMeta.isImage %}
+                {% set thumbOptions = attribute(thumbRuntimeOptions, 'pictureImage') %}
+                <img src="{{ picture.image.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ picture.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+            {% else %}
+                {{ __('Download') }} ({{ picture.imageMeta.size|rkbulletinmodule_fileSize(picture.image.getPathname(), false, false) }})
+            {% endif %}
+            </a>
+            {% endif %}
+            </dd>
+        {% endif %}
+        {% if picture.copyright is not empty %}
+            <dt>{{ __('Copyright') }}</dt>
+            <dd>{{ picture.copyright }}</dd>
+        {% endif %}
+        {% if picture.altText is not empty %}
+            <dt>{{ __('Alt text') }}</dt>
+            <dd>{{ picture.altText }}</dd>
+        {% endif %}
+        {% if picture.notice|default %}
+            <dt>{{ __('Notice') }}</dt>
+            <dd>
+              {% if not isQuickView %}
+                  <a href="{{ path('rkbulletinmodule_notice_' ~ routeArea ~ 'display', { 'id': picture.notice.id }) }}">{% spaceless %}
+                    {{ picture.notice.getTitleFromDisplayPattern() }}
+                  {% endspaceless %}</a>
+                  <a id="noticeItem{{ picture.notice.id }}Display" href="{{ path('rkbulletinmodule_notice_' ~ routeArea ~ 'display', { 'id': picture.notice.id, 'raw': 1 }) }}" title="{{ __('Open quick view window')|e('html_attr') }}" class="rkbulletin-inline-window hidden" data-modal-title="{{ picture.notice.getTitleFromDisplayPattern()|e('html_attr') }}"><span class="fa fa-id-card-o"></span></a>
+              {% else %}
+                  {{ picture.notice.getTitleFromDisplayPattern() }}
+              {% endif %}
+            </dd>
+        {% endif %}
+        
+    </dl>
+
+    {{ include('@RKBulletinModule/Helper/includeStandardFieldsDisplay.html.twig', { obj: picture }) }}
+
+    {{ block('display_hooks') }}
+</div>
+{% endblock %}
+{% block display_hooks %}
+    {% set hooks = notifyDisplayHooks(eventName='rkbulletinmodule.ui_hooks.pictures.display_view', id=picture.id, urlObject=currentUrlObject) %}
+    {% for providerArea, hook in hooks if providerArea != 'provider.scribite.ui_hooks.editor' %}
+        <h4>{{ providerArea }}</h4>
+        {{ hook }}
+    {% endfor %}
+{% endblock %}

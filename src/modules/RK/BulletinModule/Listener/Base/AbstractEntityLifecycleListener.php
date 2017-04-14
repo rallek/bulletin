@@ -23,7 +23,8 @@ use Symfony\Component\HttpFoundation\File\File;
 use Zikula\Core\Doctrine\EntityAccess;
 use RK\BulletinModule\BulletinEvents;
 use RK\BulletinModule\Event\FilterNoticeEvent;
-use RK\BulletinModule\Event\FilterImageEvent;
+use RK\BulletinModule\Event\FilterPictureEvent;
+use RK\BulletinModule\Event\FilterEventEvent;
 
 /**
  * Event subscriber base class for entity lifecycle events.
@@ -87,7 +88,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
         $workflowHelper->normaliseWorkflowData($entity);
         $workflow = $entity['__WORKFLOW__'];
         if ($workflow['id'] > 0) {
-            $entityManager = $this->container->get('doctrine.orm.default_entity_manager'); // @todo maybe $args->getObjectManager()
+            $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
             $result = true;
             try {
                 $workflow = $entityManager->find('Zikula\Core\Doctrine\Entity\WorkflowEntity', $workflow['id']);
@@ -339,7 +340,7 @@ abstract class AbstractEntityLifecycleListener implements EventSubscriber, Conta
             case 'notice':
                 $uploadFields = ['image'];
                 break;
-            case 'image':
+            case 'picture':
                 $uploadFields = ['image'];
                 break;
         }

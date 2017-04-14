@@ -1,0 +1,15 @@
+{# Purpose of this template: Display item information for previewing from other modules #}
+<dl id="event{{ event.id }}">
+<dt>{{ event.getTitleFromDisplayPattern()|notifyFilters('bulletin.filter_hooks.events.filter') }}</dt>
+{% if event.description is not empty %}<dd>{{ event.description }}</dd>{% endif %}
+{% if featureActivationHelper.isEnabled(constant('RK\\BulletinModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'event') %}
+    <dd>
+        <dl class="category-list">
+        {% for propName, catMapping in event.categories %}
+            <dt>{{ propName }}</dt>
+            <dd>{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}</dd>
+        {% endfor %}
+        </dl>
+    </dd>
+{% endif %}
+</dl>

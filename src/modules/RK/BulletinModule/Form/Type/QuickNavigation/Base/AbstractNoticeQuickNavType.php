@@ -16,7 +16,6 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
-use Zikula\SettingsModule\Api\LocaleApi;
 use RK\BulletinModule\Helper\FeatureActivationHelper;
 use RK\BulletinModule\Helper\ListEntriesHelper;
 
@@ -33,11 +32,6 @@ abstract class AbstractNoticeQuickNavType extends AbstractType
     protected $listHelper;
 
     /**
-     * @var LocaleApi
-     */
-    protected $localeApi;
-
-    /**
      * @var FeatureActivationHelper
      */
     protected $featureActivationHelper;
@@ -47,14 +41,15 @@ abstract class AbstractNoticeQuickNavType extends AbstractType
      *
      * @param TranslatorInterface $translator   Translator service instance
      * @param ListEntriesHelper   $listHelper   ListEntriesHelper service instance
-     * @param LocaleApi           $localeApi    LocaleApi service instance
      * @param FeatureActivationHelper $featureActivationHelper FeatureActivationHelper service instance
      */
-    public function __construct(TranslatorInterface $translator, ListEntriesHelper $listHelper, LocaleApi $localeApi, FeatureActivationHelper $featureActivationHelper)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        ListEntriesHelper $listHelper,
+        FeatureActivationHelper $featureActivationHelper
+    ) {
         $this->setTranslator($translator);
         $this->listHelper = $listHelper;
-        $this->localeApi = $localeApi;
         $this->featureActivationHelper = $featureActivationHelper;
     }
 
@@ -84,7 +79,6 @@ abstract class AbstractNoticeQuickNavType extends AbstractType
             $this->addCategoriesField($builder, $options);
         }
         $this->addListFields($builder, $options);
-        $this->addLocaleFields($builder, $options);
         $this->addSearchField($builder, $options);
         $this->addSortingFields($builder, $options);
         $this->addAmountField($builder, $options);
@@ -154,26 +148,6 @@ abstract class AbstractNoticeQuickNavType extends AbstractType
     }
 
     /**
-     * Adds locale fields.
-     *
-     * @param FormBuilderInterface $builder The form builder
-     * @param array                $options The options
-     */
-    public function addLocaleFields(FormBuilderInterface $builder, array $options)
-    {
-        $builder->add('noticeLocale', 'Zikula\Bundle\FormExtensionBundle\Form\Type\LocaleType', [
-            'label' => $this->__('Notice locale'),
-            'attr' => [
-                'class' => 'input-sm'
-            ],
-            'required' => false,
-            'placeholder' => $this->__('All'),
-            'choices' => $this->localeApi->getSupportedLocaleNames(),
-            'choices_as_values' => true
-        ]);
-    }
-
-    /**
      * Adds a search field.
      *
      * @param FormBuilderInterface $builder The form builder
@@ -211,10 +185,6 @@ abstract class AbstractNoticeQuickNavType extends AbstractType
                     $this->__('Start date') => 'startDate',
                     $this->__('End date') => 'endDate',
                     $this->__('Start page') => 'startPage',
-                    $this->__('Is event') => 'isEvent',
-                    $this->__('Event start date time') => 'eventStartDateTime',
-                    $this->__('Event end date time') => 'eventEndDateTime',
-                    $this->__('Notice locale') => 'noticeLocale',
                     $this->__('Creation date') => 'createdDate',
                     $this->__('Creator') => 'createdBy',
                     $this->__('Update date') => 'updatedDate',
@@ -280,19 +250,6 @@ abstract class AbstractNoticeQuickNavType extends AbstractType
     {
         $builder->add('startPage', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
             'label' => $this->__('Start page'),
-            'attr' => [
-                'class' => 'input-sm'
-            ],
-            'required' => false,
-            'placeholder' => $this->__('All'),
-            'choices' => [
-                $this->__('No') => 'no',
-                $this->__('Yes') => 'yes'
-            ],
-            'choices_as_values' => true
-        ]);
-        $builder->add('isEvent', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
-            'label' => $this->__('Is event'),
             'attr' => [
                 'class' => 'input-sm'
             ],

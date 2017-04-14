@@ -43,14 +43,11 @@
             <label for="{$baseID}Sort" class="col-sm-3 control-label">{gt text='Sort by'}:</label>
             <div class="col-sm-9">
                 <select id="{$baseID}Sort" name="sort" class="form-control">
+                    <option value="workflowState"{if $sort eq 'workflowState'} selected="selected"{/if}>{gt text='Workflow state'}</option>
                     <option value="title"{if $sort eq 'title'} selected="selected"{/if}>{gt text='Title'}</option>
                     <option value="startDate"{if $sort eq 'startDate'} selected="selected"{/if}>{gt text='Start date'}</option>
                     <option value="endDate"{if $sort eq 'endDate'} selected="selected"{/if}>{gt text='End date'}</option>
                     <option value="startPage"{if $sort eq 'startPage'} selected="selected"{/if}>{gt text='Start page'}</option>
-                    <option value="isEvent"{if $sort eq 'isEvent'} selected="selected"{/if}>{gt text='Is event'}</option>
-                    <option value="eventStartDateTime"{if $sort eq 'eventStartDateTime'} selected="selected"{/if}>{gt text='Event start date time'}</option>
-                    <option value="eventEndDateTime"{if $sort eq 'eventEndDateTime'} selected="selected"{/if}>{gt text='Event end date time'}</option>
-                    <option value="noticeLocale"{if $sort eq 'noticeLocale'} selected="selected"{/if}>{gt text='Notice locale'}</option>
                     <option value="createdDate"{if $sort eq 'createdDate'} selected="selected"{/if}>{gt text='Creation date'}</option>
                     <option value="createdBy"{if $sort eq 'createdBy'} selected="selected"{/if}>{gt text='Creator'}</option>
                     <option value="updatedDate"{if $sort eq 'updatedDate'} selected="selected"{/if}>{gt text='Update date'}</option>

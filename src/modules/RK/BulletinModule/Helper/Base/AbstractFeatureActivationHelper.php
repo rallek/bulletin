@@ -43,7 +43,7 @@ abstract class AbstractFeatureActivationHelper
                 return $this->$method($objectType);
             }
     
-            return in_array($objectType, ['notice']);
+            return in_array($objectType, ['notice', 'event']);
         }
         if ($feature == self::TRANSLATIONS) {
             $method = 'hasTranslations';
@@ -51,7 +51,7 @@ abstract class AbstractFeatureActivationHelper
                 return $this->$method($objectType);
             }
     
-            return in_array($objectType, ['notice']);
+            return in_array($objectType, ['notice', 'event']);
         }
     
         return false;

@@ -1,0 +1,13 @@
+{# Purpose of this template: Display events within an external context #}
+<dl>
+    {% for event in items %}
+        <dt>{{ event.getTitleFromDisplayPattern() }}</dt>
+        {% if event.description %}
+            <dd>{{ event.description|striptags|truncate(200, true, '&hellip;') }}</dd>
+        {% endif %}
+        <dd><a href="{{ path('rkbulletinmodule_event_display', { 'id': event.id }) }}">{{ __('Read more') }}</a>
+        </dd>
+    {% else %}
+        <dt>{{ __('No entries found.') }}</dt>
+    {% endfor %}
+</dl>

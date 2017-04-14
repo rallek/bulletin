@@ -76,7 +76,8 @@ abstract class AbstractEditHandler extends EditHandler
             'mode' => $this->templateParameters['mode'],
             'actions' => $this->templateParameters['actions'],
             'has_moderate_permission' => $this->permissionApi->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_MODERATE),
-            'filter_by_ownership' => !$this->permissionApi->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_ADD)
+            'filter_by_ownership' => !$this->permissionApi->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_ADD),
+            'inline_usage' => $this->templateParameters['inlineUsage']
         ];
     
         $options['translations'] = [];
@@ -87,6 +88,25 @@ abstract class AbstractEditHandler extends EditHandler
         return $this->formFactory->create('RK\BulletinModule\Form\Type\NoticeType', $this->entityRef, $options);
     }
 
+
+    /**
+     * Initialise existing entity for editing.
+     *
+     * @return EntityAccess Desired entity instance or null
+     */
+    protected function initEntityForEditing()
+    {
+        $entity = parent::initEntityForEditing();
+    
+        // only allow editing for the owner or people with higher permissions
+        $currentUserId = $this->currentUserApi->isLoggedIn() ? $this->currentUserApi->get('uid') : 1;
+        $isOwner = null !== $entity->getCreatedBy() && $currentUserId == $entity->getCreatedBy()->getUid();
+        if (!$isOwner && !$this->permissionApi->hasPermission($this->permissionComponent, $this->createCompositeIdentifier() . '::', ACCESS_ADD)) {
+            throw new AccessDeniedException();
+        }
+    
+        return $entity;
+    }
 
     /**
      * Get list of allowed redirect codes.
@@ -131,7 +151,6 @@ abstract class AbstractEditHandler extends EditHandler
         $objectIsPersisted = $args['commandName'] != 'delete' && !($this->templateParameters['mode'] == 'create' && $args['commandName'] == 'cancel');
     
         if (null !== $this->returnTo) {
-            
             $isDisplayOrEditPage = substr($this->returnTo, -7) == 'display' || substr($this->returnTo, -4) == 'edit';
             if (!$isDisplayOrEditPage || $objectIsPersisted) {
                 // return to referer
@@ -143,8 +162,7 @@ abstract class AbstractEditHandler extends EditHandler
         $routePrefix = 'rkbulletinmodule_' . $this->objectTypeLower . '_' . $routeArea;
     
         // redirect to the list of notices
-        $viewArgs = [];
-        $url = $this->router->generate($routePrefix . 'view', $viewArgs);
+        $url = $this->router->generate($routePrefix . 'view');
     
         return $url;
     }
@@ -194,6 +212,7 @@ abstract class AbstractEditHandler extends EditHandler
     
         $message = '';
         switch ($args['commandName']) {
+            case 'defer':
             case 'submit':
                 if ($this->templateParameters['mode'] == 'create') {
                     $message = $this->__('Done! Notice created.');
@@ -260,6 +279,19 @@ abstract class AbstractEditHandler extends EditHandler
      */
     protected function getRedirectUrl($args)
     {
+        if (true === $this->templateParameters['inlineUsage']) {
+            $urlArgs = [
+                'idPrefix' => $this->idPrefix,
+                'commandName' => $args['commandName']
+            ];
+            foreach ($this->idFields as $idField) {
+                $urlArgs[$idField] = $this->idValues[$idField];
+            }
+    
+            // inline usage, return to special function for closing the modal window instance
+            return $this->router->generate('rkbulletinmodule_' . $this->objectTypeLower . '_handleinlineredirect', $urlArgs);
+        }
+    
         if ($this->repeatCreateAction) {
             return $this->repeatReturnUrl;
         }

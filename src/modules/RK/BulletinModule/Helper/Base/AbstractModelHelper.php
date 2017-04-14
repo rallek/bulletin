@@ -60,7 +60,10 @@ abstract class AbstractModelHelper
             case 'notice':
                 $result = true;
                 break;
-            case 'image':
+            case 'picture':
+                $result = true;
+                break;
+            case 'event':
                 $result = true;
                 break;
         }

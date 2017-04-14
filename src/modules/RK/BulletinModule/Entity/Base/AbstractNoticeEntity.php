@@ -18,12 +18,10 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Gedmo\Translatable\Translatable;
 use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Validator\Constraints as Assert;
+use Zikula\Core\Doctrine\EntityAccess;
 use RK\BulletinModule\Traits\EntityWorkflowTrait;
 use RK\BulletinModule\Traits\StandardFieldsTrait;
-
-use RuntimeException;
-use ServiceUtil;
-use Zikula\Core\Doctrine\EntityAccess;
+use RK\BulletinModule\Validator\Constraints as BulletinAssert;
 
 /**
  * Entity class that defines the entity structure and behaviours.
@@ -54,12 +52,6 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     protected $_objectType = 'notice';
     
     /**
-     * @Assert\Type(type="bool")
-     * @var boolean Option to bypass validation if needed
-     */
-    protected $_bypassValidation = false;
-    
-    /**
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
      * @ORM\Column(type="integer", unique=true)
@@ -71,7 +63,7 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
      * the current workflow state
      * @ORM\Column(length=20)
      * @Assert\NotBlank()
-     * @Assert\Choice(callback="getWorkflowStateAllowedValues", multiple=false)
+     * @BulletinAssert\ListEntry(entityName="notice", propertyName="workflowState", multiple=false)
      * @var string $workflowState
      */
     protected $workflowState = 'initial';
@@ -166,40 +158,6 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     protected $startPage = true;
     
     /**
-     * @ORM\Column(type="boolean")
-     * @Assert\NotNull()
-     * @Assert\Type(type="bool")
-     * @var boolean $isEvent
-     */
-    protected $isEvent = false;
-    
-    /**
-     * startpoint of the event
-     * @ORM\Column(type="datetime")
-     * @Assert\NotNull()
-     * @Assert\DateTime()
-     * @var DateTime $eventStartDateTime
-     */
-    protected $eventStartDateTime;
-    
-    /**
-     * @ORM\Column(type="datetime")
-     * @Assert\NotNull()
-     * @Assert\DateTime()
-     * @var DateTime $eventEndDateTime
-     */
-    protected $eventEndDateTime;
-    
-    /**
-     * @Gedmo\Translatable
-     * @ORM\Column(type="text", length=5000)
-     * @Assert\NotNull()
-     * @Assert\Length(min="0", max="5000")
-     * @var text $eventDescription
-     */
-    protected $eventDescription = '';
-    
-    /**
      * @ORM\Column(type="integer")
      * @Assert\Type(type="integer")
      * @Assert\NotNull()
@@ -207,16 +165,6 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
      * @var integer $counter
      */
     protected $counter = 0;
-    
-    /**
-     * @ORM\Column(length=255)
-     * @Assert\NotNull()
-     * @Assert\Regex(pattern="/\s/", match=false, message="This value must not contain space chars.")
-     * @Assert\Length(min="0", max="255")
-     * @Assert\Locale()
-     * @var string $noticeLocale
-     */
-    protected $noticeLocale = '';
     
     
     /**
@@ -238,13 +186,23 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     protected $categories = null;
     
     /**
-     * Bidirectional - One person [notice] has many addresses [images] (INVERSE SIDE).
+     * Bidirectional - One notice [notice] has many pictures [pictures] (INVERSE SIDE).
      *
-     * @ORM\OneToMany(targetEntity="RK\BulletinModule\Entity\ImageEntity", mappedBy="person")
-     * @ORM\JoinTable(name="rk_bulletin_personaddresses")
-     * @var \RK\BulletinModule\Entity\ImageEntity[] $addresses
+     * @ORM\OneToMany(targetEntity="RK\BulletinModule\Entity\PictureEntity", mappedBy="notice")
+     * @ORM\JoinTable(name="rk_bull_noticepictures")
+     * @var \RK\BulletinModule\Entity\PictureEntity[] $pictures
      */
-    protected $addresses = null;
+    protected $pictures = null;
+    
+    /**
+     * Bidirectional - One notice [notice] has one event [event] (INVERSE SIDE).
+     *
+     * @ORM\OneToOne(targetEntity="RK\BulletinModule\Entity\EventEntity", mappedBy="notice")
+     * @ORM\JoinTable(name="rk_bull_event")
+     * @Assert\Type(type="RK\BulletinModule\Entity\EventEntity")
+     * @var \RK\BulletinModule\Entity\EventEntity $event
+     */
+    protected $event;
     
     
     /**
@@ -253,17 +211,13 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
      * Will not be called by Doctrine and can therefore be used
      * for own implementation purposes. It is also possible to add
      * arbitrary arguments as with every other class method.
-     *
-     * @param TODO
      */
     public function __construct()
     {
         $this->startDate = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $this->endDate = \DateTime::createFromFormat('Y-m-d H:i:s', '2099-12-31 00:00:00');
-        $this->eventStartDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
-        $this->eventEndDateTime = \DateTime::createFromFormat('Y-m-d H:i:s', date('Y-m-d H:i:s'));
         $this->initWorkflow();
-        $this->addresses = new ArrayCollection();
+        $this->pictures = new ArrayCollection();
         $this->categories = new ArrayCollection();
     }
     
@@ -287,28 +241,6 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     public function set_objectType($_objectType)
     {
         $this->_objectType = $_objectType;
-    }
-    
-    /**
-     * Returns the _bypass validation.
-     *
-     * @return boolean
-     */
-    public function get_bypassValidation()
-    {
-        return $this->_bypassValidation;
-    }
-    
-    /**
-     * Sets the _bypass validation.
-     *
-     * @param boolean $_bypassValidation
-     *
-     * @return void
-     */
-    public function set_bypassValidation($_bypassValidation)
-    {
-        $this->_bypassValidation = $_bypassValidation;
     }
     
     
@@ -587,104 +519,6 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     }
     
     /**
-     * Returns the is event.
-     *
-     * @return boolean
-     */
-    public function getIsEvent()
-    {
-        return $this->isEvent;
-    }
-    
-    /**
-     * Sets the is event.
-     *
-     * @param boolean $isEvent
-     *
-     * @return void
-     */
-    public function setIsEvent($isEvent)
-    {
-        if ($isEvent !== $this->isEvent) {
-            $this->isEvent = (bool)$isEvent;
-        }
-    }
-    
-    /**
-     * Returns the event start date time.
-     *
-     * @return DateTime
-     */
-    public function getEventStartDateTime()
-    {
-        return $this->eventStartDateTime;
-    }
-    
-    /**
-     * Sets the event start date time.
-     *
-     * @param DateTime $eventStartDateTime
-     *
-     * @return void
-     */
-    public function setEventStartDateTime($eventStartDateTime)
-    {
-        if (is_object($eventStartDateTime) && $eventStartDateTime instanceOf \DateTime) {
-            $this->eventStartDateTime = $eventStartDateTime;
-        } else {
-            $this->eventStartDateTime = new \DateTime($eventStartDateTime);
-        }
-    }
-    
-    /**
-     * Returns the event end date time.
-     *
-     * @return DateTime
-     */
-    public function getEventEndDateTime()
-    {
-        return $this->eventEndDateTime;
-    }
-    
-    /**
-     * Sets the event end date time.
-     *
-     * @param DateTime $eventEndDateTime
-     *
-     * @return void
-     */
-    public function setEventEndDateTime($eventEndDateTime)
-    {
-        if (is_object($eventEndDateTime) && $eventEndDateTime instanceOf \DateTime) {
-            $this->eventEndDateTime = $eventEndDateTime;
-        } else {
-            $this->eventEndDateTime = new \DateTime($eventEndDateTime);
-        }
-    }
-    
-    /**
-     * Returns the event description.
-     *
-     * @return text
-     */
-    public function getEventDescription()
-    {
-        return $this->eventDescription;
-    }
-    
-    /**
-     * Sets the event description.
-     *
-     * @param text $eventDescription
-     *
-     * @return void
-     */
-    public function setEventDescription($eventDescription)
-    {
-        $this->eventDescription = isset($eventDescription) ? $eventDescription : '';
-    }
-    
-    /**
      * Returns the counter.
      *
      * @return integer
@@ -704,28 +538,6 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     public function setCounter($counter)
     {
         $this->counter = intval($counter);
-    }
-    
-    /**
-     * Returns the notice locale.
-     *
-     * @return string
-     */
-    public function getNoticeLocale()
-    {
-        return $this->noticeLocale;
-    }
-    
-    /**
-     * Sets the notice locale.
-     *
-     * @param string $noticeLocale
-     *
-     * @return void
-     */
-    public function setNoticeLocale($noticeLocale)
-    {
-        $this->noticeLocale = isset($noticeLocale) ? $noticeLocale : '';
     }
     
     /**
@@ -805,53 +617,76 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
     }
     
     /**
-     * Returns the addresses.
+     * Returns the pictures.
      *
-     * @return \RK\BulletinModule\Entity\ImageEntity[]
+     * @return \RK\BulletinModule\Entity\PictureEntity[]
      */
-    public function getAddresses()
+    public function getPictures()
     {
-        return $this->addresses;
+        return $this->pictures;
     }
     
     /**
-     * Sets the addresses.
+     * Sets the pictures.
      *
-     * @param \RK\BulletinModule\Entity\ImageEntity[] $addresses
+     * @param \RK\BulletinModule\Entity\PictureEntity[] $pictures
      *
      * @return void
      */
-    public function setAddresses($addresses)
+    public function setPictures($pictures)
     {
-        foreach ($addresses as $imageSingle) {
-            $this->addAddresses($imageSingle);
+        foreach ($pictures as $pictureSingle) {
+            $this->addPictures($pictureSingle);
         }
     }
     
     /**
-     * Adds an instance of \RK\BulletinModule\Entity\ImageEntity to the list of addresses.
+     * Adds an instance of \RK\BulletinModule\Entity\PictureEntity to the list of pictures.
      *
-     * @param \RK\BulletinModule\Entity\ImageEntity $image The instance to be added to the collection
+     * @param \RK\BulletinModule\Entity\PictureEntity $picture The instance to be added to the collection
      *
      * @return void
      */
-    public function addAddresses(\RK\BulletinModule\Entity\ImageEntity $image)
+    public function addPictures(\RK\BulletinModule\Entity\PictureEntity $picture)
     {
-        $this->addresses->add($image);
-        $image->setPerson($this);
+        $this->pictures->add($picture);
+        $picture->setNotice($this);
     }
     
     /**
-     * Removes an instance of \RK\BulletinModule\Entity\ImageEntity from the list of addresses.
+     * Removes an instance of \RK\BulletinModule\Entity\PictureEntity from the list of pictures.
      *
-     * @param \RK\BulletinModule\Entity\ImageEntity $image The instance to be removed from the collection
+     * @param \RK\BulletinModule\Entity\PictureEntity $picture The instance to be removed from the collection
      *
      * @return void
      */
-    public function removeAddresses(\RK\BulletinModule\Entity\ImageEntity $image)
+    public function removePictures(\RK\BulletinModule\Entity\PictureEntity $picture)
     {
-        $this->addresses->removeElement($image);
-        $image->setPerson(null);
+        $this->pictures->removeElement($picture);
+        $picture->setNotice(null);
+    }
+    
+    /**
+     * Returns the event.
+     *
+     * @return \RK\BulletinModule\Entity\EventEntity
+     */
+    public function getEvent()
+    {
+        return $this->event;
+    }
+    
+    /**
+     * Sets the event.
+     *
+     * @param \RK\BulletinModule\Entity\EventEntity $event
+     *
+     * @return void
+     */
+    public function setEvent($event = null)
+    {
+        $this->event = $event;
+        $event->setNotice($this);
     }
     
     
@@ -863,58 +698,10 @@ abstract class AbstractNoticeEntity extends EntityAccess implements Translatable
      */
     public function getTitleFromDisplayPattern()
     {
-        $listHelper = ServiceUtil::get('rk_bulletin_module.listentries_helper');
-    
         $formattedTitle = ''
                 . $this->getTitle();
     
         return $formattedTitle;
-    }
-    
-    /**
-     * Returns a list of possible choices for the workflowState list field.
-     * This method is used for validation.
-     *
-     * @return array List of allowed choices
-     */
-    public static function getWorkflowStateAllowedValues()
-    {
-        $container = ServiceUtil::get('service_container');
-        $helper = $container->get('rk_bulletin_module.listentries_helper');
-        $listEntries = $helper->getWorkflowStateEntriesForNotice();
-    
-        $allowedValues = ['initial'];
-        foreach ($listEntries as $entry) {
-            $allowedValues[] = $entry['value'];
-        }
-    
-        return $allowedValues;
-    }
-    
-    /**
-     * Start validation and raise exception if invalid data is found.
-     *
-     * @return boolean Whether everything is valid or not
-     */
-    public function validate()
-    {
-        if (true === $this->_bypassValidation) {
-            return true;
-        }
-    
-        $validator = ServiceUtil::get('validator');
-        $errors = $validator->validate($this);
-    
-        if (count($errors) > 0) {
-            $flashBag = ServiceUtil::get('session')->getFlashBag();
-            foreach ($errors as $error) {
-                $flashBag->add('error', $error->getMessage());
-            }
-    
-            return false;
-        }
-    
-        return true;
     }
     
     /**

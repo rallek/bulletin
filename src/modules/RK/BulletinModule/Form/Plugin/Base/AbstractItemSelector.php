@@ -121,7 +121,7 @@ class AbstractItemSelector extends Zikula_Form_Plugin_TextInput implements Conta
             return false;
         }
 
-        $categorisableObjectTypes = ['notice'];
+        $categorisableObjectTypes = ['notice', 'event'];
         $catIds = [];
         if (in_array($this->objectType, $categorisableObjectTypes)) {
             // fetch selected categories to reselect them in the output

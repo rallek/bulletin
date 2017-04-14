@@ -60,8 +60,13 @@ abstract class AbstractTranslatableHelper
      * @param LocaleApi           $localeApi    LocaleApi service instance
      * @param BulletinFactory $entityFactory BulletinFactory service instance
      */
-    public function __construct(TranslatorInterface $translator, RequestStack $requestStack, VariableApi $variableApi, LocaleApi $localeApi, BulletinFactory $entityFactory)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        RequestStack $requestStack,
+        VariableApi $variableApi,
+        LocaleApi $localeApi,
+        BulletinFactory $entityFactory
+    ) {
         $this->translator = $translator;
         $this->request = $requestStack->getCurrentRequest();
         $this->variableApi = $variableApi;
@@ -83,7 +88,10 @@ abstract class AbstractTranslatableHelper
         $fields = [];
         switch ($objectType) {
             case 'notice':
-                $fields = ['title', 'teaser', 'description', 'eventDescription'];
+                $fields = ['title', 'teaser', 'description'];
+                break;
+            case 'event':
+                $fields = ['description'];
                 break;
         }
     
@@ -164,6 +172,11 @@ abstract class AbstractTranslatableHelper
         $currentLanguage = $this->getCurrentLanguage();
         foreach ($supportedLanguages as $language) {
             if ($language == $currentLanguage) {
+                foreach ($fields as $fieldName) {
+                    if (null === $entity[$fieldName]) {
+                        $entity[$fieldName] = '';
+                    }
+                }
                 // skip current language as this is not treated as translation on controller level
                 continue;
             }

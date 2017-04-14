@@ -1,0 +1,28 @@
+{# purpose of this template: inclusion template for managing related event #}
+{% if displayMode is not defined or displayMode is empty %}
+    {% set displayMode = 'choices' %}
+{% endif %}
+{% if tabs|default(false) == true %}
+    <div role="tabpanel" class="tab-pane fade" id="tabEvent" aria-labelledby="eventTab">
+        <h3>{{ __('Event') }}</h3>
+{% else %}
+    <fieldset class="event">
+{% endif %}
+    <legend>{{ __('Event') }}</legend>
+    {% if displayMode == 'choices' %}
+        {{ form_row(attribute(form, alias)) }}
+    {% elseif displayMode == 'autocomplete' %}
+        {{ form_row(attribute(form, alias)) }}
+        <div class="rkbulletinmodule-relation-leftside">
+            {{ include(
+                '@RKBulletinModule/Event/includeSelectEditItemListOne.html.twig',
+                attribute(linkingItem, alias) is defined ? { item: attribute(linkingItem, alias) } : {}
+            ) }}
+        </div>
+        <br style="clear: both" />
+    {% endif %}
+{% if tabs|default(false) == true %}
+    </div>
+{% else %}
+    </fieldset>
+{% endif %}

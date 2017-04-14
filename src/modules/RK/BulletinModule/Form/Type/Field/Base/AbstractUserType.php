@@ -19,7 +19,6 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\PropertyAccess\PropertyAccess;
 use Zikula\UsersModule\Entity\RepositoryInterface\UserRepositoryInterface;
-use Zikula\UsersModule\Entity\UserEntity;
 use RK\BulletinModule\Form\DataTransformer\UserFieldTransformer;
 
 /**

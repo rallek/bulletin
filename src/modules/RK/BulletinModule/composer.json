@@ -1,6 +1,6 @@
 {
     "name": "rk/bulletin-module",
-    "version": "0.1.1",
+    "version": "0.3.0",
     "description": "Bulletin is a news and event announcing modul",
     "type": "zikula-module",
     "license": "LGPL-3.0+",
@@ -31,7 +31,8 @@
                 "admin": {"route": "rkbulletinmodule_notice_adminindex"},
                 "categorizable": {
                     "entities": [
-                        "RK\\BulletinModule\\Entity\\NoticeEntity"
+                        "RK\\BulletinModule\\Entity\\NoticeEntity",
+                        "RK\\BulletinModule\\Entity\\EventEntity"
                     ]
                 },
                 "hook_subscriber": {"class": "RK\\BulletinModule\\Container\\HookContainer"}
@@ -40,8 +41,10 @@
                 "RKBulletinModule::": "::",
                 "RKBulletinModule:ItemListBlock:": "Block title::",
                 "RKBulletinModule:Notice:": "Notice ID::",
-                "RKBulletinModule:Image:": "Image ID::",
-                "RKBulletinModule:Notice:Image": "Notice ID:Image ID:",
+                "RKBulletinModule:Picture:": "Picture ID::",
+                "RKBulletinModule:Notice:Picture": "Notice ID:Picture ID:",
+                "RKBulletinModule:Event:": "Event ID::",
+                "RKBulletinModule:Notice:Event": "Notice ID:Event ID:",
                 "RKBulletinModule::Ajax": "::"
             }
         }

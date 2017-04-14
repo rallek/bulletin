@@ -137,7 +137,14 @@ abstract class AbstractListEntriesHelper
                         break;
                 }
                 break;
-            case 'image':
+            case 'picture':
+                switch ($fieldName) {
+                    case 'workflowState':
+                        $result = false;
+                        break;
+                }
+                break;
+            case 'event':
                 switch ($fieldName) {
                     case 'workflowState':
                         $result = false;
@@ -173,10 +180,17 @@ abstract class AbstractListEntriesHelper
                         break;
                 }
                 break;
-            case 'image':
+            case 'picture':
                 switch ($fieldName) {
                     case 'workflowState':
-                        $entries = $this->getWorkflowStateEntriesForImage();
+                        $entries = $this->getWorkflowStateEntriesForPicture();
+                        break;
+                }
+                break;
+            case 'event':
+                switch ($fieldName) {
+                    case 'workflowState':
+                        $entries = $this->getWorkflowStateEntriesForEvent();
                         break;
                 }
                 break;
@@ -195,9 +209,23 @@ abstract class AbstractListEntriesHelper
     {
         $states = [];
         $states[] = [
+            'value'   => 'deferred',
+            'text'    => $this->__('Deferred'),
+            'title'   => $this->__('Content has not been submitted yet or has been waiting, but was rejected.'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
             'value'   => 'approved',
             'text'    => $this->__('Approved'),
             'title'   => $this->__('Content has been approved and is available online.'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => '!deferred',
+            'text'    => $this->__('All except deferred'),
+            'title'   => $this->__('Shows all items except these which are deferred'),
             'image'   => '',
             'default' => false
         ];
@@ -217,13 +245,67 @@ abstract class AbstractListEntriesHelper
      *
      * @return array Array with desired list entries
      */
-    public function getWorkflowStateEntriesForImage()
+    public function getWorkflowStateEntriesForPicture()
     {
         $states = [];
+        $states[] = [
+            'value'   => 'deferred',
+            'text'    => $this->__('Deferred'),
+            'title'   => $this->__('Content has not been submitted yet or has been waiting, but was rejected.'),
+            'image'   => '',
+            'default' => false
+        ];
         $states[] = [
             'value'   => 'approved',
             'text'    => $this->__('Approved'),
             'title'   => $this->__('Content has been approved and is available online.'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => '!deferred',
+            'text'    => $this->__('All except deferred'),
+            'title'   => $this->__('Shows all items except these which are deferred'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => '!approved',
+            'text'    => $this->__('All except approved'),
+            'title'   => $this->__('Shows all items except these which are approved'),
+            'image'   => '',
+            'default' => false
+        ];
+    
+        return $states;
+    }
+    
+    /**
+     * Get 'workflow state' list entries.
+     *
+     * @return array Array with desired list entries
+     */
+    public function getWorkflowStateEntriesForEvent()
+    {
+        $states = [];
+        $states[] = [
+            'value'   => 'deferred',
+            'text'    => $this->__('Deferred'),
+            'title'   => $this->__('Content has not been submitted yet or has been waiting, but was rejected.'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => 'approved',
+            'text'    => $this->__('Approved'),
+            'title'   => $this->__('Content has been approved and is available online.'),
+            'image'   => '',
+            'default' => false
+        ];
+        $states[] = [
+            'value'   => '!deferred',
+            'text'    => $this->__('All except deferred'),
+            'title'   => $this->__('Shows all items except these which are deferred'),
             'image'   => '',
             'default' => false
         ];

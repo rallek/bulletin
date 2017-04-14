@@ -1,0 +1,21 @@
+{# purpose of this template: inclusion template for display of related notice #}
+{% set editImage = '<span class="fa fa-pencil-square-o"></span>' %}
+{% set removeImage = '<span class="fa fa-trash-o"></span>' %}
+
+<input type="hidden" id="{{ idPrefix }}" name="{{ idPrefix }}" value="{% if item is defined and item.id is defined %}{{ item.id }}{% endif %}" />
+<input type="hidden" id="{{ idPrefix }}Mode" name="{{ idPrefix }}Mode" value="1" />
+
+<ul id="{{ idPrefix }}ReferenceList">
+{% if item is defined and item.id is defined %}
+{% set idPrefixItem = idPrefix ~ 'Reference_' ~ item.id %}
+<li id="{{ idPrefixItem }}">
+    {{ item.getTitleFromDisplayPattern() }}
+    <a id="{{ idPrefixItem }}Edit" href="{{ path('rkbulletinmodule_notice_' ~ routeArea ~ 'edit', { 'id': item.id }) }}">{{ editImage|raw }}</a>
+     <a id="{{ idPrefixItem }}Remove" href="javascript:rKBulletinRemoveRelatedItem('{{ idPrefix }}', '{{ item.id }}');">{{ removeImage|raw }}</a>
+    <br />
+    {% if item.image is not empty and item.imageMeta.isImage %}
+        <img src="{{ item.image.getPathname()|imagine_filter('zkroot', relationThumbRuntimeOptions) }}" alt="{{ item.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ relationThumbRuntimeOptions.thumbnail.size[0] }}" height="{{ relationThumbRuntimeOptions.thumbnail.size[1] }}" class="img-rounded" />
+    {% endif %}
+</li>
+{% endif %}
+</ul>

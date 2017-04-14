@@ -20,7 +20,7 @@ function getRKBulletinModulePopupAttributes()
 /**
  * Open a popup window with the finder triggered by a CKEditor button.
  */
-function RKBulletinModuleFinderCKEditor(editor, bulletinUrl)
+function RKBulletinModuleFinderCKEditor(editor, bullUrl)
 {
     // Save editor for access in selector window
     currentRKBulletinModuleEditor = editor;

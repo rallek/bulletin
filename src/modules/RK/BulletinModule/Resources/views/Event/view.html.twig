@@ -1,0 +1,144 @@
+{# purpose of this template: events list view #}
+{% extends routeArea == 'admin' ? 'RKBulletinModule::adminBase.html.twig' : 'RKBulletinModule::base.html.twig' %}
+{% block title own ? __('My events') : __('Event list') %}
+{% block admin_page_icon 'list-alt' %}
+{% block content %}
+<div class="rkbulletinmodule-event rkbulletinmodule-view">
+
+    {{ block('page_nav_links') }}
+
+    {{ include('@RKBulletinModule/Event/viewQuickNav.html.twig') }}{# see template file for available options #}
+
+    {% if routeArea == 'admin' %}
+    <form action="{{ path('rkbulletinmodule_event_' ~ routeArea ~ 'handleselectedentries') }}" method="post" id="eventsViewForm" class="form-horizontal" role="form">
+        <div>
+    {% endif %}
+        <div class="table-responsive">
+        <table class="table table-striped table-bordered table-hover{% if routeArea == 'admin' %} table-condensed{% endif %}">
+            <colgroup>
+                {% if routeArea == 'admin' %}
+                    <col id="cSelect" />
+                {% endif %}
+                <col id="cItemActions" />
+                {% if routeArea == 'admin' %}
+                <col id="cWorkflowState" />
+                {% endif %}
+                <col id="cEventTitle" />
+                <col id="cStartDate" />
+                <col id="cEndDate" />
+            </colgroup>
+            <thead>
+            <tr>
+                {% if routeArea == 'admin' %}
+                    <th id="hSelect" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}text-center z-w02">
+                        <input type="checkbox" class="rkbulletin-mass-toggle" />
+                    </th>
+                {% endif %}
+                <th id="hItemActions" scope="col" class="{% if items|length > 0 %}fixed-column {% endif %}z-order-unsorted z-w02">{{ __('Actions') }}</th>
+                {% if routeArea == 'admin' %}
+                <th id="hWorkflowState" scope="col" class="text-left">
+                    <a href="{{ sort.workflowState.url }}" title="{{ __f('Sort by %s', {'%s': 'state'}) }}" class="{{ sort.workflowState.class }}">{{ __('State') }}</a>
+                </th>
+                {% endif %}
+                <th id="hEventTitle" scope="col" class="text-left">
+                    <a href="{{ sort.eventTitle.url }}" title="{{ __f('Sort by %s', {'%s': 'event title'}) }}" class="{{ sort.eventTitle.class }}">{{ __('Event title') }}</a>
+                </th>
+                <th id="hStartDate" scope="col" class="text-left">
+                    <a href="{{ sort.startDate.url }}" title="{{ __f('Sort by %s', {'%s': 'start date'}) }}" class="{{ sort.startDate.class }}">{{ __('Start date') }}</a>
+                </th>
+                <th id="hEndDate" scope="col" class="text-left">
+                    <a href="{{ sort.endDate.url }}" title="{{ __f('Sort by %s', {'%s': 'end date'}) }}" class="{{ sort.endDate.class }}">{{ __('End date') }}</a>
+                </th>
+            </tr>
+            </thead>
+            <tbody>
+        
+        {% for event in items %}
+            <tr>
+                {% if routeArea == 'admin' %}
+                    <td headers="hSelect" class="fixed-column text-center z-w02">
+                        <input type="checkbox" name="items[]" value="{{ event.id }}" class="rkbulletin-toggle-checkbox" />
+                    </td>
+                {% endif %}
+                <td id="itemActions{{ event.id }}" headers="hItemActions" class="fixed-column actions nowrap z-w02">
+                    {% set itemActions = knp_menu_get('RKBulletinModule:ItemActionsMenu:menu', [], { entity: event, area: routeArea, context: 'view' }) %}
+                    <div class="dropdown">
+                        <a id="itemActions{{ event.id }}DropDownToggle" role="button" data-toggle="dropdown" data-target="#" href="javascript:void(0);" class="hidden dropdown-toggle"><i class="fa fa-tasks"></i> <span class="caret"></span></a>
+                        {{ knp_menu_render(itemActions, { template: 'ZikulaMenuModule:Override:actions.html.twig' }) }}
+                    </div>
+                </td>
+                {% if routeArea == 'admin' %}<td headers="hWorkflowState" class="text-left nowrap">
+                    {{ event.workflowState|rkbulletinmodule_objectState }}
+                </td>
+                {% endif %}<td headers="hEventTitle" class="text-left">
+                    {{ event.eventTitle }}
+                </td>
+                <td headers="hStartDate" class="text-left">
+                    {{ event.startDate|localizeddate('medium', 'short') }}
+                </td>
+                <td headers="hEndDate" class="text-left">
+                    {{ event.endDate|localizeddate('medium', 'short') }}
+                </td>
+            </tr>
+        {% else %}
+            <tr class="z-{{ routeArea == 'admin' ? 'admin' : 'data' }}tableempty">
+                <td class="text-left" colspan="{% if routeArea == 'admin' %}6{% else %}5{% endif %}">
+            {{ __('No events found.') }}
+              </td>
+            </tr>
+        {% endfor %}
+        
+            </tbody>
+        </table>
+        </div>
+        
+        {% if showAllEntries != 1 and pager|default %}
+            {{ pager({ rowcount: pager.amountOfItems, limit: pager.itemsPerPage, display: 'page', route: 'rkbulletinmodule_event_' ~ routeArea ~ 'view'}) }}
+        {% endif %}
+    {% if routeArea == 'admin' %}
+            <fieldset>
+                <label for="rKBulletinModuleAction" class="col-sm-3 control-label">{{ __('With selected events') }}</label>
+                <div class="col-sm-6">
+                    <select id="rKBulletinModuleAction" name="action" class="form-control input-sm">
+                        <option value="">{{ __('Choose action') }}</option>
+                        <option value="delete" title="{{ __('Delete content permanently.') }}">{{ __('Delete') }}</option>
+                    </select>
+                </div>
+                <div class="col-sm-3">
+                    <input type="submit" value="{{ __('Submit') }}" class="btn btn-default btn-sm" />
+                </div>
+            </fieldset>
+        </div>
+    </form>
+    {% endif %}
+
+    {{ block('display_hooks') }}
+</div>
+{% endblock %}
+{% block page_nav_links %}
+    <p>
+        {% if canBeCreated %}
+            {% if hasPermission('RKBulletinModule:Event:', '::', 'ACCESS_EDIT') %}
+                {% set createTitle = __('Create event') %}
+                <a href="{{ path('rkbulletinmodule_event_' ~ routeArea ~ 'edit') }}" title="{{ createTitle|e('html_attr') }}" class="fa fa-plus">{{ createTitle }}</a>
+            {% endif %}
+        {% endif %}
+        {% if showAllEntries == 1 %}
+            {% set linkTitle = __('Back to paginated view') %}
+            <a href="{{ path('rkbulletinmodule_event_' ~ routeArea ~ 'view') }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% else %}
+            {% set linkTitle = __('Show all entries') %}
+            <a href="{{ path('rkbulletinmodule_event_' ~ routeArea ~ 'view', { all: 1 }) }}" title="{{ linkTitle|e('html_attr') }}" class="fa fa-table">{{ linkTitle }}</a>
+        {% endif %}
+    </p>
+{% endblock %}
+{% block display_hooks %}
+    
+    {# here you can activate calling display hooks for the view page if you need it #}
+    {# % if routeArea != 'admin' %}
+        {% set hooks = notifyDisplayHooks(eventName='rkbulletinmodule.ui_hooks.events.display_view', urlObject=currentUrlObject) %}
+        {% for providerArea, hook in hooks %}
+            {{ hook }}
+        {% endfor %}
+    {% endif % #}
+{% endblock %}

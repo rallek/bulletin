@@ -14,7 +14,6 @@ namespace RK\BulletinModule\Listener\Base;
 
 use Psr\Log\LoggerInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Core\Event\GenericEvent;
 use Zikula\UsersModule\Api\CurrentUserApi;
@@ -56,8 +55,12 @@ abstract class AbstractUserListener implements EventSubscriberInterface
      *
      * @return void
      */
-    public function __construct(TranslatorInterface $translator, BulletinFactory $entityFactory, CurrentUserApi $currentUserApi, LoggerInterface $logger)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        BulletinFactory $entityFactory,
+        CurrentUserApi $currentUserApi,
+        LoggerInterface $logger
+    ) {
         $this->translator = $translator;
         $this->entityFactory = $entityFactory;
         $this->currentUserApi = $currentUserApi;
@@ -128,14 +131,24 @@ abstract class AbstractUserListener implements EventSubscriberInterface
         $logArgs = ['app' => 'RKBulletinModule', 'user' => $this->currentUserApi->get('uname'), 'entities' => 'notices'];
         $this->logger->notice('{app}: User {user} has been deleted, so we deleted/updated corresponding {entities}, too.', $logArgs);
         
-        $repo = $this->entityFactory->getRepository('image');
-        // set creator to admin (2) for all images created by this user
+        $repo = $this->entityFactory->getRepository('picture');
+        // set creator to admin (2) for all pictures created by this user
         $repo->updateCreator($userId, 2, $this->translator, $this->logger, $this->currentUserApi);
         
-        // set last editor to admin (2) for all images updated by this user
+        // set last editor to admin (2) for all pictures updated by this user
         $repo->updateLastEditor($userId, 2, $this->translator, $this->logger, $this->currentUserApi);
         
-        $logArgs = ['app' => 'RKBulletinModule', 'user' => $this->currentUserApi->get('uname'), 'entities' => 'images'];
+        $logArgs = ['app' => 'RKBulletinModule', 'user' => $this->currentUserApi->get('uname'), 'entities' => 'pictures'];
+        $this->logger->notice('{app}: User {user} has been deleted, so we deleted/updated corresponding {entities}, too.', $logArgs);
+        
+        $repo = $this->entityFactory->getRepository('event');
+        // set creator to admin (2) for all events created by this user
+        $repo->updateCreator($userId, 2, $this->translator, $this->logger, $this->currentUserApi);
+        
+        // set last editor to admin (2) for all events updated by this user
+        $repo->updateLastEditor($userId, 2, $this->translator, $this->logger, $this->currentUserApi);
+        
+        $logArgs = ['app' => 'RKBulletinModule', 'user' => $this->currentUserApi->get('uname'), 'entities' => 'events'];
         $this->logger->notice('{app}: User {user} has been deleted, so we deleted/updated corresponding {entities}, too.', $logArgs);
     }
 }

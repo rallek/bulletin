@@ -51,7 +51,7 @@ function rKBulletinReadDate(val, includeTime)
     if (val.substr(2, 1) === '.' && val.substr(5, 1) === '.') {
         var newVal = val.substr(6, 4) + '-' + val.substr(3, 2) + '-' + val.substr(0, 2);
         if (true === includeTime) {
-            newVal += ' ' + val.substr(11, 5);
+            newVal += ' ' + val.substr(11, 7);
         }
 
         return newVal;
@@ -96,6 +96,21 @@ function rKBulletinValidateDateRangeNotice(val)
     return result;
 }
 
+function rKBulletinValidateDateRangeEvent(val)
+{
+    var cmpVal, cmpVal2, result;
+    cmpVal = rKBulletinReadDate(jQuery("[id$='startDate']").val(), true);
+    cmpVal2 = rKBulletinReadDate(jQuery("[id$='endDate']").val(), true);
+
+    if (typeof cmpVal == 'undefined' && typeof cmpVal2 == 'undefined') {
+        result = true;
+    } else {
+        result = (cmpVal <= cmpVal2);
+    }
+
+    return result;
+}
+
 /**
  * Runs special validation rules.
  */
@@ -117,11 +132,40 @@ function rKBulletinExecuteCustomValidationConstraints(objectType, currentEntityI
     });
     jQuery('.validate-daterange-notice').each( function() {
         if (typeof jQuery(this).attr('id') != 'undefined') {
-        if (!rKBulletinValidateDateRangeNotice(jQuery(this).val())) {
-            document.getElementById(jQuery(this).attr('id')).setCustomValidity(Translator.__('The start must be before the end.'));
-        } else {
-            document.getElementById(jQuery(this).attr('id')).setCustomValidity('');
+            if (jQuery(this).prop('tagName') == 'DIV') {
+                if (!rKBulletinValidateDateRangeNotice()) {
+                    document.getElementById(jQuery(this).attr('id') + '_date').setCustomValidity(Translator.__('The start must be before the end.'));
+                    document.getElementById(jQuery(this).attr('id') + '_time').setCustomValidity(Translator.__('The start must be before the end.'));
+                } else {
+                    document.getElementById(jQuery(this).attr('id') + '_date').setCustomValidity('');
+                    document.getElementById(jQuery(this).attr('id') + '_time').setCustomValidity('');
+                }
+        	} else {
+                if (!rKBulletinValidateDateRangeNotice()) {
+                    document.getElementById(jQuery(this).attr('id')).setCustomValidity(Translator.__('The start must be before the end.'));
+                } else {
+                    document.getElementById(jQuery(this).attr('id')).setCustomValidity('');
+                }
+    		}
         }
+    });
+    jQuery('.validate-daterange-event').each( function() {
+        if (typeof jQuery(this).attr('id') != 'undefined') {
+            if (jQuery(this).prop('tagName') == 'DIV') {
+                if (!rKBulletinValidateDateRangeEvent()) {
+                    document.getElementById(jQuery(this).attr('id') + '_date').setCustomValidity(Translator.__('The start must be before the end.'));
+                    document.getElementById(jQuery(this).attr('id') + '_time').setCustomValidity(Translator.__('The start must be before the end.'));
+                } else {
+                    document.getElementById(jQuery(this).attr('id') + '_date').setCustomValidity('');
+                    document.getElementById(jQuery(this).attr('id') + '_time').setCustomValidity('');
+                }
+        	} else {
+                if (!rKBulletinValidateDateRangeEvent()) {
+                    document.getElementById(jQuery(this).attr('id')).setCustomValidity(Translator.__('The start must be before the end.'));
+                } else {
+                    document.getElementById(jQuery(this).attr('id')).setCustomValidity('');
+                }
+    		}
         }
     });
 }

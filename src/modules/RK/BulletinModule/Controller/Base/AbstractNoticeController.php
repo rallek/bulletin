@@ -23,6 +23,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Zikula\Component\SortableColumns\Column;
 use Zikula\Component\SortableColumns\SortableColumns;
 use Zikula\Core\Controller\AbstractController;
+use Zikula\Core\Response\PlainResponse;
 use Zikula\Core\RouteUrl;
 use RK\BulletinModule\Entity\NoticeEntity;
 use RK\BulletinModule\Helper\FeatureActivationHelper;
@@ -78,9 +79,6 @@ abstract class AbstractNoticeController extends AbstractController
         ];
         
         return $this->redirectToRoute('rkbulletinmodule_notice_' . $templateParameters['routeArea'] . 'view');
-        
-        // return index template
-        return $this->render('@RKBulletinModule/Notice/index.html.twig', $templateParameters);
     }
     /**
      * This action provides an item list overview in the admin area.
@@ -141,18 +139,17 @@ abstract class AbstractNoticeController extends AbstractController
         $sortdir = strtolower($sortdir);
         $request->query->set('sort', $sort);
         $request->query->set('sortdir', $sortdir);
+        $request->query->set('pos', $pos);
         
         $sortableColumns = new SortableColumns($this->get('router'), 'rkbulletinmodule_notice_' . ($isAdmin ? 'admin' : '') . 'view', 'sort', 'sortdir');
         
         $sortableColumns->addColumns([
+            new Column('workflowState'),
             new Column('title'),
             new Column('startDate'),
             new Column('endDate'),
             new Column('startPage'),
-            new Column('isEvent'),
-            new Column('eventStartDateTime'),
-            new Column('eventEndDateTime'),
-            new Column('noticeLocale'),
+            new Column('event'),
             new Column('createdBy'),
             new Column('createdDate'),
             new Column('updatedBy'),
@@ -484,16 +481,16 @@ abstract class AbstractNoticeController extends AbstractController
         
         $action = strtolower($action);
         
-        $selectionHelper = $this->get('rk_bulletin_module.selection_helper');
+        $repository = $this->get('rk_bulletin_module.entity_factory')->getRepository($objectType);
         $workflowHelper = $this->get('rk_bulletin_module.workflow_helper');
         $hookHelper = $this->get('rk_bulletin_module.hook_helper');
         $logger = $this->get('logger');
         $userName = $this->get('zikula_users_module.current_user')->get('uname');
         
         // process each item
-        foreach ($items as $itemid) {
+        foreach ($items as $itemId) {
             // check if item exists, and get record instance
-            $entity = $selectionHelper->getEntity($objectType, $itemid, false);
+            $entity = $repository->selectById($itemId, false);
             if (null === $entity) {
                 continue;
             }
@@ -516,14 +513,11 @@ abstract class AbstractNoticeController extends AbstractController
         
             $success = false;
             try {
-                if ($action != 'delete' && !$entity->validate()) {
-                    continue;
-                }
                 // execute the workflow action
                 $success = $workflowHelper->executeAction($entity, $action);
             } catch(\Exception $e) {
                 $this->addFlash('error', $this->__f('Sorry, but an error occured during the %action% action.', ['%action%' => $action]) . '  ' . $e->getMessage());
-                $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'RKBulletinModule', 'user' => $userName, 'action' => $action, 'entity' => 'notice', 'id' => $itemid, 'errorMessage' => $e->getMessage()]);
+                $logger->error('{app}: User {user} tried to execute the {action} workflow action for the {entity} with id {id}, but failed. Error details: {errorMessage}.', ['app' => 'RKBulletinModule', 'user' => $userName, 'action' => $action, 'entity' => 'notice', 'id' => $itemId, 'errorMessage' => $e->getMessage()]);
             }
         
             if (!$success) {
@@ -532,10 +526,10 @@ abstract class AbstractNoticeController extends AbstractController
         
             if ($action == 'delete') {
                 $this->addFlash('status', $this->__('Done! Item deleted.'));
-                $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', ['app' => 'RKBulletinModule', 'user' => $userName, 'entity' => 'notice', 'id' => $itemid]);
+                $logger->notice('{app}: User {user} deleted the {entity} with id {id}.', ['app' => 'RKBulletinModule', 'user' => $userName, 'entity' => 'notice', 'id' => $itemId]);
             } else {
                 $this->addFlash('status', $this->__('Done! Item updated.'));
-                $logger->notice('{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.', ['app' => 'RKBulletinModule', 'user' => $userName, 'action' => $action, 'entity' => 'notice', 'id' => $itemid]);
+                $logger->notice('{app}: User {user} executed the {action} workflow action for the {entity} with id {id}.', ['app' => 'RKBulletinModule', 'user' => $userName, 'action' => $action, 'entity' => 'notice', 'id' => $itemId]);
             }
         
             // Let any hooks know that we have updated or deleted an item
@@ -550,5 +544,29 @@ abstract class AbstractNoticeController extends AbstractController
         }
         
         return $this->redirectToRoute('rkbulletinmodule_notice_' . ($isAdmin ? 'admin' : '') . 'index');
+    }
+
+    /**
+     * This method cares for a redirect within an inline frame.
+     *
+     * @param string  $idPrefix    Prefix for inline window element identifier
+     * @param string  $commandName Name of action to be performed (create or edit)
+     * @param integer $id          Identifier of created notice (used for activating auto completion after closing the modal window)
+     *
+     * @return PlainResponse Output
+     */
+    public function handleInlineRedirectAction($idPrefix, $commandName, $id = 0)
+    {
+        if (empty($idPrefix)) {
+            return false;
+        }
+        
+        $templateParameters = [
+            'itemId' => $id,
+            'idPrefix' => $idPrefix,
+            'commandName' => $commandName
+        ];
+        
+        return new PlainResponse($this->get('twig')->render('@RKBulletinModule/Notice/inlineRedirectHandler.html.twig', $templateParameters));
     }
 }

@@ -180,15 +180,15 @@ abstract class AbstractItemList extends \Content_AbstractContentType implements 
         $this->filter = $data['filter'];
         $featureActivationHelper = $this->container->get('rk_bulletin_module.feature_activation_helper');
         if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $this->objectType)) {
-            $this->categorisableObjectTypes = ['notice'];
+            $this->categorisableObjectTypes = ['notice', 'event'];
             $categoryHelper = $this->container->get('rk_bulletin_module.category_helper');
     
             // fetch category properties
             $this->catRegistries = [];
             $this->catProperties = [];
             if (in_array($this->objectType, $this->categorisableObjectTypes)) {
-                $selectionHelper = $this->container->get('rk_bulletin_module.selection_helper');
-                $idFields = $selectionHelper->getIdFields($this->objectType);
+                $entityFactory = $this->container->get('rk_bulletin_module.entity_factory');
+                $idFields = $entityFactory->getIdFields($this->objectType);
                 $this->catRegistries = $categoryHelper->getAllPropertiesWithMainCat($this->objectType, $idFields[0]);
                 $this->catProperties = $categoryHelper->getAllProperties($this->objectType);
             }
@@ -342,8 +342,8 @@ abstract class AbstractItemList extends \Content_AbstractContentType implements 
     
         $sortParam = '';
         if ($this->sorting == 'newest') {
-            $selectionHelper = $this->container->get('rk_bulletin_module.selection_helper');
-            $idFields = $selectionHelper->getIdFields($this->objectType);
+            $entityFactory = $this->container->get('rk_bulletin_module.entity_factory');
+            $idFields = $entityFactory->getIdFields($this->objectType);
             if (count($idFields) == 1) {
                 $sortParam = $idFields[0] . ' DESC';
             } else {
@@ -420,11 +420,17 @@ abstract class AbstractItemList extends \Content_AbstractContentType implements 
                 //$mainCategory = $categoryApi->getCategoryById($registryCid);
                 $cats = $categoryApi->getSubCategories($registryCid, true, true, false, true, false, null, '', null, 'sort_value');
                 $catsForDropdown = [
-                    ['value' => '', 'text' => $translator->__('All')]
+                    [
+                        'value' => '',
+                        'text' => $translator->__('All')
+                    ]
                 ];
-                foreach ($cats as $cat) {
-                    $catName = isset($cat['display_name'][$locale]) ? $cat['display_name'][$locale] : $cat['name'];
-                    $catsForDropdown[] = ['value' => $cat['id'], 'text' => $catName];
+                foreach ($cats as $category) {
+                    $categoryName = isset($category['display_name'][$locale]) ? $category['display_name'][$locale] : $category['name'];
+                    $catsForDropdown[] = [
+                        'value' => $category->getId(),
+                        'text' => $categoryName
+                    ];
                 }
                 $categories[$propName] = $catsForDropdown;
             }

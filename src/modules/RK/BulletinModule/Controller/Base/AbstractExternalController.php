@@ -48,9 +48,10 @@ abstract class AbstractExternalController extends AbstractController
             return '';
         }
         
-        $repository = $this->get('rk_bulletin_module.entity_factory')->getRepository($objectType);
+        $entityFactory = $this->get('rk_bulletin_module.entity_factory');
+        $repository = $entityFactory->getRepository($objectType);
         $repository->setRequest($this->get('request_stack')->getCurrentRequest());
-        $idValues = ['id' => $id];
+        $idValues = $controllerHelper->retrieveIdentifier($request, [], $objectType);
         
         $hasIdentifier = $controllerHelper->isValidIdentifier($idValues);
         if (!$hasIdentifier) {
@@ -188,7 +189,7 @@ abstract class AbstractExternalController extends AbstractController
             list($entities, $objectCount) = $repository->selectWherePaginated($where, $sortParam, $currentPage, $resultsPerPage);
         }
         
-        if (in_array($objectType, ['notice'])) {
+        if (in_array($objectType, ['notice', 'event'])) {
             $featureActivationHelper = $this->get('rk_bulletin_module.feature_activation_helper');
             if ($featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
                 $entities = $this->get('rk_bulletin_module.category_helper')->filterEntitiesByPermission($entities);

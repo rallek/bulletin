@@ -31,8 +31,12 @@ function smarty_function_rkbulletinmoduleObjectTypeSelector($params, $view)
         'value' => 'notice'
     ];
     $result[] = [
-        'text' => __('Images', $dom),
-        'value' => 'image'
+        'text' => __('Pictures', $dom),
+        'value' => 'picture'
+    ];
+    $result[] = [
+        'text' => __('Events', $dom),
+        'value' => 'event'
     ];
 
     if (array_key_exists('assign', $params)) {

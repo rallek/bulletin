@@ -41,13 +41,7 @@ abstract class AbstractAjaxController extends AbstractController
             return true;
         }
         
-        $fragment = '';
-        if ($request->isMethod('POST') && $request->request->has('fragment')) {
-            $fragment = $request->request->get('fragment', '');
-        } elseif ($request->isMethod('GET') && $request->query->has('fragment')) {
-            $fragment = $request->query->get('fragment', '');
-        }
-        
+        $fragment = $request->query->get('fragment', '');
         $userRepository = $this->get('zikula_users_module.user_repository');
         $limit = 50;
         $filter = [
@@ -97,8 +91,6 @@ abstract class AbstractAjaxController extends AbstractController
         
         $repository = $this->get('rk_bulletin_module.entity_factory')->getRepository($objectType);
         $repository->setRequest($request);
-        $selectionHelper = $this->get('rk_bulletin_module.selection_helper');
-        $idFields = $selectionHelper->getIdFields($objectType);
         
         $descriptionField = $repository->getDescriptionFieldName();
         
@@ -126,10 +118,7 @@ abstract class AbstractAjaxController extends AbstractController
         $slimItems = [];
         $component = 'RKBulletinModule:' . ucfirst($objectType) . ':';
         foreach ($entities as $item) {
-            $itemId = '';
-            foreach ($idFields as $idField) {
-                $itemId .= (!empty($itemId) ? '_' : '') . $item[$idField];
-            }
+            $itemId = $item->createCompositeIdentifier();
             if (!$this->hasPermission($component, $itemId . '::', ACCESS_READ)) {
                 continue;
             }
@@ -174,6 +163,87 @@ abstract class AbstractAjaxController extends AbstractController
     }
     
     /**
+     * Searches for entities for auto completion usage.
+     *
+     * @param Request $request Current request instance
+     *
+     * @return JsonResponse
+     */
+    public function getItemListAutoCompletionAction(Request $request)
+    {
+        if (!$this->hasPermission('RKBulletinModule::Ajax', '::', ACCESS_EDIT)) {
+            return true;
+        }
+        
+        $objectType = $request->query->getAlnum('ot', 'notice');
+        $controllerHelper = $this->get('rk_bulletin_module.controller_helper');
+        $contextArgs = ['controller' => 'ajax', 'action' => 'getItemListAutoCompletion'];
+        if (!in_array($objectType, $controllerHelper->getObjectTypes('controllerAction', $contextArgs))) {
+            $objectType = $controllerHelper->getDefaultObjectType('controllerAction', $contextArgs);
+        }
+        
+        $repository = $this->get('rk_bulletin_module.entity_factory')->getRepository($objectType);
+        $repository->setRequest($request);
+        
+        $fragment = $request->query->get('fragment', '');
+        $exclude = $request->query->get('exclude', '');
+        $exclude = !empty($exclude) ? explode(',', str_replace(', ', ',', $exclude)) : [];
+        
+        // parameter for used sorting field
+        $sort = $request->query->get('sort', '');
+        if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
+            $sort = $repository->getDefaultSortingField();
+            $request->query->set('sort', $sort);
+            // set default sorting in route parameters (e.g. for the pager)
+            $routeParams = $request->attributes->get('_route_params');
+            $routeParams['sort'] = $sort;
+            $request->attributes->set('_route_params', $routeParams);
+        }
+        $sortParam = $sort . ' asc';
+        
+        $currentPage = 1;
+        $resultsPerPage = 20;
+        
+        // get objects from database
+        list($entities, $objectCount) = $repository->selectSearch($fragment, $exclude, $sortParam, $currentPage, $resultsPerPage);
+        
+        $resultItems = [];
+        
+        if ((is_array($entities) || is_object($entities)) && count($entities) > 0) {
+            $descriptionFieldName = $repository->getDescriptionFieldName();
+            $previewFieldName = $repository->getPreviewFieldName();
+            $imagineCacheManager = $this->get('liip_imagine.cache.manager');
+            $imageHelper = $this->get('rk_bulletin_module.image_helper');
+            $thumbRuntimeOptions = $imageHelper->getRuntimeOptions($objectType, $previewFieldName, 'controllerAction', $contextArgs);
+            foreach ($entities as $item) {
+                $itemTitle = $item->getTitleFromDisplayPattern();
+                $itemTitleStripped = str_replace('"', '', $itemTitle);
+                $itemDescription = isset($item[$descriptionFieldName]) && !empty($item[$descriptionFieldName]) ? $item[$descriptionFieldName] : '';//$this->__('No description yet.')
+                if (!empty($itemDescription)) {
+                    $itemDescription = substr($itemDescription, 0, 50) . '&hellip;';
+                }
+        
+                $resultItem = [
+                    'id' => $item->createCompositeIdentifier(),
+                    'title' => $item->getTitleFromDisplayPattern(),
+                    'description' => $itemDescription,
+                    'image' => ''
+                ];
+        
+                // check for preview image
+                if (!empty($previewFieldName) && !empty($item[$previewFieldName])) {
+                    $thumbImagePath = $imagineCacheManager->getThumb($item[$previewFieldName]->getPathname(), 'zkroot', $thumbRuntimeOptions);
+                    $resultItem['image'] = '<img src="' . $thumbImagePath . '" width="50" height="50" alt="' . $itemTitleStripped . '" />';
+                }
+        
+                $resultItems[] = $resultItem;
+            }
+        }
+        
+        return new JsonResponse($resultItems);
+    }
+    
+    /**
      * Changes a given flag (boolean field) by switching between true and false.
      *
      * @param Request $request Current request instance
@@ -202,8 +272,9 @@ abstract class AbstractAjaxController extends AbstractController
         }
         
         // select data from data source
-        $selectionHelper = $this->get('rk_bulletin_module.selection_helper');
-        $entity = $selectionHelper->getEntity($objectType, $id);
+        $entityFactory = $this->get('rk_bulletin_module.entity_factory');
+        $repository = $entityFactory->getRepository($objectType);
+        $entity = $repository->selectById($id, false);
         if (null === $entity) {
             return new NotFoundResponse($this->__('No such item.'));
         }
@@ -212,20 +283,17 @@ abstract class AbstractAjaxController extends AbstractController
         $entity[$field] = !$entity[$field];
         
         // save entity back to database
-        $entityManager = $this->get('doctrine.orm.default_entity_manager');
-        $entityManager->flush();
-        
-        // return response
-        $result = [
-            'id' => $id,
-            'state' => $entity[$field],
-            'message' => $this->__('The setting has been successfully changed.')
-        ];
+        $entityFactory->getObjectManager()->flush();
         
         $logger = $this->get('logger');
         $logArgs = ['app' => 'RKBulletinModule', 'user' => $this->get('zikula_users_module.current_user')->get('uname'), 'field' => $field, 'entity' => $objectType, 'id' => $id];
         $logger->notice('{app}: User {user} toggled the {field} flag the {entity} with id {id}.', $logArgs);
         
-        return new AjaxResponse($result);
+        // return response
+        return new AjaxResponse([
+            'id' => $id,
+            'state' => $entity[$field],
+            'message' => $this->__('The setting has been successfully changed.')
+        ]);
     }
 }

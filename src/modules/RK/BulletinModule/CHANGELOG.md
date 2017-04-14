@@ -1,3 +1,3 @@
 # CHANGELOG
 
-Changes in RKBulletinModule 0.1.1
+Changes in RKBulletinModule 0.3.0

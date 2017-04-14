@@ -19,14 +19,14 @@ use Doctrine\ORM\Query;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 use InvalidArgumentException;
+use Psr\Log\LoggerInterface;
+use ServiceUtil;
 use Symfony\Component\HttpFoundation\Request;
 use Zikula\Component\FilterUtil\FilterUtil;
 use Zikula\Component\FilterUtil\Config as FilterConfig;
 use Zikula\Component\FilterUtil\PluginManager as FilterPluginManager;
-use Zikula\Core\FilterUtil\CategoryPlugin as CategoryFilter;
 use Zikula\Component\FilterUtil\Plugin\DatePlugin as DateFilter;
-use Psr\Log\LoggerInterface;
-use ServiceUtil;
+use Zikula\Core\FilterUtil\CategoryPlugin as CategoryFilter;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\UsersModule\Api\CurrentUserApi;
 use RK\BulletinModule\Entity\NoticeEntity;
@@ -60,14 +60,11 @@ abstract class AbstractNoticeRepository extends EntityRepository
     public function getAllowedSortingFields()
     {
         return [
+            'workflowState',
             'title',
             'startDate',
             'endDate',
             'startPage',
-            'isEvent',
-            'eventStartDateTime',
-            'eventEndDateTime',
-            'noticeLocale',
             'createdBy',
             'createdDate',
             'updatedBy',
@@ -127,9 +124,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
      */
     public function getTitleFieldName()
     {
-        $fieldName = 'title';
-    
-        return $fieldName;
+        return 'title';
     }
     
     /**
@@ -139,9 +134,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
      */
     public function getDescriptionFieldName()
     {
-        $fieldName = 'teaser';
-    
-        return $fieldName;
+        return 'teaser';
     }
     
     /**
@@ -151,9 +144,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
      */
     public function getPreviewFieldName()
     {
-        $fieldName = 'image';
-    
-        return $fieldName;
+        return 'image';
     }
     
     /**
@@ -229,11 +220,9 @@ abstract class AbstractNoticeRepository extends EntityRepository
         $categoryHelper = ServiceUtil::get('rk_bulletin_module.category_helper');
         $parameters['catIdList'] = $categoryHelper->retrieveCategoriesFromRequest('notice', 'GET');
         $parameters['workflowState'] = $this->getRequest()->query->get('workflowState', '');
-        $parameters['noticeLocale'] = $this->getRequest()->query->get('noticeLocale', '');
         $parameters['q'] = $this->getRequest()->query->get('q', '');
         
         $parameters['startPage'] = $this->getRequest()->query->get('startPage', '');
-        $parameters['isEvent'] = $this->getRequest()->query->get('isEvent', '');
     
         // in the concrete child class you could do something like
         // $parameters = parent::getViewQuickNavParameters($context, $args);
@@ -468,16 +457,42 @@ abstract class AbstractNoticeRepository extends EntityRepository
     /**
      * Adds where clauses excluding desired identifiers from selection.
      *
-     * @param QueryBuilder $qb        Query builder to be enhanced
-     * @param integer      $excludeId The id to be excluded from selection
+     * @param QueryBuilder $qb           Query builder to be enhanced
+     * @param array        $excludesions Array of ids to be excluded from selection
      *
      * @return QueryBuilder Enriched query builder instance
      */
-    protected function addExclusion(QueryBuilder $qb, $excludeId)
+    protected function addExclusion(QueryBuilder $qb, array $exclusions = [])
     {
-        if ($excludeId > 0) {
-            $qb->andWhere('tbl.id != :excludeId')
-               ->setParameter('excludeId', $excludeId);
+        if (count($exclusions) > 0) {
+            $qb->andWhere('tbl.id NOT IN (:excludedIdentifiers)')
+               ->setParameter('excludedIdentifiers', $exclusions);
+        }
+    
+        return $qb;
+    }
+
+    /**
+     * Adds a filter for the createdBy field.
+     *
+     * @param QueryBuilder $qb Query builder to be enhanced
+     * @param integer      $userId The user identifier used for filtering (optional)
+     *
+     * @return QueryBuilder Enriched query builder instance
+     */
+    public function addCreatorFilter(QueryBuilder $qb, $userId = null)
+    {
+        if (null === $userId) {
+            $currentUserApi = ServiceUtil::get('zikula_users_module.current_user');
+            $userId = $currentUserApi->isLoggedIn() ? $currentUserApi->get('uid') : 1;
+        }
+    
+        if (is_array($userId)) {
+            $qb->andWhere('tbl.createdBy IN (:userIds)')
+               ->setParameter('userIds', $userId);
+        } else {
+            $qb->andWhere('tbl.createdBy = :userId')
+               ->setParameter('userId', $userId);
         }
     
         return $qb;
@@ -533,8 +548,6 @@ abstract class AbstractNoticeRepository extends EntityRepository
      */
     public function getSelectWherePaginatedQuery(QueryBuilder $qb, $currentPage = 1, $resultsPerPage = 25)
     {
-        $qb = $this->addCommonViewFilters($qb);
-    
         $query = $this->getQueryFromBuilder($qb);
         $offset = ($currentPage-1) * $resultsPerPage;
     
@@ -558,11 +571,8 @@ abstract class AbstractNoticeRepository extends EntityRepository
      */
     public function selectWherePaginated($where = '', $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true, $slimMode = false)
     {
-        $qb = $this->genericBaseQuery($where, $orderBy, $useJoins, $slimMode);
-    
-        $page = $currentPage;
-        
-        $query = $this->getSelectWherePaginatedQuery($qb, $page, $resultsPerPage);
+        $qb = $this->getListQueryBuilder($where, $orderBy, $useJoins, $slimMode);
+        $query = $this->getSelectWherePaginatedQuery($qb, $currentPage, $resultsPerPage);
     
         return $this->retrieveCollectionResult($query, $orderBy, true);
     }
@@ -607,7 +617,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
                 if (!empty($v)) {
                     $qb = $this->addSearchFilter($qb, $v);
                 }
-            } elseif (in_array($k, ['startPage', 'isEvent'])) {
+            } elseif (in_array($k, ['startPage'])) {
                 // boolean filter
                 if ($v == 'no') {
                     $qb->andWhere('tbl.' . $k . ' = 0');
@@ -646,6 +656,27 @@ abstract class AbstractNoticeRepository extends EntityRepository
      */
     protected function applyDefaultFilters(QueryBuilder $qb, $parameters = [])
     {
+        if (null === $this->getRequest()) {
+            $this->request = ServiceUtil::get('request_stack')->getCurrentRequest();
+        }
+        $routeName = $this->request->get('_route');
+        $isAdminArea = false !== strpos($routeName, 'rkbulletinmodule_notice_admin');
+        if ($isAdminArea) {
+            return $qb;
+        }
+    
+        if (!in_array('workflowState', array_keys($parameters)) || empty($parameters['workflowState'])) {
+            // per default we show approved notices only
+            $onlineStates = ['approved'];
+            
+            $showOnlyOwnEntries = $this->getRequest()->query->getInt('own', 0);
+            if ($showOnlyOwnEntries == 1) {
+                // allow the owner to see his deferred notices
+                $onlineStates[] = 'deferred';
+            }
+            $qb->andWhere('tbl.workflowState IN (:onlineStates)')
+               ->setParameter('onlineStates', $onlineStates);
+        }
         $startDate = null !== $this->getRequest() ? $this->getRequest()->query->get('startDate', date('Y-m-d H:i:s')) : date('Y-m-d H:i:s');
         $qb->andWhere('(tbl.startDate <= :startDate OR tbl.startDate IS NULL)')
            ->setParameter('startDate', $startDate);
@@ -670,7 +701,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
      */
     public function selectSearch($fragment = '', $exclude = [], $orderBy = '', $currentPage = 1, $resultsPerPage = 25, $useJoins = true)
     {
-        $qb = $this->genericBaseQuery('', $orderBy, $useJoins);
+        $qb = $this->getListQueryBuilder('', $orderBy, $useJoins);
         if (count($exclude) > 0) {
             $qb = $this->addExclusion($qb, $exclude);
         }
@@ -699,6 +730,8 @@ abstract class AbstractNoticeRepository extends EntityRepository
         $filters = [];
         $parameters = [];
     
+        $filters[] = 'tbl.workflowState = :searchWorkflowState';
+        $parameters['searchWorkflowState'] = $fragment;
         $filters[] = 'tbl.title LIKE :searchTitle';
         $parameters['searchTitle'] = '%' . $fragment . '%';
         $filters[] = 'tbl.teaser LIKE :searchTeaser';
@@ -713,19 +746,14 @@ abstract class AbstractNoticeRepository extends EntityRepository
         $parameters['searchStartDate'] = $fragment;
         $filters[] = 'tbl.endDate = :searchEndDate';
         $parameters['searchEndDate'] = $fragment;
-        $filters[] = 'tbl.eventStartDateTime = :searchEventStartDateTime';
-        $parameters['searchEventStartDateTime'] = $fragment;
-        $filters[] = 'tbl.eventEndDateTime = :searchEventEndDateTime';
-        $parameters['searchEventEndDateTime'] = $fragment;
-        $filters[] = 'tbl.eventDescription LIKE :searchEventDescription';
-        $parameters['searchEventDescription'] = '%' . $fragment . '%';
         $filters[] = 'tbl.counter = :searchCounter';
         $parameters['searchCounter'] = $fragment;
-        $filters[] = 'tbl.noticeLocale LIKE :searchNoticeLocale';
-        $parameters['searchNoticeLocale'] = '%' . $fragment . '%';
     
-        $qb->andWhere('(' . implode(' OR ', $filters) . ')')
-           ->setParameters($parameters);
+        $qb->andWhere('(' . implode(' OR ', $filters) . ')');
+    
+        foreach ($parameters as $parameterName => $parameterValue) {
+            $qb->setParameter($parameterName, $parameterValue);
+        }
     
         return $qb;
     }
@@ -762,15 +790,12 @@ abstract class AbstractNoticeRepository extends EntityRepository
      * Returns query builder instance for a count query.
      *
      * @param string  $where    The where clause to use when retrieving the object count (optional) (default='')
-     * @param boolean $useJoins Whether to include joining related objects (optional) (default=true)
+     * @param boolean $useJoins Whether to include joining related objects (optional) (default=false)
      *
      * @return QueryBuilder Created query builder instance
-     * @TODO fix usage of joins; please remove the first line and test
      */
-    protected function getCountQuery($where = '', $useJoins = true)
+    protected function getCountQuery($where = '', $useJoins = false)
     {
-        $useJoins = false;
-    
         $selection = 'COUNT(tbl.id) AS numNotices';
         if (true === $useJoins) {
             $selection .= $this->addJoinsToSelection();
@@ -793,12 +818,12 @@ abstract class AbstractNoticeRepository extends EntityRepository
      * Selects entity count with a given where clause.
      *
      * @param string  $where      The where clause to use when retrieving the object count (optional) (default='')
-     * @param boolean $useJoins   Whether to include joining related objects (optional) (default=true)
+     * @param boolean $useJoins   Whether to include joining related objects (optional) (default=false)
      * @param array   $parameters List of determined filter options
      *
      * @return integer amount of affected records
      */
-    public function selectCount($where = '', $useJoins = true, $parameters = [])
+    public function selectCount($where = '', $useJoins = false, $parameters = [])
     {
         $qb = $this->getCountQuery($where, $useJoins);
     
@@ -813,9 +838,9 @@ abstract class AbstractNoticeRepository extends EntityRepository
     /**
      * Checks for unique values.
      *
-     * @param string $fieldName  The name of the property to be checked
-     * @param string $fieldValue The value of the property to be checked
-     * @param int    $excludeId  Id of notices to exclude (optional)
+     * @param string  $fieldName  The name of the property to be checked
+     * @param string  $fieldValue The value of the property to be checked
+     * @param integer $excludeId  Id of notices to exclude (optional)
      *
      * @return boolean result of this check, true if the given notice does not already exist
      */
@@ -825,7 +850,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
         $qb->andWhere('tbl.' . $fieldName . ' = :' . $fieldName)
            ->setParameter($fieldName, $fieldValue);
     
-        $qb = $this->addExclusion($qb, $excludeId);
+        $qb = $this->addExclusion($qb, [$excludeId]);
     
         $query = $qb->getQuery();
     
@@ -887,9 +912,8 @@ abstract class AbstractNoticeRepository extends EntityRepository
      */
     protected function genericBaseQueryAddWhere(QueryBuilder $qb, $where = '')
     {
-        if (!empty($where)) {
+        if (!empty($where) || null !== $this->getRequest()) {
             // Use FilterUtil to support generic filtering.
-            //$qb->where($where);
     
             // Create filter configuration.
             $filterConfig = new FilterConfig($qb);
@@ -902,7 +926,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
                 // If no plugin with default = true given the compare plugin is loaded and used for unconfigured fields.
                 // Multiple objects of the same plugin with different configurations are possible.
                 [
-                    new DateFilter(['startDate', 'endDate', 'eventStartDateTime', 'eventEndDateTime'/*, 'tblJoin.someJoinedField'*/])
+                    new DateFilter(['startDate', 'endDate'/*, 'tblJoin.someJoinedField'*/])
                 ],
     
                 // Allowed operators per field.
@@ -919,19 +943,16 @@ abstract class AbstractNoticeRepository extends EntityRepository
                 $config['plugins'][] = new CategoryFilter('RKBulletinModule', $propertyName, 'categories' . ucfirst($propertyName));
             }
     
-            // Request object to obtain the filter string (only needed if the filter is set via GET or it reads values from GET).
-            // We do this not per default (for now) to prevent problems with explicite filters set by blocks or content types.
-            // TODO readd automatic request processing (basically replacing applyDefaultFilters() and addCommonViewFilters()).
-            $request = null;
-    
             // Name of filter variable(s) (filterX).
             $filterKey = 'filter';
     
             // initialise FilterUtil and assign both query builder and configuration
-            $filterUtil = new FilterUtil($filterPluginManager, $request, $filterKey);
+            $filterUtil = new FilterUtil($filterPluginManager, $this->getRequest(), $filterKey);
     
             // set our given filter
-            $filterUtil->setFilter($where);
+            if (!empty($where)) {
+                $filterUtil->setFilter($where);
+            }
     
             // you could add explicit filters at this point, something like
             // $filterUtil->addFilter('foo:eq:something,bar:gt:100');
@@ -1028,7 +1049,7 @@ abstract class AbstractNoticeRepository extends EntityRepository
      */
     protected function addJoinsToSelection()
     {
-        $selection = ', tblAddresses';
+        $selection = ', tblPictures, tblEvent';
     
         $selection = ', tblCategories';
     
@@ -1044,7 +1065,8 @@ abstract class AbstractNoticeRepository extends EntityRepository
      */
     protected function addJoinsToFrom(QueryBuilder $qb)
     {
-        $qb->leftJoin('tbl.addresses', 'tblAddresses');
+        $qb->leftJoin('tbl.pictures', 'tblPictures');
+        $qb->leftJoin('tbl.event', 'tblEvent');
     
         $qb->leftJoin('tbl.categories', 'tblCategories');
     

@@ -13,15 +13,8 @@
 namespace RK\BulletinModule\Entity;
 
 use RK\BulletinModule\Entity\Base\AbstractNoticeEntity as BaseEntity;
-
 use Doctrine\ORM\Mapping as ORM;
-use Doctrine\Common\Collections\ArrayCollection;
 use Gedmo\Mapping\Annotation as Gedmo;
-use Gedmo\Translatable\Translatable;
-use Symfony\Component\HttpFoundation\File\File;
-use Symfony\Component\Validator\Constraints as Assert;
-use RK\BulletinModule\Traits\EntityWorkflowTrait;
-use RK\BulletinModule\Traits\StandardFieldsTrait;
 
 /**
  * Entity class that defines the entity structure and behaviours.
@@ -29,7 +22,7 @@ use RK\BulletinModule\Traits\StandardFieldsTrait;
  * This is the concrete entity class for notice entities.
  * @Gedmo\TranslationEntity(class="RK\BulletinModule\Entity\NoticeTranslationEntity")
  * @ORM\Entity(repositoryClass="RK\BulletinModule\Entity\Repository\NoticeRepository")
- * @ORM\Table(name="rk_bulletin_notice",
+ * @ORM\Table(name="rk_bull_notice",
  *     indexes={
  *         @ORM\Index(name="workflowstateindex", columns={"workflowState"})
  *     }

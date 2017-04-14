@@ -1,0 +1,7 @@
+{# purpose of this template: events index view #}
+{% extends routeArea == 'admin' ? 'RKBulletinModule::adminBase.html.twig' : 'RKBulletinModule::base.html.twig' %}
+{% block title __('events') %}
+{% block admin_page_icon 'home' %}
+{% block content %}
+    <p>{{ __('Welcome to the event section of the Bulletin application.') }}</p>
+{% endblock %}

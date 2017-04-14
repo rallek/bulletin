@@ -1,0 +1,16 @@
+{# Purpose of this template: Display item information for previewing from other modules #}
+<dl id="picture{{ picture.id }}">
+<dt>{{ picture.getTitleFromDisplayPattern()|notifyFilters('bulletin.filter_hooks.pictures.filter') }}</dt>
+<dd>{% if picture.imageMeta|default %}
+<a href="{{ picture.imageUrl }}" title="{{ picture.getTitleFromDisplayPattern()|e('html_attr') }}"{% if picture.imageMeta.isImage %} class="image-link"{% endif %}>
+{% if picture.imageMeta.isImage %}
+    {% set thumbOptions = attribute(thumbRuntimeOptions, 'pictureImage') %}
+    <img src="{{ picture.image.getPathname()|imagine_filter('zkroot', thumbOptions) }}" alt="{{ picture.getTitleFromDisplayPattern()|e('html_attr') }}" width="{{ thumbOptions.thumbnail.size[0] }}" height="{{ thumbOptions.thumbnail.size[1] }}" class="img-thumbnail" />
+{% else %}
+    {{ __('Download') }} ({{ picture.imageMeta.size|rkbulletinmodule_fileSize(picture.image.getPathname(), false, false) }})
+{% endif %}
+</a>
+{% endif %}
+</dd>
+{% if picture.copyright is not empty %}<dd>{{ picture.copyright }}</dd>{% endif %}
+</dl>

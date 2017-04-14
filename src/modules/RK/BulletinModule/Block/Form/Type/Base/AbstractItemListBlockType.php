@@ -19,6 +19,7 @@ use Symfony\Component\Form\FormView;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Zikula\Common\Translator\TranslatorInterface;
 use Zikula\Common\Translator\TranslatorTrait;
+use RK\BulletinModule\Helper\FeatureActivationHelper;
 
 /**
  * List block form type base class.
@@ -53,7 +54,7 @@ abstract class AbstractItemListBlockType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $this->addObjectTypeField($builder, $options);
-        if ($options['featureActivationHelper']->isEnabled(FeatureActivationHelper::CATEGORIES, $options['objectType'])) {
+        if ($options['feature_activation_helper']->isEnabled(FeatureActivationHelper::CATEGORIES, $options['object_type'])) {
             $this->addCategoriesField($builder, $options);
         }
         $this->addSortingField($builder, $options);
@@ -67,7 +68,7 @@ abstract class AbstractItemListBlockType extends AbstractType
      */
     public function buildView(FormView $view, FormInterface $form, array $options)
     {
-        $view->vars['isCategorisable'] = $options['isCategorisable'];
+        $view->vars['isCategorisable'] = $options['is_categorisable'];
     }
 
     /**
@@ -87,7 +88,8 @@ abstract class AbstractItemListBlockType extends AbstractType
             'help' => $this->__('If you change this please save the block once to reload the parameters below.'),
             'choices' => [
                 $this->__('Notices') => 'notice',
-                $this->__('Images') => 'image'
+                $this->__('Pictures') => 'picture',
+                $this->__('Events') => 'event'
             ],
             'choices_as_values' => true,
             'multiple' => false,
@@ -103,11 +105,11 @@ abstract class AbstractItemListBlockType extends AbstractType
      */
     public function addCategoriesField(FormBuilderInterface $builder, array $options)
     {
-        if (!$options['isCategorisable'] || null === $options['categoryHelper']) {
+        if (!$options['is_categorisable'] || null === $options['category_helper']) {
             return;
         }
     
-        $hasMultiSelection = $options['categoryHelper']->hasMultipleSelection($options['objectType']);
+        $hasMultiSelection = $options['category_helper']->hasMultipleSelection($options['object_type']);
         $builder->add('categories', 'Zikula\CategoriesModule\Form\Type\CategoriesType', [
             'label' => ($hasMultiSelection ? $this->__('Categories') : $this->__('Category')) . ':',
             'empty_data' => $hasMultiSelection ? [] : null,
@@ -119,8 +121,8 @@ abstract class AbstractItemListBlockType extends AbstractType
             'required' => false,
             'multiple' => $hasMultiSelection,
             'module' => 'RKBulletinModule',
-            'entity' => ucfirst($options['objectType']) . 'Entity',
-            'entityCategoryClass' => 'RK\BulletinModule\Entity\\' . ucfirst($options['objectType']) . 'CategoryEntity'
+            'entity' => ucfirst($options['object_type']) . 'Entity',
+            'entityCategoryClass' => 'RK\BulletinModule\Entity\\' . ucfirst($options['object_type']) . 'CategoryEntity'
         ]);
     }
 
@@ -231,15 +233,18 @@ abstract class AbstractItemListBlockType extends AbstractType
     {
         $resolver
             ->setDefaults([
-                'objectType' => 'notice',
-                'isCategorisable' => false,
-                'categoryHelper' => null
+                'object_type' => 'notice',
+                'is_categorisable' => false,
+                'category_helper' => null,
+                'feature_activation_helper' => null
             ])
-            ->setRequired(['objectType'])
-            ->setOptional(['isCategorisable', 'categoryHelper'])
+            ->setRequired(['object_type'])
+            ->setOptional(['is_categorisable', 'category_helper', 'feature_activation_helper'])
             ->setAllowedTypes([
                 'objectType' => 'string',
-                'isCategorisable' => 'bool'
+                'is_categorisable' => 'bool',
+                'category_helper' => 'object',
+                'feature_activation_helper' => 'object'
             ])
         ;
     }

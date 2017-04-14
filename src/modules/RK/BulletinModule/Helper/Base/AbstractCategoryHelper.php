@@ -80,8 +80,8 @@ abstract class AbstractCategoryHelper
         LoggerInterface $logger,
         CurrentUserApi $currentUserApi,
         CategoryRegistryApi $categoryRegistryApi,
-        CategoryPermissionApi $categoryPermissionApi)
-    {
+        CategoryPermissionApi $categoryPermissionApi
+    ) {
         $this->translator = $translator;
         $this->session = $session;
         $this->request = $requestStack->getCurrentRequest();
@@ -95,25 +95,25 @@ abstract class AbstractCategoryHelper
      * Retrieves the main/default category of RKBulletinModule.
      *
      * @param string $objectType The object type to retrieve
-     * @param string $registry   Name of category registry to be used (optional)
+     * @param string $property   Name of category registry property to be used (optional)
      * @deprecated Use the methods getAllProperties, getAllPropertiesWithMainCat, getMainCatForProperty and getPrimaryProperty instead
      *
      * @return mixed Category array on success, false on failure
      */
-    public function getMainCat($objectType = '', $registry = '')
+    public function getMainCat($objectType = '', $property = '')
     {
         if (empty($objectType)) {
             throw new InvalidArgumentException($this->translator->__('Invalid object type received.'));
     	}
-        if (empty($registry)) {
+        if (empty($property)) {
             // default to the primary registry
-            $registry = $this->getPrimaryProperty($objectType);
+            $property = $this->getPrimaryProperty($objectType);
         }
     
         $logArgs = ['app' => 'RKBulletinModule', 'user' => $this->currentUserApi->get('uname')];
         $this->logger->warning('{app}: User {user} called CategoryHelper#getMainCat which is deprecated.', $logArgs);
     
-        return $this->categoryRegistryApi->getModuleCategoryId('RKBulletinModule', ucfirst($objectType) . 'Entity', $registry, 32); // 32 == /__System/Modules/Global
+        return $this->categoryRegistryApi->getModuleCategoryId('RKBulletinModule', ucfirst($objectType) . 'Entity', $property, 32); // 32 == /__System/Modules/Global
     }
     
     /**
@@ -142,6 +142,9 @@ abstract class AbstractCategoryHelper
         $result = false;
         switch ($objectType) {
             case 'notice':
+                $result = false;
+                break;
+            case 'event':
                 $result = false;
                 break;
         }
@@ -276,7 +279,7 @@ abstract class AbstractCategoryHelper
      *
      * @return array list of the registries (registry id as key, main category id as value)
      */
-    public function getAllPropertiesWithMainCat($objectType = '', $arrayKey = '')
+    public function getAllPropertiesWithMainCat($objectType = '', $arrayKey = 'property')
     {
         if (empty($objectType)) {
             throw new InvalidArgumentException($this->translator->__('Invalid object type received.'));

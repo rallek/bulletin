@@ -28,7 +28,6 @@ use RK\BulletinModule\Entity\Factory\BulletinFactory;
 use RK\BulletinModule\Helper\FeatureActivationHelper;
 use RK\BulletinModule\Helper\ImageHelper;
 use RK\BulletinModule\Helper\ModelHelper;
-use RK\BulletinModule\Helper\SelectionHelper;
 
 /**
  * Helper base class for controller layer methods.
@@ -73,11 +72,6 @@ abstract class AbstractControllerHelper
     protected $modelHelper;
 
     /**
-     * @var SelectionHelper
-     */
-    protected $selectionHelper;
-
-    /**
      * @var ImageHelper
      */
     protected $imageHelper;
@@ -98,7 +92,6 @@ abstract class AbstractControllerHelper
      * @param VariableApi         $variableApi     VariableApi service instance
      * @param BulletinFactory $entityFactory BulletinFactory service instance
      * @param ModelHelper         $modelHelper     ModelHelper service instance
-     * @param SelectionHelper     $selectionHelper SelectionHelper service instance
      * @param ImageHelper         $imageHelper     ImageHelper service instance
      * @param FeatureActivationHelper $featureActivationHelper FeatureActivationHelper service instance
      */
@@ -111,12 +104,9 @@ abstract class AbstractControllerHelper
         VariableApi $variableApi,
         BulletinFactory $entityFactory,
         ModelHelper $modelHelper,
-        SelectionHelper $selectionHelper,
-        ImageHelper $imageHelper
-        ,
+        ImageHelper $imageHelper,
         FeatureActivationHelper $featureActivationHelper
-        )
-    {
+    ) {
         $this->setTranslator($translator);
         $this->request = $requestStack->getCurrentRequest();
         $this->session = $session;
@@ -125,7 +115,6 @@ abstract class AbstractControllerHelper
         $this->variableApi = $variableApi;
         $this->entityFactory = $entityFactory;
         $this->modelHelper = $modelHelper;
-        $this->selectionHelper = $selectionHelper;
         $this->imageHelper = $imageHelper;
         $this->featureActivationHelper = $featureActivationHelper;
     }
@@ -156,7 +145,8 @@ abstract class AbstractControllerHelper
     
         $allowedObjectTypes = [];
         $allowedObjectTypes[] = 'notice';
-        $allowedObjectTypes[] = 'image';
+        $allowedObjectTypes[] = 'picture';
+        $allowedObjectTypes[] = 'event';
     
         return $allowedObjectTypes;
     }
@@ -186,17 +176,17 @@ abstract class AbstractControllerHelper
      * @param Request $request    The current request
      * @param array   $args       List of arguments used as fallback if request does not contain a field
      * @param string  $objectType Name of treated entity type
-     * @param array   $idFields   List of identifier field names
      *
      * @return array List of fetched identifiers
      */
-    public function retrieveIdentifier(Request $request, array $args, $objectType = '', array $idFields)
+    public function retrieveIdentifier(Request $request, array $args, $objectType = '')
     {
+        $idFields = $this->entityFactory->getIdFields($objectType);
         $idValues = [];
         $routeParams = $request->get('_route_params', []);
         foreach ($idFields as $idField) {
             $defaultValue = isset($args[$idField]) && is_numeric($args[$idField]) ? $args[$idField] : 0;
-            if ($this->selectionHelper->hasCompositeKeys($objectType)) {
+            if ($this->entityFactory->hasCompositeKeys($objectType)) {
                 // composite key may be alphanumeric
                 if (array_key_exists($idField, $routeParams)) {
                     $id = !empty($routeParams[$idField]) ? $routeParams[$idField] : $defaultValue;
@@ -266,7 +256,7 @@ abstract class AbstractControllerHelper
     public function formatPermalink($name)
     {
         $name = str_replace(
-            ['Ã¤', 'Ã¶', 'Ã¼', 'Ã„', 'Ã–', 'Ãœ', 'ÃŸ', '.', '?', '"', '/', ':', 'Ã©', 'Ã¨', 'Ã¢'],
+            ['ä', 'ö', 'ü', 'Ä', 'Ö', 'Ü', 'ß', '.', '?', '"', '/', ':', 'é', 'è', 'â'],
             ['ae', 'oe', 'ue', 'Ae', 'Oe', 'Ue', 'ss', '', '', '', '-', '-', 'e', 'e', 'a'],
             $name
         );
@@ -298,6 +288,7 @@ abstract class AbstractControllerHelper
         $repository->setRequest($request);
     
         // parameter for used sorting field
+        $sort = $request->query->get('sort', '');
         if (empty($sort) || !in_array($sort, $repository->getAllowedSortingFields())) {
             $sort = $repository->getDefaultSortingField();
             $request->query->set('sort', $sort);
@@ -379,13 +370,13 @@ abstract class AbstractControllerHelper
         $where = '';
         if ($showAllEntries == 1) {
             // retrieve item list without pagination
-            $entities = $this->selectionHelper->getEntities($objectType, [], $where, $sort . ' ' . $sortdir);
+            $entities = $repository->selectWhere($where, $sort . ' ' . $sortdir);
         } else {
             // the current offset which is used to calculate the pagination
             $currentPage = $request->query->getInt('pos', 1);
     
             // retrieve item list with pagination
-            list($entities, $objectCount) = $this->selectionHelper->getEntitiesPaginated($objectType, $where, $sort . ' ' . $sortdir, $currentPage, $resultsPerPage);
+            list($entities, $objectCount) = $repository->selectWherePaginated($where, $sort . ' ' . $sortdir, $currentPage, $resultsPerPage);
     
             $templateParameters['currentPage'] = $currentPage;
             $templateParameters['pager'] = [

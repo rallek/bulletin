@@ -86,8 +86,8 @@ abstract class AbstractUploadHelper
         LoggerInterface $logger,
         CurrentUserApi $currentUserApi,
         VariableApi $variableApi,
-        $dataDirectory)
-    {
+        $dataDirectory
+    ) {
         $this->setTranslator($translator);
         $this->session = $session;
         $this->logger = $logger;
@@ -95,7 +95,7 @@ abstract class AbstractUploadHelper
         $this->variableApi = $variableApi;
         $this->dataDirectory = $dataDirectory;
 
-        $this->allowedObjectTypes = ['notice', 'image'];
+        $this->allowedObjectTypes = ['notice', 'picture'];
         $this->imageFileTypes = ['gif', 'jpeg', 'jpg', 'png', 'swf'];
         $this->forbiddenFileTypes = ['cgi', 'pl', 'asp', 'phtml', 'php', 'php3', 'php4', 'php5', 'exe', 'com', 'bat', 'jsp', 'cfm', 'shtml'];
     }
@@ -323,7 +323,7 @@ abstract class AbstractUploadHelper
             case 'notice':
                 $allowedExtensions = ['gif', 'jpeg', 'jpg', 'png'];
                     break;
-            case 'image':
+            case 'picture':
                 $allowedExtensions = ['gif', 'jpeg', 'jpg', 'png'];
                     break;
         }
@@ -364,7 +364,7 @@ abstract class AbstractUploadHelper
             case 'notice':
                 $namingScheme = 0;
                     break;
-            case 'image':
+            case 'picture':
                 $namingScheme = 0;
                     break;
         }
@@ -462,8 +462,8 @@ abstract class AbstractUploadHelper
             case 'notice':
                 $basePath .= 'notices/image/';
                 break;
-            case 'image':
-                $basePath .= 'images/image/';
+            case 'picture':
+                $basePath .= 'pictures/image/';
                 break;
             default:
                 throw new Exception($this->__('Error! Invalid object type received.'));
@@ -522,7 +522,7 @@ abstract class AbstractUploadHelper
     
         $result &= $this->checkAndCreateUploadFolder('notice', 'image', 'gif, jpeg, jpg, png');
     
-        $result &= $this->checkAndCreateUploadFolder('image', 'image', 'gif, jpeg, jpg, png');
+        $result &= $this->checkAndCreateUploadFolder('picture', 'image', 'gif, jpeg, jpg, png');
     
         return $result;
     }

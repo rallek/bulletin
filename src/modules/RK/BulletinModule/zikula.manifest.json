@@ -10,7 +10,7 @@
         "icon": ""
     },
     "version": {
-        "semver": "0.1.1",
+        "semver": "0.3.0",
         "compatibility": ">=1.4.5 <2.0.0",
         "composerpath": "composer.json",
         "description": "Bulletin is a news and event announcing modul",

@@ -22,7 +22,7 @@ use Doctrine\ORM\Mapping as ORM;
  * This is the concrete translation class for notice entities.
  *
  * @ORM\Entity(repositoryClass="RK\BulletinModule\Entity\Repository\NoticeTranslationRepository")
- * @ORM\Table(name="rk_bulletin_notice_translation",
+ * @ORM\Table(name="rk_bull_notice_translation",
  *     indexes={
  *         @ORM\Index(name="translations_lookup_idx", columns={
  *             "locale", "object_class", "foreign_key"

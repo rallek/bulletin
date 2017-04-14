@@ -1,11 +1,6 @@
 services:
     # Form field types
     
-    rk_bulletin_module.form.type.field.datetime:
-        class: RK\BulletinModule\Form\Type\Field\DateTimeType
-        tags:
-            - { name: form.type }
-    
     rk_bulletin_module.form.type.field.translation:
         class: RK\BulletinModule\Form\Type\Field\TranslationType
         tags:
@@ -25,5 +20,13 @@ services:
         class: RK\BulletinModule\Form\Type\Field\UserType
         arguments:
             - "@zikula_users_module.user_repository"
+        tags:
+            - { name: form.type }
+    
+    rk_bulletin_module.form.type.field.autocompletionrelation:
+        class: RK\BulletinModule\Form\Type\Field\AutoCompletionRelationType
+        arguments:
+            - "@router"
+            - "@rk_bulletin_module.entity_factory"
         tags:
             - { name: form.type }

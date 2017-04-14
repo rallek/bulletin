@@ -70,8 +70,8 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
         PermissionApi $permissionApi,
         VariableApi $variableApi,
         CurrentUserApi $currentUserApi,
-        ControllerHelper $controllerHelper)
-    {
+        ControllerHelper $controllerHelper
+    ) {
         $this->setTranslator($translator);
         $this->router = $router;
         $this->permissionApi = $permissionApi;
@@ -123,12 +123,23 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
                 }
             }
 
-            if (true === $this->variableApi->get('RKBulletinModule', 'linkOwnImagesOnAccountPage', true)) {
-                $objectType = 'image';
+            if (true === $this->variableApi->get('RKBulletinModule', 'linkOwnPicturesOnAccountPage', true)) {
+                $objectType = 'picture';
                 if ($this->permissionApi->hasPermission($this->getBundleName() . ':' . ucfirst($objectType) . ':', '::', ACCESS_READ)) {
                     $links[] = [
                         'url' => $this->router->generate('rkbulletinmodule_' . strtolower($objectType) . '_view', ['own' => 1]),
-                        'text' => $this->__('My images', 'rkbulletinmodule'),
+                        'text' => $this->__('My pictures', 'rkbulletinmodule'),
+                        'icon' => 'list-alt'
+                    ];
+                }
+            }
+
+            if (true === $this->variableApi->get('RKBulletinModule', 'linkOwnEventsOnAccountPage', true)) {
+                $objectType = 'event';
+                if ($this->permissionApi->hasPermission($this->getBundleName() . ':' . ucfirst($objectType) . ':', '::', ACCESS_READ)) {
+                    $links[] = [
+                        'url' => $this->router->generate('rkbulletinmodule_' . strtolower($objectType) . '_view', ['own' => 1]),
+                        'text' => $this->__('My events', 'rkbulletinmodule'),
                         'icon' => 'list-alt'
                     ];
                 }
@@ -175,12 +186,20 @@ abstract class AbstractLinkContainer implements LinkContainerInterface
                 'title' => $this->__('Notice list', 'rkbulletinmodule')
             ];
         }
-        if (in_array('image', $allowedObjectTypes)
-            && $this->permissionApi->hasPermission($this->getBundleName() . ':Image:', '::', $permLevel)) {
+        if (in_array('picture', $allowedObjectTypes)
+            && $this->permissionApi->hasPermission($this->getBundleName() . ':Picture:', '::', $permLevel)) {
             $links[] = [
-                'url' => $this->router->generate('rkbulletinmodule_image_' . $routeArea . 'view'),
-                'text' => $this->__('Images', 'rkbulletinmodule'),
-                'title' => $this->__('Image list', 'rkbulletinmodule')
+                'url' => $this->router->generate('rkbulletinmodule_picture_' . $routeArea . 'view'),
+                'text' => $this->__('Pictures', 'rkbulletinmodule'),
+                'title' => $this->__('Picture list', 'rkbulletinmodule')
+            ];
+        }
+        if (in_array('event', $allowedObjectTypes)
+            && $this->permissionApi->hasPermission($this->getBundleName() . ':Event:', '::', $permLevel)) {
+            $links[] = [
+                'url' => $this->router->generate('rkbulletinmodule_event_' . $routeArea . 'view'),
+                'text' => $this->__('Events', 'rkbulletinmodule'),
+                'title' => $this->__('Event list', 'rkbulletinmodule')
             ];
         }
         if ($routeArea == 'admin' && $this->permissionApi->hasPermission($this->getBundleName() . '::', '::', ACCESS_ADMIN)) {

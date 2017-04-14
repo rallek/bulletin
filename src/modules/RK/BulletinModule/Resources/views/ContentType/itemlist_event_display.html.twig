@@ -1,0 +1,6 @@
+{# Purpose of this template: Display events within an external context #}
+{% for event in items %}
+    <h3>{{ event.getTitleFromDisplayPattern() }}</h3>
+    <p><a href="{{ path('rkbulletinmodule_event_display', { 'id': event.id }) }}">{{ __('Read more') }}</a>
+    </p>
+{% endfor %}

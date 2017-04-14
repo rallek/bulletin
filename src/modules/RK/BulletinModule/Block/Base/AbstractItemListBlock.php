@@ -39,7 +39,7 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
     {
         parent::__construct($bundle);
     
-        $this->categorisableObjectTypes = ['notice'];
+        $this->categorisableObjectTypes = ['notice', 'event'];
     }
     
     /**
@@ -176,8 +176,8 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
     
         $sortParam = '';
         if ($properties['sorting'] == 'newest') {
-            $selectionHelper = $this->get('rk_bulletin_module.selection_helper');
-            $idFields = $selectionHelper->getIdFields($properties['objectType']);
+            $entityFactory = $this->get('rk_bulletin_module.entity_factory');
+            $idFields = $entityFactory->getIdFields($properties['objectType']);
             if (count($idFields) == 1) {
                 $sortParam = $idFields[0] . ' DESC';
             } else {
@@ -226,10 +226,10 @@ abstract class AbstractItemListBlock extends AbstractBlockHandler
         }
     
         return [
-            'objectType' => $objectType,
-            'isCategorisable' => in_array($objectType, $this->categorisableObjectTypes),
-            'categoryHelper' => $this->get('rk_bulletin_module.category_helper'),
-            'featureActivationHelper' => $this->get('rk_bulletin_module.feature_activation_helper')
+            'object_type' => $objectType,
+            'is_categorisable' => in_array($objectType, $this->categorisableObjectTypes),
+            'category_helper' => $this->get('rk_bulletin_module.category_helper'),
+            'feature_activation_helper' => $this->get('rk_bulletin_module.feature_activation_helper')
         ];
     }
     

@@ -244,8 +244,12 @@ abstract class AbstractTwigExtension extends Twig_Extension
             'value' => 'notice'
         ];
         $result[] = [
-            'text' => $this->__('Images'),
-            'value' => 'image'
+            'text' => $this->__('Pictures'),
+            'value' => 'picture'
+        ];
+        $result[] = [
+            'text' => $this->__('Events'),
+            'value' => 'event'
         ];
     
         return $result;
@@ -293,14 +297,14 @@ abstract class AbstractTwigExtension extends Twig_Extension
         if (!is_numeric($uid)) {
             $limit = 1;
             $filter = [
-                'uname' => ['operator' => 'eq', 'operand' => $uid]
+                'uname' => ['operator' => '=', 'operand' => $uid]
             ];
             $results = $this->userRepository->query($filter, [], $limit);
             if (!count($results)) {
                 return '';
             }
     
-            $uid = $results[0]->getUname();
+            $uid = $results->getIterator()->getArrayCopy()[0]->getUname();
         }
         $params = ['uid' => $uid];
         if ($width > 0) {

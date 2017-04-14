@@ -13,7 +13,6 @@
 namespace RK\BulletinModule\Container\Base;
 
 use Zikula\Bundle\HookBundle\AbstractHookContainer as ZikulaHookContainer;
-
 use Zikula\Bundle\HookBundle\Bundle\SubscriberBundle;
 
 /**
@@ -51,29 +50,51 @@ abstract class AbstractHookContainer extends ZikulaHookContainer
         $bundle->addEvent('filter', 'rkbulletinmodule.filter_hooks.notices.filter');
         $this->registerHookSubscriberBundle($bundle);
         
-        $bundle = new SubscriberBundle('RKBulletinModule', 'subscriber.rkbulletinmodule.ui_hooks.images', 'ui_hooks', $this->__('rkbulletinmodule. Images Display Hooks'));
+        $bundle = new SubscriberBundle('RKBulletinModule', 'subscriber.rkbulletinmodule.ui_hooks.pictures', 'ui_hooks', $this->__('rkbulletinmodule. Pictures Display Hooks'));
         
         // Display hook for view/display templates.
-        $bundle->addEvent('display_view', 'rkbulletinmodule.ui_hooks.images.display_view');
+        $bundle->addEvent('display_view', 'rkbulletinmodule.ui_hooks.pictures.display_view');
         // Display hook for create/edit forms.
-        $bundle->addEvent('form_edit', 'rkbulletinmodule.ui_hooks.images.form_edit');
+        $bundle->addEvent('form_edit', 'rkbulletinmodule.ui_hooks.pictures.form_edit');
         // Display hook for delete dialogues.
-        $bundle->addEvent('form_delete', 'rkbulletinmodule.ui_hooks.images.form_delete');
+        $bundle->addEvent('form_delete', 'rkbulletinmodule.ui_hooks.pictures.form_delete');
         // Validate input from an ui create/edit form.
-        $bundle->addEvent('validate_edit', 'rkbulletinmodule.ui_hooks.images.validate_edit');
+        $bundle->addEvent('validate_edit', 'rkbulletinmodule.ui_hooks.pictures.validate_edit');
         // Validate input from an ui delete form.
-        $bundle->addEvent('validate_delete', 'rkbulletinmodule.ui_hooks.images.validate_delete');
+        $bundle->addEvent('validate_delete', 'rkbulletinmodule.ui_hooks.pictures.validate_delete');
         // Perform the final update actions for a ui create/edit form.
-        $bundle->addEvent('process_edit', 'rkbulletinmodule.ui_hooks.images.process_edit');
+        $bundle->addEvent('process_edit', 'rkbulletinmodule.ui_hooks.pictures.process_edit');
         // Perform the final delete actions for a ui form.
-        $bundle->addEvent('process_delete', 'rkbulletinmodule.ui_hooks.images.process_delete');
+        $bundle->addEvent('process_delete', 'rkbulletinmodule.ui_hooks.pictures.process_delete');
         $this->registerHookSubscriberBundle($bundle);
         
-        $bundle = new SubscriberBundle('RKBulletinModule', 'subscriber.rkbulletinmodule.filter_hooks.images', 'filter_hooks', $this->__('rkbulletinmodule. Images Filter Hooks'));
+        $bundle = new SubscriberBundle('RKBulletinModule', 'subscriber.rkbulletinmodule.filter_hooks.pictures', 'filter_hooks', $this->__('rkbulletinmodule. Pictures Filter Hooks'));
         // A filter applied to the given area.
-        $bundle->addEvent('filter', 'rkbulletinmodule.filter_hooks.images.filter');
+        $bundle->addEvent('filter', 'rkbulletinmodule.filter_hooks.pictures.filter');
         $this->registerHookSubscriberBundle($bundle);
         
+        $bundle = new SubscriberBundle('RKBulletinModule', 'subscriber.rkbulletinmodule.ui_hooks.events', 'ui_hooks', $this->__('rkbulletinmodule. Events Display Hooks'));
+        
+        // Display hook for view/display templates.
+        $bundle->addEvent('display_view', 'rkbulletinmodule.ui_hooks.events.display_view');
+        // Display hook for create/edit forms.
+        $bundle->addEvent('form_edit', 'rkbulletinmodule.ui_hooks.events.form_edit');
+        // Display hook for delete dialogues.
+        $bundle->addEvent('form_delete', 'rkbulletinmodule.ui_hooks.events.form_delete');
+        // Validate input from an ui create/edit form.
+        $bundle->addEvent('validate_edit', 'rkbulletinmodule.ui_hooks.events.validate_edit');
+        // Validate input from an ui delete form.
+        $bundle->addEvent('validate_delete', 'rkbulletinmodule.ui_hooks.events.validate_delete');
+        // Perform the final update actions for a ui create/edit form.
+        $bundle->addEvent('process_edit', 'rkbulletinmodule.ui_hooks.events.process_edit');
+        // Perform the final delete actions for a ui form.
+        $bundle->addEvent('process_delete', 'rkbulletinmodule.ui_hooks.events.process_delete');
+        $this->registerHookSubscriberBundle($bundle);
+        
+        $bundle = new SubscriberBundle('RKBulletinModule', 'subscriber.rkbulletinmodule.filter_hooks.events', 'filter_hooks', $this->__('rkbulletinmodule. Events Filter Hooks'));
+        // A filter applied to the given area.
+        $bundle->addEvent('filter', 'rkbulletinmodule.filter_hooks.events.filter');
+        $this->registerHookSubscriberBundle($bundle);
         
         
     }

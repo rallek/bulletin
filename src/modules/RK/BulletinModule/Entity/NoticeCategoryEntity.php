@@ -21,7 +21,7 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * This is the concrete category class for notice entities.
  * @ORM\Entity(repositoryClass="\RK\BulletinModule\Entity\Repository\NoticeCategoryRepository")
- * @ORM\Table(name="rk_bulletin_notice_category",
+ * @ORM\Table(name="rk_bull_notice_category",
  *     uniqueConstraints={
  *         @ORM\UniqueConstraint(name="cat_unq", columns={"registryId", "categoryId", "entityId"})
  *     }

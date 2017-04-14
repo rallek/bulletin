@@ -60,10 +60,13 @@ abstract class AbstractBulletinModuleInstaller extends AbstractExtensionInstalle
         $this->setVar('teaserLength', '5000');
         $this->setVar('teaserDisplayLength', '250');
         $this->setVar('descriptionLength', 0);
+        $this->setVar('showCounter', true);
         $this->setVar('noticeEntriesPerPage', '10');
         $this->setVar('linkOwnNoticesOnAccountPage', true);
-        $this->setVar('imageEntriesPerPage', '10');
-        $this->setVar('linkOwnImagesOnAccountPage', true);
+        $this->setVar('pictureEntriesPerPage', '10');
+        $this->setVar('linkOwnPicturesOnAccountPage', true);
+        $this->setVar('eventEntriesPerPage', '10');
+        $this->setVar('linkOwnEventsOnAccountPage', true);
         $this->setVar('enableShrinkingForNoticeImage', false);
         $this->setVar('shrinkWidthNoticeImage', '800');
         $this->setVar('shrinkHeightNoticeImage', '600');
@@ -74,17 +77,17 @@ abstract class AbstractBulletinModuleInstaller extends AbstractExtensionInstalle
         $this->setVar('thumbnailHeightNoticeImageDisplay', '180');
         $this->setVar('thumbnailWidthNoticeImageEdit', '240');
         $this->setVar('thumbnailHeightNoticeImageEdit', '180');
-        $this->setVar('enableShrinkingForImageImage', false);
-        $this->setVar('shrinkWidthImageImage', '800');
-        $this->setVar('shrinkHeightImageImage', '600');
-        $this->setVar('thumbnailModeImageImage',  'inset' );
-        $this->setVar('thumbnailWidthImageImageView', '32');
-        $this->setVar('thumbnailHeightImageImageView', '24');
-        $this->setVar('thumbnailWidthImageImageDisplay', '240');
-        $this->setVar('thumbnailHeightImageImageDisplay', '180');
-        $this->setVar('thumbnailWidthImageImageEdit', '240');
-        $this->setVar('thumbnailHeightImageImageEdit', '180');
-        $this->setVar('enabledFinderTypes', [ 'notice' ,  'image' ]);
+        $this->setVar('enableShrinkingForPictureImage', false);
+        $this->setVar('shrinkWidthPictureImage', '800');
+        $this->setVar('shrinkHeightPictureImage', '600');
+        $this->setVar('thumbnailModePictureImage',  'inset' );
+        $this->setVar('thumbnailWidthPictureImageView', '32');
+        $this->setVar('thumbnailHeightPictureImageView', '24');
+        $this->setVar('thumbnailWidthPictureImageDisplay', '240');
+        $this->setVar('thumbnailHeightPictureImageDisplay', '180');
+        $this->setVar('thumbnailWidthPictureImageEdit', '240');
+        $this->setVar('thumbnailHeightPictureImageEdit', '180');
+        $this->setVar('enabledFinderTypes', [ 'notice' ,  'picture' ,  'event' ]);
     
         $categoryRegistryIdsPerEntity = [];
     
@@ -116,12 +119,27 @@ abstract class AbstractBulletinModuleInstaller extends AbstractExtensionInstalle
         }
         $categoryRegistryIdsPerEntity['notice'] = $registry->getId();
     
+        $registry = new CategoryRegistryEntity();
+        $registry->setModname('RKBulletinModule');
+        $registry->setEntityname('EventEntity');
+        $registry->setProperty($categoryHelper->getPrimaryProperty('Event'));
+        $registry->setCategory_Id($categoryGlobal['id']);
+    
+        try {
+            $entityManager = $this->container->get('doctrine.orm.default_entity_manager');
+            $entityManager->persist($registry);
+            $entityManager->flush();
+        } catch (\Exception $e) {
+            $this->addFlash('error', $this->__f('Error! Could not create a category registry for the %entity% entity.', ['%entity%' => 'event']));
+            $logger->error('{app}: User {user} could not create a category registry for {entities} during installation. Error details: {errorMessage}.', ['app' => 'RKBulletinModule', 'user' => $userName, 'entities' => 'events', 'errorMessage' => $e->getMessage()]);
+        }
+        $categoryRegistryIdsPerEntity['event'] = $registry->getId();
+    
         // create the default data
         $this->createDefaultData($categoryRegistryIdsPerEntity);
     
         // install subscriber hooks
         $this->hookApi->installSubscriberHooks($this->bundle->getMetaData());
-        
     
         // initialisation successful
         return true;
@@ -268,9 +286,9 @@ abstract class AbstractBulletinModuleInstaller extends AbstractExtensionInstalle
         $conn = $this->getConnection();
         $dbName = $this->getDbName();
     
-        $oldPrefix = 'bulletin_';
+        $oldPrefix = 'bull_';
         $oldPrefixLength = strlen($oldPrefix);
-        $newPrefix = 'rk_bulletin_';
+        $newPrefix = 'rk_bull_';
     
         $sm = $conn->getSchemaManager();
         $tables = $sm->listTables();
@@ -420,10 +438,10 @@ abstract class AbstractBulletinModuleInstaller extends AbstractExtensionInstalle
     
         // uninstall subscriber hooks
         $this->hookApi->uninstallSubscriberHooks($this->bundle->getMetaData());
-        
     
         // remove all module vars
         $this->delVars();
+    
         // remove category registry entries
         $categoryRegistryApi = $this->container->get('zikula_categories_module.api.category_registry');
         // assume that not more than five registries exist
@@ -455,7 +473,10 @@ abstract class AbstractBulletinModuleInstaller extends AbstractExtensionInstalle
         $classNames[] = 'RK\BulletinModule\Entity\NoticeEntity';
         $classNames[] = 'RK\BulletinModule\Entity\NoticeTranslationEntity';
         $classNames[] = 'RK\BulletinModule\Entity\NoticeCategoryEntity';
-        $classNames[] = 'RK\BulletinModule\Entity\ImageEntity';
+        $classNames[] = 'RK\BulletinModule\Entity\PictureEntity';
+        $classNames[] = 'RK\BulletinModule\Entity\EventEntity';
+        $classNames[] = 'RK\BulletinModule\Entity\EventTranslationEntity';
+        $classNames[] = 'RK\BulletinModule\Entity\EventCategoryEntity';
     
         return $classNames;
     }
@@ -475,7 +496,9 @@ abstract class AbstractBulletinModuleInstaller extends AbstractExtensionInstalle
         
         $entityClass = 'RK\BulletinModule\Entity\NoticeEntity';
         $entityManager->getRepository($entityClass)->truncateTable($logger);
-        $entityClass = 'RK\BulletinModule\Entity\ImageEntity';
+        $entityClass = 'RK\BulletinModule\Entity\PictureEntity';
+        $entityManager->getRepository($entityClass)->truncateTable($logger);
+        $entityClass = 'RK\BulletinModule\Entity\EventEntity';
         $entityManager->getRepository($entityClass)->truncateTable($logger);
     }
 }

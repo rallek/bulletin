@@ -9,107 +9,112 @@
             'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'
         ] %}
         {{ form_start(form) }}
-        <ul class="nav nav-pills">
-        {% set tabTitle = __('Bulletin') %}
-        <li class="active" role="presentation">
-            <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
-        </li>
-        {% set tabTitle = __('List views') %}
-        <li role="presentation">
-            <a id="vars2Tab" href="#tab2" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
-        </li>
-        {% set tabTitle = __('Images') %}
-        <li class=" dropdown" role="presentation">
-            <a id="imagesTabDrop" class="dropdown-toggle" href="#" data-toggle="dropdown" aria-controls="imagesTabDropSections" aria-expanded="false">{{ tabTitle }}<span class="caret"></span></a>
-            <ul id="imagesTabDropSections" class="dropdown-menu" aria-labelledby="imagesTabDrop">
-            <li>
-                <a id="imagesNoticeImageTab" href="#tabImagesNoticeImage" role="tab" data-toggle="tab" aria-controls="tabImagesNoticeImage">{{ __('Notices image') }}</a>
+        <div class="zikula-bootstrap-tab-container">
+            <ul class="nav nav-tabs">
+            {% set tabTitle = __('Bulletin') %}
+            <li role="presentation" class="active">
+                <a id="vars1Tab" href="#tab1" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
             </li>
-            <li>
-                <a id="imagesImageImageTab" href="#tabImagesImageImage" role="tab" data-toggle="tab" aria-controls="tabImagesImageImage">{{ __('Images image') }}</a>
+            {% set tabTitle = __('List views') %}
+            <li role="presentation">
+                <a id="vars2Tab" href="#tab2" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
+            </li>
+            {% set tabTitle = __('Images') %}
+            <li role="presentation" class=" dropdown">
+                <a id="imagesTabDrop" class="dropdown-toggle" href="#" data-toggle="dropdown" aria-controls="imagesTabDropSections" aria-expanded="false" title="{{ tabTitle|e('html_attr') }}">{{ tabTitle }}<span class="caret"></span></a>
+                <ul id="imagesTabDropSections" class="dropdown-menu" aria-labelledby="imagesTabDrop">
+                <li>
+                    <a id="imagesNoticeImageTab" href="#tabImagesNoticeImage" role="tab" data-toggle="tab" aria-controls="tabImagesNoticeImage">{{ __('Notices image') }}</a>
+                </li>
+                <li>
+                    <a id="imagesPictureImageTab" href="#tabImagesPictureImage" role="tab" data-toggle="tab" aria-controls="tabImagesPictureImage">{{ __('Pictures image') }}</a>
+                </li>
+                </ul>
+            </li>
+            {% set tabTitle = __('Integration') %}
+            <li role="presentation">
+                <a id="vars4Tab" href="#tab4" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
             </li>
             </ul>
-        </li>
-        {% set tabTitle = __('Integration') %}
-        <li role="presentation">
-            <a id="vars4Tab" href="#tab4" title="{{ tabTitle|e('html_attr') }}" role="tab" data-toggle="tab">{{ tabTitle }}</a>
-        </li>
-        </ul>
 
-        {{ form_errors(form) }}
-        <div class="tab-content">
-            <div role="tabpanel" class="tab-pane fade in active" id="tab1" aria-labelledby="vars1Tab">
-                {% set tabTitle = __('Bulletin') %}
-                <fieldset>
-                    <legend>{{ tabTitle }}</legend>
+            {{ form_errors(form) }}
+            <div class="tab-content">
+                <div role="tabpanel" class="tab-pane fade in active" id="tab1" aria-labelledby="vars1Tab">
+                    {% set tabTitle = __('Bulletin') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('Here you can manage all basic settings for this application.') }}</p>
+                    
+                        {{ form_row(form.teaserLength) }}
+                        {{ form_row(form.teaserDisplayLength) }}
+                        {{ form_row(form.descriptionLength) }}
+                        {{ form_row(form.showCounter) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab2" aria-labelledby="vars2Tab">
+                    {% set tabTitle = __('List views') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('Here you can configure parameters for list views.')|nl2br }}</p>
+                    
+                        {{ form_row(form.noticeEntriesPerPage) }}
+                        {{ form_row(form.linkOwnNoticesOnAccountPage) }}
+                        {{ form_row(form.pictureEntriesPerPage) }}
+                        {{ form_row(form.linkOwnPicturesOnAccountPage) }}
+                        {{ form_row(form.eventEntriesPerPage) }}
+                        {{ form_row(form.linkOwnEventsOnAccountPage) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabImagesNoticeImage" aria-labelledby="imagesNoticeImageTab">
+                    {% set tabTitle = __('Image settings for notices image') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
                 
-                    <p class="alert alert-info">{{ __('Here you can manage all basic settings for this application.') }}</p>
+                        {{ form_row(form.enableShrinkingForNoticeImage) }}
+                        <div id="shrinkDetailsNoticeImage">
+                        {{ form_row(form.shrinkWidthNoticeImage) }}
+                        {{ form_row(form.shrinkHeightNoticeImage) }}
+                        </div>
+                        {{ form_row(form.thumbnailModeNoticeImage) }}
+                        {{ form_row(form.thumbnailWidthNoticeImageView) }}
+                        {{ form_row(form.thumbnailHeightNoticeImageView) }}
+                        {{ form_row(form.thumbnailWidthNoticeImageDisplay) }}
+                        {{ form_row(form.thumbnailHeightNoticeImageDisplay) }}
+                        {{ form_row(form.thumbnailWidthNoticeImageEdit) }}
+                        {{ form_row(form.thumbnailHeightNoticeImageEdit) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tabImagesPictureImage" aria-labelledby="imagesPictureImageTab">
+                    {% set tabTitle = __('Image settings for pictures image') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
                 
-                    {{ form_row(form.teaserLength) }}
-                    {{ form_row(form.teaserDisplayLength) }}
-                    {{ form_row(form.descriptionLength) }}
-                </fieldset>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="tab2" aria-labelledby="vars2Tab">
-                {% set tabTitle = __('List views') %}
-                <fieldset>
-                    <legend>{{ tabTitle }}</legend>
-                
-                    <p class="alert alert-info">{{ __('Here you can configure parameters for list views.')|nl2br }}</p>
-                
-                    {{ form_row(form.noticeEntriesPerPage) }}
-                    {{ form_row(form.linkOwnNoticesOnAccountPage) }}
-                    {{ form_row(form.imageEntriesPerPage) }}
-                    {{ form_row(form.linkOwnImagesOnAccountPage) }}
-                </fieldset>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="tabImagesNoticeImage" aria-labelledby="imagesNoticeImageTab">
-                {% set tabTitle = __('Image settings for notices image') %}
-                <fieldset>
-                    <legend>{{ tabTitle }}</legend>
-            
-                    {{ form_row(form.enableShrinkingForNoticeImage) }}
-                    <div id="shrinkDetailsNoticeImage">
-                    {{ form_row(form.shrinkWidthNoticeImage) }}
-                    {{ form_row(form.shrinkHeightNoticeImage) }}
-                    </div>
-                    {{ form_row(form.thumbnailModeNoticeImage) }}
-                    {{ form_row(form.thumbnailWidthNoticeImageView) }}
-                    {{ form_row(form.thumbnailHeightNoticeImageView) }}
-                    {{ form_row(form.thumbnailWidthNoticeImageDisplay) }}
-                    {{ form_row(form.thumbnailHeightNoticeImageDisplay) }}
-                    {{ form_row(form.thumbnailWidthNoticeImageEdit) }}
-                    {{ form_row(form.thumbnailHeightNoticeImageEdit) }}
-                </fieldset>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="tabImagesImageImage" aria-labelledby="imagesImageImageTab">
-                {% set tabTitle = __('Image settings for images image') %}
-                <fieldset>
-                    <legend>{{ tabTitle }}</legend>
-            
-                    {{ form_row(form.enableShrinkingForImageImage) }}
-                    <div id="shrinkDetailsImageImage">
-                    {{ form_row(form.shrinkWidthImageImage) }}
-                    {{ form_row(form.shrinkHeightImageImage) }}
-                    </div>
-                    {{ form_row(form.thumbnailModeImageImage) }}
-                    {{ form_row(form.thumbnailWidthImageImageView) }}
-                    {{ form_row(form.thumbnailHeightImageImageView) }}
-                    {{ form_row(form.thumbnailWidthImageImageDisplay) }}
-                    {{ form_row(form.thumbnailHeightImageImageDisplay) }}
-                    {{ form_row(form.thumbnailWidthImageImageEdit) }}
-                    {{ form_row(form.thumbnailHeightImageImageEdit) }}
-                </fieldset>
-            </div>
-            <div role="tabpanel" class="tab-pane fade" id="tab4" aria-labelledby="vars4Tab">
-                {% set tabTitle = __('Integration') %}
-                <fieldset>
-                    <legend>{{ tabTitle }}</legend>
-                
-                    <p class="alert alert-info">{{ __('These options allow you to configure integration aspects.')|nl2br }}</p>
-                
-                    {{ form_row(form.enabledFinderTypes) }}
-                </fieldset>
+                        {{ form_row(form.enableShrinkingForPictureImage) }}
+                        <div id="shrinkDetailsPictureImage">
+                        {{ form_row(form.shrinkWidthPictureImage) }}
+                        {{ form_row(form.shrinkHeightPictureImage) }}
+                        </div>
+                        {{ form_row(form.thumbnailModePictureImage) }}
+                        {{ form_row(form.thumbnailWidthPictureImageView) }}
+                        {{ form_row(form.thumbnailHeightPictureImageView) }}
+                        {{ form_row(form.thumbnailWidthPictureImageDisplay) }}
+                        {{ form_row(form.thumbnailHeightPictureImageDisplay) }}
+                        {{ form_row(form.thumbnailWidthPictureImageEdit) }}
+                        {{ form_row(form.thumbnailHeightPictureImageEdit) }}
+                    </fieldset>
+                </div>
+                <div role="tabpanel" class="tab-pane fade" id="tab4" aria-labelledby="vars4Tab">
+                    {% set tabTitle = __('Integration') %}
+                    <fieldset>
+                        <legend>{{ tabTitle }}</legend>
+                    
+                        <p class="alert alert-info">{{ __('These options allow you to configure integration aspects.')|nl2br }}</p>
+                    
+                        {{ form_row(form.enabledFinderTypes) }}
+                    </fieldset>
+                </div>
             </div>
         </div>
 

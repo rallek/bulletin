@@ -61,3 +61,38 @@
         {% endif %}
     {% endif %}
 {% endblock %}
+
+{% block rkbulletinmodule_field_autocompletionrelation_widget %}
+    {% set entityNameTranslated = '' %}
+    {% set withImage = false %}
+    {% if object_type == 'notice' %}
+        {% set entityNameTranslated = __('notice') %}
+        {% set withImage = true %}
+    {% elseif object_type == 'picture' %}
+        {% set entityNameTranslated = __('picture') %}
+        {% set withImage = true %}
+    {% elseif object_type == 'event' %}
+        {% set entityNameTranslated = __('event') %}
+    {% endif %}
+    {% set idPrefix = unique_name_for_js %}
+    {% set addLinkText = multiple ? __f('Add %name%', { '%name%': entityNameTranslated }) : __f('Select %name%', { '%name%': entityNameTranslated }) %}
+
+    <div class="rkbulletinmodule-relation-rightside">
+        <a id="{{ idPrefix }}AddLink" href="javascript:void(0);" class="hidden">{{ addLinkText }}</a>
+        <div id="{{ idPrefix }}AddFields" class="rkbulletinmodule-autocomplete{{ withImage ? '-with-image' : '' }}">
+            <label for="{{ idPrefix }}Selector">{{ __f('Find %name%', { '%name%': entityNameTranslated }) }}</label>
+            <br />
+            <i class="fa fa-search" title="{{ __f('Search %name%', { '%name%': entityNameTranslated })|e('html_attr') }}"></i>
+            <input type="hidden" {{ block('widget_attributes') }} value="{{ value }}" />
+            <input type="hidden" name="{{ idPrefix }}Scope" id="{{ idPrefix }}Scope" value="{{ multiple ? '1' : '0' }}" />
+            <input type="text" id="{{ idPrefix }}Selector" name="{{ idPrefix }}Selector" autocomplete="off" />
+            <i class="fa fa-refresh fa-spin hidden" id="{{ idPrefix }}Indicator"></i>
+            <span id="{{ idPrefix }}NoResultsHint" class="hidden">{{ __('No results found!') }}</span>
+            <input type="button" id="{{ idPrefix }}SelectorDoCancel" name="{{ idPrefix }}SelectorDoCancel" value="{{ __('Cancel') }}" class="btn btn-default rkbulletinmodule-inline-button" />
+            {% if create_url != '' %}
+                <a id="{{ idPrefix }}SelectorDoNew" href="{{ create_url }}" title="{{ __f('Create new %name%', { '%name%': entityNameTranslated }) }}" class="btn btn-default rkbulletinnewsmodule-inline-button">{{ __('Create') }}</a>
+            {% endif %}
+            <noscript><p>{{ __('This function requires JavaScript activated!') }}</p></noscript>
+        </div>
+    </div>
+{% endblock %}

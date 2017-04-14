@@ -174,14 +174,17 @@ abstract class AbstractSearchHelper implements SearchableInterface
                     $whereArray[] = 'tbl.description';
                     $whereArray[] = 'tbl.image';
                     $whereArray[] = 'tbl.copyright';
-                    $whereArray[] = 'tbl.eventDescription';
-                    $whereArray[] = 'tbl.noticeLocale';
                     break;
-                case 'image':
+                case 'picture':
                     $whereArray[] = 'tbl.workflowState';
                     $whereArray[] = 'tbl.image';
                     $whereArray[] = 'tbl.copyright';
                     $whereArray[] = 'tbl.altText';
+                    break;
+                case 'event':
+                    $whereArray[] = 'tbl.workflowState';
+                    $whereArray[] = 'tbl.eventTitle';
+                    $whereArray[] = 'tbl.description';
                     break;
             }
     
@@ -209,7 +212,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
     
             $descriptionField = $repository->getDescriptionFieldName();
     
-            $entitiesWithDisplayAction = ['notice', 'image'];
+            $entitiesWithDisplayAction = ['notice', 'picture', 'event'];
     
             foreach ($entities as $entity) {
                 $urlArgs = $entity->createUrlArgs();
@@ -221,7 +224,7 @@ abstract class AbstractSearchHelper implements SearchableInterface
                     continue;
                 }
     
-                if (in_array($objectType, ['notice'])) {
+                if (in_array($objectType, ['notice', 'event'])) {
                     if ($this->featureActivationHelper->isEnabled(FeatureActivationHelper::CATEGORIES, $objectType)) {
                         if (!$this->categoryHelper->hasPermission($entity)) {
                             continue;
@@ -262,9 +265,13 @@ abstract class AbstractSearchHelper implements SearchableInterface
                 'value' => 'notice',
                 'label' => $this->__('Notices')
             ],
-            'rKBulletinModuleImages' => [
-                'value' => 'image',
-                'label' => $this->__('Images')
+            'rKBulletinModulePictures' => [
+                'value' => 'picture',
+                'label' => $this->__('Pictures')
+            ],
+            'rKBulletinModuleEvents' => [
+                'value' => 'event',
+                'label' => $this->__('Events')
             ]
         ];
     

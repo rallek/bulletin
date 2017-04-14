@@ -4,15 +4,20 @@
 {% block title __('Search and select notice') %}
 {% block content %}
     <div class="container">
-        <ul class="nav nav-tabs">
-        {% set activatedObjectTypes = getModVar('RKBulletinModule', 'enabledFinderTypes', []) %}
-        {% if 'notice' in activatedObjectTypes %}
-            <li{{ objectType == 'notice' ? ' class="active"' : '' }}><a href="{{ path('rkbulletinmodule_external_finder', {'objectType': 'notice', 'editor': editorName}) }}" title="{{ __('Search and select notice') }}">{{ __('Notices') }}</a></li>
-        {% endif %}
-        {% if 'image' in activatedObjectTypes %}
-            <li{{ objectType == 'image' ? ' class="active"' : '' }}><a href="{{ path('rkbulletinmodule_external_finder', {'objectType': 'image', 'editor': editorName}) }}" title="{{ __('Search and select image') }}">{{ __('Images') }}</a></li>
-        {% endif %}
-        </ul>
+        <div class="zikula-bootstrap-tab-container">
+            <ul class="nav nav-tabs">
+            {% set activatedObjectTypes = getModVar('RKBulletinModule', 'enabledFinderTypes', []) %}
+            {% if 'notice' in activatedObjectTypes %}
+                <li{{ objectType == 'notice' ? ' class="active"' : '' }}><a href="{{ path('rkbulletinmodule_external_finder', {'objectType': 'notice', 'editor': editorName}) }}" title="{{ __('Search and select notice') }}">{{ __('Notices') }}</a></li>
+            {% endif %}
+            {% if 'picture' in activatedObjectTypes %}
+                <li{{ objectType == 'picture' ? ' class="active"' : '' }}><a href="{{ path('rkbulletinmodule_external_finder', {'objectType': 'picture', 'editor': editorName}) }}" title="{{ __('Search and select picture') }}">{{ __('Pictures') }}</a></li>
+            {% endif %}
+            {% if 'event' in activatedObjectTypes %}
+                <li{{ objectType == 'event' ? ' class="active"' : '' }}><a href="{{ path('rkbulletinmodule_external_finder', {'objectType': 'event', 'editor': editorName}) }}" title="{{ __('Search and select event') }}">{{ __('Events') }}</a></li>
+            {% endif %}
+            </ul>
+        </div>
         {% form_theme finderForm with [
             '@RKBulletinModule/Form/bootstrap_3.html.twig',
             'ZikulaFormExtensionBundle:Form:form_div_layout.html.twig'

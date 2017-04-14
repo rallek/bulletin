@@ -38,11 +38,13 @@ abstract class AbstractAppSettingsType extends AbstractType
     /**
      * AppSettingsType constructor.
      *
-     * @param TranslatorInterface $translator  Translator service instance
-     * @param VariableApi         $variableApi VariableApi service instance
+     * @param TranslatorInterface  $translator  Translator service instance
+     * @param VariableApi          $variableApi VariableApi service instance
      */
-    public function __construct(TranslatorInterface $translator, VariableApi $variableApi)
-    {
+    public function __construct(
+        TranslatorInterface $translator,
+        VariableApi $variableApi
+    ) {
         $this->setTranslator($translator);
         $this->variableApi = $variableApi;
         $this->modVars = $this->variableApi->getAll('RKBulletinModule');
@@ -131,6 +133,19 @@ abstract class AbstractAppSettingsType extends AbstractType
                     'title' => $this->__('Enter the description length.') . ' ' . $this->__('Only digits are allowed.')
                 ],'scale' => 0
             ])
+            ->add('showCounter', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'label' => $this->__('Show counter') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('show counter in notice display')
+                ],
+                'help' => $this->__('show counter in notice display'),
+                'required' => false,
+                'data' => (bool)(isset($this->modVars['showCounter']) ? $this->modVars['showCounter'] : true),
+                'attr' => [
+                    'title' => $this->__('The show counter option.')
+                ],
+            ])
         ;
     }
 
@@ -171,32 +186,60 @@ abstract class AbstractAppSettingsType extends AbstractType
                     'title' => $this->__('The link own notices on account page option.')
                 ],
             ])
-            ->add('imageEntriesPerPage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
-                'label' => $this->__('Image entries per page') . ':',
+            ->add('pictureEntriesPerPage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+                'label' => $this->__('Picture entries per page') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
-                    'title' => $this->__('The amount of images shown per page')
+                    'title' => $this->__('The amount of pictures shown per page')
                 ],
-                'help' => $this->__('The amount of images shown per page'),
+                'help' => $this->__('The amount of pictures shown per page'),
                 'required' => false,
-                'data' => isset($this->modVars['imageEntriesPerPage']) ? $this->modVars['imageEntriesPerPage'] : '',
+                'data' => isset($this->modVars['pictureEntriesPerPage']) ? $this->modVars['pictureEntriesPerPage'] : '',
                 'empty_data' => intval('10'),
                 'attr' => [
                     'maxlength' => 255,
-                    'title' => $this->__('Enter the image entries per page.') . ' ' . $this->__('Only digits are allowed.')
+                    'title' => $this->__('Enter the picture entries per page.') . ' ' . $this->__('Only digits are allowed.')
                 ],'scale' => 0
             ])
-            ->add('linkOwnImagesOnAccountPage', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
-                'label' => $this->__('Link own images on account page') . ':',
+            ->add('linkOwnPicturesOnAccountPage', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'label' => $this->__('Link own pictures on account page') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
-                    'title' => $this->__('Whether to add a link to images of the current user on his account page')
+                    'title' => $this->__('Whether to add a link to pictures of the current user on his account page')
                 ],
-                'help' => $this->__('Whether to add a link to images of the current user on his account page'),
+                'help' => $this->__('Whether to add a link to pictures of the current user on his account page'),
                 'required' => false,
-                'data' => (bool)(isset($this->modVars['linkOwnImagesOnAccountPage']) ? $this->modVars['linkOwnImagesOnAccountPage'] : true),
+                'data' => (bool)(isset($this->modVars['linkOwnPicturesOnAccountPage']) ? $this->modVars['linkOwnPicturesOnAccountPage'] : true),
                 'attr' => [
-                    'title' => $this->__('The link own images on account page option.')
+                    'title' => $this->__('The link own pictures on account page option.')
+                ],
+            ])
+            ->add('eventEntriesPerPage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+                'label' => $this->__('Event entries per page') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('The amount of events shown per page')
+                ],
+                'help' => $this->__('The amount of events shown per page'),
+                'required' => false,
+                'data' => isset($this->modVars['eventEntriesPerPage']) ? $this->modVars['eventEntriesPerPage'] : '',
+                'empty_data' => intval('10'),
+                'attr' => [
+                    'maxlength' => 255,
+                    'title' => $this->__('Enter the event entries per page.') . ' ' . $this->__('Only digits are allowed.')
+                ],'scale' => 0
+            ])
+            ->add('linkOwnEventsOnAccountPage', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+                'label' => $this->__('Link own events on account page') . ':',
+                'label_attr' => [
+                    'class' => 'tooltips',
+                    'title' => $this->__('Whether to add a link to events of the current user on his account page')
+                ],
+                'help' => $this->__('Whether to add a link to events of the current user on his account page'),
+                'required' => false,
+                'data' => (bool)(isset($this->modVars['linkOwnEventsOnAccountPage']) ? $this->modVars['linkOwnEventsOnAccountPage'] : true),
+                'attr' => [
+                    'title' => $this->__('The link own events on account page option.')
                 ],
             ])
         ;
@@ -374,7 +417,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],'scale' => 0,
                 'input_group' => ['right' => $this->__('pixels')]
             ])
-            ->add('enableShrinkingForImageImage', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
+            ->add('enableShrinkingForPictureImage', 'Symfony\Component\Form\Extension\Core\Type\CheckboxType', [
                 'label' => $this->__('Enable shrinking') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
@@ -382,13 +425,13 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],
                 'help' => $this->__('Whether to enable shrinking huge images to maximum dimensions. Stores downscaled version of the original image.'),
                 'required' => false,
-                'data' => (bool)(isset($this->modVars['enableShrinkingForImageImage']) ? $this->modVars['enableShrinkingForImageImage'] : false),
+                'data' => (bool)(isset($this->modVars['enableShrinkingForPictureImage']) ? $this->modVars['enableShrinkingForPictureImage'] : false),
                 'attr' => [
                     'title' => $this->__('The enable shrinking option.'),
                     'class' => 'shrink-enabler'
                 ],
             ])
-            ->add('shrinkWidthImageImage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('shrinkWidthPictureImage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $this->__('Shrink width') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
@@ -396,16 +439,16 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],
                 'help' => $this->__('The maximum image width in pixels.'),
                 'required' => false,
-                'data' => isset($this->modVars['shrinkWidthImageImage']) ? $this->modVars['shrinkWidthImageImage'] : '',
+                'data' => isset($this->modVars['shrinkWidthPictureImage']) ? $this->modVars['shrinkWidthPictureImage'] : '',
                 'empty_data' => intval('800'),
                 'attr' => [
                     'maxlength' => 4,
                     'title' => $this->__('Enter the shrink width.') . ' ' . $this->__('Only digits are allowed.'),
-                    'class' => 'shrinkdimension-shrinkwidthimageimage'
+                    'class' => 'shrinkdimension-shrinkwidthpictureimage'
                 ],'scale' => 0,
                 'input_group' => ['right' => $this->__('pixels')]
             ])
-            ->add('shrinkHeightImageImage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('shrinkHeightPictureImage', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $this->__('Shrink height') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
@@ -413,16 +456,16 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],
                 'help' => $this->__('The maximum image height in pixels.'),
                 'required' => false,
-                'data' => isset($this->modVars['shrinkHeightImageImage']) ? $this->modVars['shrinkHeightImageImage'] : '',
+                'data' => isset($this->modVars['shrinkHeightPictureImage']) ? $this->modVars['shrinkHeightPictureImage'] : '',
                 'empty_data' => intval('600'),
                 'attr' => [
                     'maxlength' => 4,
                     'title' => $this->__('Enter the shrink height.') . ' ' . $this->__('Only digits are allowed.'),
-                    'class' => 'shrinkdimension-shrinkheightimageimage'
+                    'class' => 'shrinkdimension-shrinkheightpictureimage'
                 ],'scale' => 0,
                 'input_group' => ['right' => $this->__('pixels')]
             ])
-            ->add('thumbnailModeImageImage', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
+            ->add('thumbnailModePictureImage', 'Symfony\Component\Form\Extension\Core\Type\ChoiceType', [
                 'label' => $this->__('Thumbnail mode') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
@@ -430,7 +473,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],
                 'help' => $this->__('Thumbnail mode (inset or outbound).'),
                 'required' => false,
-                'data' => isset($this->modVars['thumbnailModeImageImage']) ? $this->modVars['thumbnailModeImageImage'] : '',
+                'data' => isset($this->modVars['thumbnailModePictureImage']) ? $this->modVars['thumbnailModePictureImage'] : '',
                 'empty_data' => 'inset',
                 'attr' => [
                     'title' => $this->__('Choose the thumbnail mode.')
@@ -441,7 +484,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 'choices_as_values' => true,
                 'multiple' => false
             ])
-            ->add('thumbnailWidthImageImageView', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('thumbnailWidthPictureImageView', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $this->__('Thumbnail width view') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
@@ -449,7 +492,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],
                 'help' => $this->__('Thumbnail width on view pages in pixels.'),
                 'required' => false,
-                'data' => isset($this->modVars['thumbnailWidthImageImageView']) ? $this->modVars['thumbnailWidthImageImageView'] : '',
+                'data' => isset($this->modVars['thumbnailWidthPictureImageView']) ? $this->modVars['thumbnailWidthPictureImageView'] : '',
                 'empty_data' => intval('32'),
                 'attr' => [
                     'maxlength' => 4,
@@ -457,7 +500,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],'scale' => 0,
                 'input_group' => ['right' => $this->__('pixels')]
             ])
-            ->add('thumbnailHeightImageImageView', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('thumbnailHeightPictureImageView', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $this->__('Thumbnail height view') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
@@ -465,7 +508,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],
                 'help' => $this->__('Thumbnail height on view pages in pixels.'),
                 'required' => false,
-                'data' => isset($this->modVars['thumbnailHeightImageImageView']) ? $this->modVars['thumbnailHeightImageImageView'] : '',
+                'data' => isset($this->modVars['thumbnailHeightPictureImageView']) ? $this->modVars['thumbnailHeightPictureImageView'] : '',
                 'empty_data' => intval('24'),
                 'attr' => [
                     'maxlength' => 4,
@@ -473,7 +516,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],'scale' => 0,
                 'input_group' => ['right' => $this->__('pixels')]
             ])
-            ->add('thumbnailWidthImageImageDisplay', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('thumbnailWidthPictureImageDisplay', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $this->__('Thumbnail width display') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
@@ -481,7 +524,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],
                 'help' => $this->__('Thumbnail width on display pages in pixels.'),
                 'required' => false,
-                'data' => isset($this->modVars['thumbnailWidthImageImageDisplay']) ? $this->modVars['thumbnailWidthImageImageDisplay'] : '',
+                'data' => isset($this->modVars['thumbnailWidthPictureImageDisplay']) ? $this->modVars['thumbnailWidthPictureImageDisplay'] : '',
                 'empty_data' => intval('240'),
                 'attr' => [
                     'maxlength' => 4,
@@ -489,7 +532,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],'scale' => 0,
                 'input_group' => ['right' => $this->__('pixels')]
             ])
-            ->add('thumbnailHeightImageImageDisplay', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('thumbnailHeightPictureImageDisplay', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $this->__('Thumbnail height display') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
@@ -497,7 +540,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],
                 'help' => $this->__('Thumbnail height on display pages in pixels.'),
                 'required' => false,
-                'data' => isset($this->modVars['thumbnailHeightImageImageDisplay']) ? $this->modVars['thumbnailHeightImageImageDisplay'] : '',
+                'data' => isset($this->modVars['thumbnailHeightPictureImageDisplay']) ? $this->modVars['thumbnailHeightPictureImageDisplay'] : '',
                 'empty_data' => intval('180'),
                 'attr' => [
                     'maxlength' => 4,
@@ -505,7 +548,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],'scale' => 0,
                 'input_group' => ['right' => $this->__('pixels')]
             ])
-            ->add('thumbnailWidthImageImageEdit', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('thumbnailWidthPictureImageEdit', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $this->__('Thumbnail width edit') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
@@ -513,7 +556,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],
                 'help' => $this->__('Thumbnail width on edit pages in pixels.'),
                 'required' => false,
-                'data' => isset($this->modVars['thumbnailWidthImageImageEdit']) ? $this->modVars['thumbnailWidthImageImageEdit'] : '',
+                'data' => isset($this->modVars['thumbnailWidthPictureImageEdit']) ? $this->modVars['thumbnailWidthPictureImageEdit'] : '',
                 'empty_data' => intval('240'),
                 'attr' => [
                     'maxlength' => 4,
@@ -521,7 +564,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],'scale' => 0,
                 'input_group' => ['right' => $this->__('pixels')]
             ])
-            ->add('thumbnailHeightImageImageEdit', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
+            ->add('thumbnailHeightPictureImageEdit', 'Symfony\Component\Form\Extension\Core\Type\IntegerType', [
                 'label' => $this->__('Thumbnail height edit') . ':',
                 'label_attr' => [
                     'class' => 'tooltips',
@@ -529,7 +572,7 @@ abstract class AbstractAppSettingsType extends AbstractType
                 ],
                 'help' => $this->__('Thumbnail height on edit pages in pixels.'),
                 'required' => false,
-                'data' => isset($this->modVars['thumbnailHeightImageImageEdit']) ? $this->modVars['thumbnailHeightImageImageEdit'] : '',
+                'data' => isset($this->modVars['thumbnailHeightPictureImageEdit']) ? $this->modVars['thumbnailHeightPictureImageEdit'] : '',
                 'empty_data' => intval('180'),
                 'attr' => [
                     'maxlength' => 4,
@@ -563,7 +606,8 @@ abstract class AbstractAppSettingsType extends AbstractType
                     'title' => $this->__('Choose the enabled finder types.')
                 ],'choices' => [
                     $this->__('Notice') => 'notice'
-                    ,$this->__('Image') => 'image'
+                    ,$this->__('Picture') => 'picture'
+                    ,$this->__('Event') => 'event'
                 ],
                 'choices_as_values' => true,
                 'multiple' => true

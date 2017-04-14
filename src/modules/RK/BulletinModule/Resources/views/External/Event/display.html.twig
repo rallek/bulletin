@@ -1,0 +1,47 @@
+{# Purpose of this template: Display one certain event within an external context #}
+<div id="event{$event.id}" class="rkbulletinmodule-external-event">
+{% if displayMode == 'link' %}
+    <p class="rkbulletinmodule-external-link">
+    <a href="{{ path('rkbulletinmodule_event_display', { 'id': event.id }) }}" title="{{ event.getTitleFromDisplayPattern()|e('html_attr') }}">
+    {{ event.getTitleFromDisplayPattern()|notifyFilters('bulletin.filter_hooks.events.filter') }}
+    </a>
+    </p>
+{% endif %}
+{% if hasPermission('RKBulletinModule::', '::', 'ACCESS_EDIT') %}
+    {# for normal users without edit permission show only the actual file per default #}
+    {% if displayMode == 'embed' %}
+        <p class="rkbulletinmodule-external-title">
+            <strong>{{ event.getTitleFromDisplayPattern()|notifyFilters('bulletin.filter_hooks.events.filter') }}</strong>
+        </p>
+    {% endif %}
+{% endif %}
+
+{% if displayMode == 'link' %}
+{% elseif displayMode == 'embed' %}
+    <div class="rkbulletinmodule-external-snippet">
+        &nbsp;
+    </div>
+
+    {# you can distinguish the context like this: #}
+    {# % if source == 'contentType' %}
+        ...
+    {% elseif source == 'scribite' %}
+        ...
+    {% endif % #}
+
+    {# you can enable more details about the item: #}
+    {#
+        <p class="rkbulletinmodule-external-description">
+            {% if event.description is not empty %}{{ event.description }}<br />{% endif %}
+            {% if featureActivationHelper.isEnabled(constant('RK\\BulletinModule\\Helper\\FeatureActivationHelper::CATEGORIES'), 'event') %}
+                <dl class="category-list">
+                {% for propName, catMapping in event.categories %}
+                    <dt>{{ propName }}</dt>
+                    <dd>{{ catMapping.category.display_name[app.request.locale]|default(catMapping.category.name) }}</dd>
+                {% endfor %}
+                </dl>
+            {% endif %}
+        </p>
+    #}
+{% endif %}
+</div>
